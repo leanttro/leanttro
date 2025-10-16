@@ -465,10 +465,10 @@
         <!-- Seção Hero com Carrossel -->
         <section id="inicio">
             <div class="hero-carousel">
-                <!-- CORREÇÃO: Adicionado /static/ ao caminho das imagens -->
-                <div class="hero-slide active" style="background-image: url('/static/hero1.png');"></div>
-                <div class="hero-slide" style="background-image: url('/static/hero2.png');"></div>
-                <div class="hero-slide" style="background-image: url('/static/hero3.png');"></div>
+                <!-- Se as imagens estiverem na pasta 'static', use url_for('static', filename='...') -->
+                <div class="hero-slide active" style="background-image: url('hero1.png');"></div>
+                <div class="hero-slide" style="background-image: url('hero2.png');"></div>
+                <div class="hero-slide" style="background-image: url('hero3.png');"></div>
             </div>
             <div class="hero-overlay"></div>
             <div class="container hero-content">
@@ -614,8 +614,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // CORREÇÃO: Adicionado /static/ ao caminho das imagens
             const projectsData = [
+                // ... (Dados de projetos mantidos)
                 {
                     id: 1,
                     title: "Feiras de Rua - SP",
@@ -626,7 +626,7 @@
                     liveLink: "https://www.feirasderua.com.br",
                     liveLinkText: "Veja Funcionando",
                     disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
-                    imageSrc: "/static/projeto-1.png"
+                    imageSrc: "projeto-1.png"
                 },
                 {
                     id: 2,
@@ -638,7 +638,7 @@
                     liveLink: "https://leanttro.github.io/taxi_nyc_cloud",
                     liveLinkText: "Ver Simulador de IA",
                     disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
-                    imageSrc: "/static/projeto-2.png"
+                    imageSrc: "projeto-2.png"
                 },
                 {
                     id: 3,
@@ -650,7 +650,7 @@
                     liveLink: "https://automacao-mkt-api.onrender.com/",
                     liveLinkText: "Ver API Funcionando",
                     disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
-                    imageSrc: "/static/projeto-3.png"
+                    imageSrc: "projeto-3.png"
                 },
                 {
                     id: 4,
@@ -659,7 +659,7 @@
                     longDescription: "Análise de dados e criação de um dashboard interativo no Power BI para avaliar o risco de crédito de clientes. O projeto incluiu limpeza, tratamento de dados com Python (Pandas) e criação de métricas e KPIs estratégicos, aplicando conceitos de machine learning para a modelagem de risco.",
                     skills: ["Power BI", "Python", "Machine Learning"],
                     githubLink: "https://github.com/leanttro",
-                    imageSrc: "/static/projeto-4.png"
+                    imageSrc: "projeto-4.png"
                 },
                 {
                     id: 5,
@@ -668,7 +668,7 @@
                     longDescription: "Pipeline de dados completo para um dataset de e-commerce do Kaggle. O projeto aborda a extração, limpeza, transformação e carga dos dados, preparando-os para análises de negócio e modelagem.",
                     skills: ["Python", "SQL", "API Rest", "Docker"],
                     githubLink: "https://github.com/leanttro/kaggle_ecommerce_pipeline.git",
-                    imageSrc: "/static/projeto-5.png"
+                    imageSrc: "projeto-5.png"
                 },
                 {
                     id: 6,
@@ -679,7 +679,7 @@
                     githubLink: "https://github.com/leanttro/vick_express",
                     liveLink: "https://leanttro.github.io/vick_express/",
                     liveLinkText: "Veja Funcionando",
-                    imageSrc: "/static/projeto-6.png"
+                    imageSrc: "projeto-6.png"
                 }
             ];
 
@@ -863,4 +863,3 @@
     </script>
 </body>
 </html>
-
