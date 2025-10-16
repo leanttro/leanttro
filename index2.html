@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inovação & Insights | Junte-se à Nossa Comunidade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset and Base Styles */
+        :root {
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --primary-color: #6a45ff;
+            --primary-hover-color: #5a38d9;
+            --text-color: #e0e0e0;
+            --text-secondary-color: #a0a0a0;
+            --border-color: #333333;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--surface-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            max-width: 150px;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-secondary-color);
+            font-size: 1rem;
+        }
+
+        /* Form */
+        .form-container {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(106, 69, 255, 0.3);
+        }
+
+        /* Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .submit-btn.loading {
+            cursor: not-allowed;
+            background-color: var(--primary-hover-color);
+        }
+
+        /* Message Display */
+        #form-message {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            display: none; /* Hidden by default */
+        }
+
+        #form-message.success {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        #form-message.error {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa" class="logo">
+            <h1>Acesso Exclusivo</h1>
+            <p>Preencha seus dados para receber insights de mercado e inovação.</p>
+        </header>
+
+        <main class="form-container">
+            <form id="lead-form" method="POST" action="/submit">
+                <div class="form-group">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail Profissional</label>
+                    <input type="email" id="email" name="email" placeholder="voce@empresa.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone / WhatsApp</label>
+                    <input type="tel" id="telefone" name="telefone" placeholder="(11) 99999-9999">
+                </div>
+                <div class="form-group">
+                    <label for="empresa">Empresa</label>
+                    <input type="text" id="empresa" name="empresa" placeholder="Nome da sua empresa">
+                </div>
+                <div class="form-group">
+                    <label for="cargo">Seu Cargo</label>
+                    <input type="text" id="cargo" name="cargo" placeholder="Ex: Diretor de Vendas">
+                </div>
+                <button type="submit" class="submit-btn" id="submit-button">Quero Acesso Agora</button>
+            </form>
+            <div id="form-message"></div>
+        </main>
+    </div>
+
+    <script>
+        const form = document.getElementById('lead-form');
+        const submitButton = document.getElementById('submit-button');
+        const formMessage = document.getElementById('form-message');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            // Mostra estado de carregamento
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+            submitButton.classList.add('loading');
+            formMessage.style.display = 'none';
+
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    body: new URLSearchParams(formData) // Converte para o formato que o Flask espera
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Sucesso
+                    formMessage.textContent = result.message;
+                    formMessage.className = 'success';
+                    form.reset(); // Limpa o formulário
+                } else {
+                    // Erro
+                    formMessage.textContent = result.message || 'Ocorreu um erro. Tente novamente.';
+                    formMessage.className = 'error';
+                }
+            } catch (error) {
+                // Erro de rede
+                console.error('Fetch Error:', error);
+                formMessage.textContent = 'Erro de conexão. Verifique sua internet.';
+                formMessage.className = 'error';
+            } finally {
+                // Restaura o botão
+                submitButton.disabled = false;
+                submitButton.textContent = 'Quero Acesso Agora';
+                submitButton.classList.remove('loading');
+                formMessage.style.display = 'block'; // Mostra a mensagem
+            }
+        });
+    </script>
+
+</body>
+</html>
