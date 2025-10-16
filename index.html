@@ -142,7 +142,7 @@
         .direction-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2)); transition: background-color 0.4s ease; }
         .direction-card:hover::before { background-color: rgba(0,0,0,0.3); }
         .direction-card-content { position: relative; z-index: 2; max-width: 450px; }
-        .direction-card h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .direction-card h3 { font-size: 2rem; margin-bottom: 1rem; text-align: center; }
         .direction-card p { font-size: 1.1rem; margin-bottom: 2rem; color: rgba(255, 255, 255, 0.85); }
         
         /* SEÇÃO: SKILLS */
@@ -248,12 +248,24 @@
             position: relative;
             z-index: 3;
             color: var(--text-primary);
+            width: 100%;
+            text-align: center;
+            white-space: nowrap;
+            left: -12px;
         }
         
         /* MODAL DE PROJETOS */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); align-items: center; justify-content: center; padding: 1rem; }
         .modal-content { background-color: var(--surface); margin: auto; padding: 2.5rem; border: 1px solid var(--border); width: 90%; max-width: 700px; border-radius: 16px; position: relative; animation: fadeInModal 0.4s; }
         @keyframes fadeInModal { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        #modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
         .close-modal-btn { color: var(--text-secondary); position: absolute; top: 1.5rem; right: 1.5rem; font-size: 1.75rem; font-weight: bold; cursor: pointer; transition: color 0.3s ease; }
         .close-modal-btn:hover { color: var(--text-primary); }
         #modal-title { font-size: 2rem; color: var(--accent); margin-bottom: 1rem; }
@@ -265,7 +277,7 @@
         /* MODIFICADO: Seção Serviços */
         #servicos {
             padding-top: 4rem; 
-            padding-bottom: 3rem; /* MODIFICADO: Espaçamento inferior reduzido */
+            padding-bottom: 3rem; 
             background-color: var(--surface);
         }
         .service-grid { 
@@ -295,15 +307,27 @@
 
         /* Seção Contato */
         #contato {
-            padding-top: 3rem; /* MODIFICADO: Espaçamento superior reduzido */
+            padding-top: 3rem; 
         }
         #contato .container { max-width: 700px; text-align: center; }
         #contato p { font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 2rem; }
         .contact-form { display: flex; flex-direction: column; gap: 1.5rem; }
         .form-group { text-align: left; }
-        .form-group input, .form-group textarea { width: 100%; padding: 0.85rem 1rem; border-radius: 8px; border: 1px solid var(--border); background-color: var(--surface); color: var(--text-primary); font-family: 'Inter', sans-serif; font-size: 1rem; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3); }
-        .form-group textarea { resize: vertical; min-height: 150px; }
+        .form-group input, .form-group select { 
+            width: 100%; 
+            padding: 0.85rem 1rem; 
+            border-radius: 8px; 
+            border: 1px solid var(--border); 
+            background-color: var(--surface); 
+            color: var(--text-primary); 
+            font-family: 'Inter', sans-serif; 
+            font-size: 1rem; 
+        }
+        .form-group input:focus, .form-group select:focus { 
+            outline: none; 
+            border-color: var(--accent); 
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3); 
+        }
         .contact-form .btn-primary { background-color: var(--accent); color: var(--text-primary); }
         .contact-form .btn-primary:hover { background-color: var(--accent-hover); }
         
@@ -440,12 +464,24 @@
         <!-- Seção Contato -->
         <section id="contato">
             <div class="container fade-in">
-                <h2>Vamos Conversar</h2>
-                <p>Estou disponível para novas oportunidades e projetos freelance. Envie uma mensagem e retornarei em breve.</p>
+                <h2>5 Coisas com I.A. que Você Já Tem e Não Sabia</h2>
+                <p>A Inteligência Artificial já faz parte do seu dia a dia de formas surpreendentes. Deixe seu nome e e-mail abaixo para receber gratuitamente no seu e-mail um guia rápido que preparei.</p>
                 <form class="contact-form" id="contact-form">
                     <div class="form-group"><input type="text" id="name" name="name" placeholder="Seu Nome" required></div>
                     <div class="form-group"><input type="email" id="email" name="email" placeholder="Seu Email" required></div>
-                    <div class="form-group"><textarea id="message" name="message" placeholder="Sua Mensagem" required></textarea></div>
+                    <div class="form-group">
+                        <select id="source" name="source" required>
+                            <option value="" disabled selected>Onde você me encontrou?</option>
+                            <option value="google">Google</option>
+                            <option value="linkedin">LinkedIn</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="indicacao">Indicação</option>
+                            <option value="amigo">Amigo</option>
+                            <option value="recrutador">Recrutador</option>
+                            <option value="empreendedor">Empreendedor</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
                 </form>
             </div>
@@ -456,6 +492,7 @@
     <div id="project-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal-btn">&times;</span>
+            <img src="" alt="Imagem do projeto" id="modal-image">
             <h2 id="modal-title"></h2>
             <p id="modal-description"></p>
             <div id="modal-skills"></div>
@@ -482,30 +519,34 @@
                 {
                     id: 1,
                     title: "Feiras de Rua - SP",
+                    shortTitle: "Feiras de Rua - SP",
                     longDescription: "Estudo de caso completo sobre o desenvolvimento de uma aplicação web full-stack para encontrar feiras livres na cidade de São Paulo. O projeto envolveu desde a modelagem do banco de dados PostgreSQL até a criação de uma API com Flask e um frontend interativo e responsivo.",
                     skills: ["Desenvolvimento Web", "Python", "SQL"],
-                    githubLink: "https://github.com/leanttro",
+                    githubLink: "https://github.com/leanttro/feiras-de-rua.git",
                     imageSrc: "projeto-1.png"
                 },
                 {
                     id: 2,
                     title: "Pipeline de Dados - NYC Taxi",
-                    longDescription: "Projeto de engenharia de dados em nuvem para processar mais de 48 milhões de registros de corridas de táxi. A solução inclui a orquestração de pipelines com Mage AI, processamento distribuído com PySpark/Databricks e armazenamento em BigQuery na GCP.",
+                    shortTitle: "Pipeline NYC Taxi",
+                    longDescription: "Projeto de engenharia de dados na nuvem para processar mais de 48 milhões de registros. A solução utiliza n8n para a orquestração do pipeline, automatizando o processamento distribuído com PySpark/Databricks e o armazenamento em BigQuery na GCP.",
                     skills: ["GCP", "Python", "SQL", "Databricks"],
-                    githubLink: "https://github.com/leanttro",
+                    githubLink: "https://github.com/leanttro/taxi_nyc_cloud",
                     imageSrc: "projeto-2.png"
                 },
                 {
                     id: 3,
                     title: "Automação de Leads de Marketing",
+                    shortTitle: "Automação de Leads",
                     longDescription: "Sistema de automação low-code/high-code que qualifica e segmenta leads de marketing. Utiliza n8n para orquestrar o fluxo e scripts em Python para integrar com APIs externas, salvando os dados em um banco PostgreSQL para análise.",
                     skills: ["Automação", "Python", "SQL", "API Rest"],
-                    githubLink: "https://github.com/leanttro",
+                    githubLink: "https://github.com/leanttro/automacao_mkt_n8n.git",
                     imageSrc: "projeto-3.png"
                 },
                 {
                     id: 4,
                     title: "Dashboard de Risco de Crédito",
+                    shortTitle: "Dashboard Risco",
                     longDescription: "Análise de dados e criação de um dashboard interativo no Power BI para avaliar o risco de crédito de clientes. O projeto incluiu limpeza, tratamento de dados com Python (Pandas) e criação de métricas e KPIs estratégicos, aplicando conceitos de machine learning para a modelagem de risco.",
                     skills: ["Power BI", "Python", "Machine Learning"],
                     githubLink: "https://github.com/leanttro",
@@ -513,18 +554,20 @@
                 },
                 {
                     id: 5,
-                    title: "API para E-commerce",
-                    longDescription: "Desenvolvimento de uma API RESTful robusta com Python e FastAPI para um sistema de e-commerce. A API gerencia produtos, usuários e pedidos, utilizando Docker para conteinerização e PostgreSQL como banco de dados.",
+                    title: "Pipeline de E-commerce",
+                    shortTitle: "Pipeline E-commerce",
+                    longDescription: "Pipeline de dados completo para um dataset de e-commerce do Kaggle. O projeto aborda a extração, limpeza, transformação e carga dos dados, preparando-os para análises de negócio e modelagem.",
                     skills: ["Python", "SQL", "API Rest", "Docker"],
-                    githubLink: "https://github.com/leanttro",
+                    githubLink: "https://github.com/leanttro/kaggle_ecommerce_pipeline.git",
                     imageSrc: "projeto-5.png"
                 },
                 {
                     id: 6,
                     title: "Website Institucional",
-                    longDescription: "Criação de um website institucional completo e responsivo utilizando HTML, CSS e JavaScript puro, focado em performance e SEO. O projeto foi entregue com um design moderno e otimizado para todos os dispositivos.",
+                    shortTitle: "Site Institucional",
+                    longDescription: "Website institucional responsivo para a empresa de logística Vick Express. Desenvolvido com foco em performance, design moderno e uma experiência de usuário intuitiva para apresentar os serviços da empresa.",
                     skills: ["Desenvolvimento Web"],
-                    githubLink: "https://github.com/leanttro",
+                    githubLink: "https://github.com/leanttro/vick_express",
                     imageSrc: "projeto-6.png"
                 }
             ];
@@ -542,9 +585,12 @@
                     const card = document.createElement('div');
                     card.className = 'project-preview-card';
                     card.dataset.id = project.id;
+
+                    const titleStyle = project.shortTitle === "Dashboard Risco" ? 'style="left: -7px;"' : '';
+
                     card.innerHTML = `
                         <img src="${project.imageSrc}" alt="Imagem do projeto ${project.title}">
-                        <h3>${project.title}</h3>
+                        <h3 ${titleStyle}>${project.shortTitle}</h3>
                     `;
                     projectCarousel.appendChild(card);
                 });
@@ -569,6 +615,8 @@
                     const project = projectsData.find(p => p.id === projectId);
                     
                     if (project) {
+                        document.getElementById('modal-image').src = project.imageSrc;
+                        document.getElementById('modal-image').alt = `Imagem do projeto ${project.title}`;
                         document.getElementById('modal-title').textContent = project.title;
                         document.getElementById('modal-description').textContent = project.longDescription;
                         document.getElementById('modal-github-link').href = project.githubLink;
@@ -613,7 +661,7 @@
             const contactForm = document.getElementById('contact-form');
             contactForm.addEventListener('submit', (event) => {
                 event.preventDefault();
-                alert('Mensagem enviada com sucesso! Obrigado pelo contato.');
+                alert("Você receberá o guia '5 Coisas com I.A. que Você Já Tem e Não Sabia' no seu e-mail! Obrigado pela visita.");
                 contactForm.reset();
             });
 
