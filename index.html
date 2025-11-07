@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leandro Andrade | Engenheiro de Dados & Desenvolvedor Full Stack</title>
     <meta name="description" content="Portfólio de Leandro Andrade, Engenheiro de Dados e Desenvolvedor Full Stack, apresentando projetos em nuvem, web e automação.">
+    <!-- O CSS do Font Awesome é necessário para os ícones do bot (fas) e do WhatsApp (fab) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="chatbot.css">
     
     <style>
         /* Importação da Fonte Inter */
@@ -41,7 +41,7 @@
             --font-heading: 'Montserrat', sans-serif; /* Fonte de destaque para o logo */
         }
 
-        /* ... (Reset e Base CSS - sem mudanças) ... */
+        /* ... (Reset e Base CSS - Inalterado) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -53,7 +53,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ... (Utilitários, Header, Hero, etc. - sem mudanças) ... */
+        /* ... (Utilitários, Header, Hero, etc. - Inalterado) ... */
          /* Utilitários */
          .container {
             max-width: 1120px;
@@ -621,52 +621,9 @@
         .service-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
         .service-card p { color: var(--text-secondary); }
 
-        /* Seção Contato */
+        /* Seção Contato (Removida conforme o novo design focado no chat) */
         #contato {
-            padding-top: 3rem; 
-            background-color: var(--surface);
-        }
-        #contato .container { max-width: 700px; text-align: center; }
-        #contato p { font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 2rem; }
-        .contact-form { display: flex; flex-direction: column; gap: 1.5rem; }
-        .form-group { text-align: left; }
-        .form-group input, .form-group select { 
-            width: 100%; 
-            padding: 0.85rem 1rem; 
-            border-radius: 8px; 
-            border: 1px solid var(--border); 
-            background-color: var(--background);
-            color: var(--text-primary); 
-            font-family: 'Inter', sans-serif; 
-            font-size: 1rem; 
-        }
-        .form-group input:focus, .form-group select:focus { 
-            outline: none; 
-            border-color: var(--accent); 
-            box-shadow: 0 0 0 3px (249, 115, 22, 0.3); 
-        }
-        .contact-form .btn-primary { background-color: var(--accent); color: var(--text-primary); transition: opacity 0.3s; }
-        .contact-form .btn-primary:hover { background-color: var(--accent-hover); }
-        .contact-form .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        /* Estilos para a mensagem de feedback */
-        #form-feedback {
-            margin-top: 1rem;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 500;
-            display: none; 
-        }
-        #form-feedback.success {
-            background-color: rgba(16, 185, 129, 0.2); 
-            color: var(--success-color);
-            border: 1px solid var(--success-color);
-        }
-        #form-feedback.error {
-            background-color: rgba(239, 68, 68, 0.2); 
-            color: var(--error-color);
-            border: 1px solid var(--error-color);
+           display: none;
         }
         
         /* Rodapé */
@@ -713,7 +670,7 @@
         /* ======================================================== */
 
         /* Font Awesome (Já importado no <head>) */
-        .fas {
+        .fas, .fab { /* Adicionado .fab para o WhatsApp */
             font-family: "Font Awesome 6 Free" !important;
             font-weight: 900 !important;
         }
@@ -1038,6 +995,16 @@
             color: var(--chat-text-primary); /* Branco */
             border-bottom-right-radius: 4px;
         }
+        
+        /* [NOVO] Estilo para links e botões dentro da bolha */
+        .message-bubble a {
+            color: var(--text-primary); /* Cor branca para links em bolhas laranjas */
+            text-decoration: underline;
+        }
+        .message.bot .message-bubble a {
+            color: var(--accent); /* Cor laranja para links em bolhas de bot */
+        }
+
 
         .message-time {
             font-size: 0.7rem;
@@ -1324,7 +1291,7 @@
                     <li><a href="#projetos">Projetos</a></li>
                     <li><a href="#blog">Blog</a></li> <!-- Adicionado link Blog na navegação -->
                     <li><a href="#servicos">Serviços</a></li>
-                    <li><a href="#contato">Contato</a></li>
+                    <!-- O link de Contato foi removido do HTML, o que está correto -->
                 </ul>
             </nav>
             <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
@@ -1348,7 +1315,7 @@
                 <p>Eu construo soluções de dados eficientes e desenvolvo aplicações web completas, transformando problemas complexos em resultados tangíveis.</p>
                 <div class="hero-buttons">
                     <a href="#case-study-feiras" class="btn btn-primary">Ver Case de IA</a>
-                    <a href="#contato" class="btn btn-outline">Entrar em Contato</a>
+                    <a href="#google-search-intro" class="btn btn-outline">Diagnóstico de SEO</a>
                 </div>
             </div>
         </section>
@@ -1425,7 +1392,8 @@
             <div class="container fade-in">
                  <div class="project-carousel-wrapper">
                     <div class="project-carousel" id="project-carousel">
-                        </div>
+                        <!-- Cards de projeto serão injetados aqui pelo JS -->
+                    </div>
                     
                     <button class="carousel-nav-btn" id="scroll-left-btn" aria-label="Rolar para esquerda">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M165.66,202.34a8,8,0,0,1-11.32,0l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128l74.35,74.34A8,8,0,0,1,165.66,202.34Z"></path></svg>
@@ -1488,12 +1456,14 @@
         <!-- TAREFA 1: INÍCIO DO HTML DA NOVA SEÇÃO BLOG -->
         <section id="blog" class="products" style="padding-top: 3rem; background-color: var(--background);">
             <div class="container fade-in">
-                <div class="section-header">
-                    <div>
-                        <div class="section-label">Meu Conteúdo</div>
-                        <h2 class="section-title">Blog & Artigos</h2>
+                <!-- CSS INLINE ADICIONADO PARA HEADER DO BLOG -->
+                <!-- [MUDANÇA AQUI] Adicionado justify-content: center e text-align: center para centralizar -->
+                <div class="section-header" style="display: flex; justify-content: center; align-items: center; margin-bottom: 2rem; flex-direction: column;">
+                    <div style="text-align: center;">
+                        <h2 class="section-title" style="text-align: center; margin: 0;">Blog & Artigos</h2>
                     </div>
-                    <div class="carousel-controls">
+                    <!-- Controles de carrossel movidos para o centro e estilizados abaixo do título para centralização total -->
+                    <div class="carousel-controls" style="display: flex; gap: 0.5rem; margin-top: 1rem;">
                         <button id="blog-scroll-left-btn" class="carousel-nav-btn" aria-label="Anterior">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                         </button>
@@ -1502,7 +1472,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="project-carousel" id="blog-carousel" style="min-height: 350px;">
+                <div class="project-carousel" id="blog-carousel" style="min-height: 350px; justify-content: center;">
+                    <!-- Posts do blog serão injetados aqui -->
                 </div>
             </div>
         </section>
@@ -1527,6 +1498,10 @@
                     </button>
                     </div>
             </div>
+        </section>
+        
+        <!-- Seção Contato (Removida) -->
+        <section id="contato" style="display: none;">
         </section>
         
         </main>
@@ -1582,7 +1557,8 @@
             </div>
 
             <div class="chatbot-messages" id="chatbotMessages">
-                </div>
+                <!-- Mensagens do chat serão injetadas aqui -->
+            </div>
 
             <div class="chatbot-input-area">
                 <input 
@@ -1618,6 +1594,11 @@
         </div>
     </footer>
 
+    <!-- 
+        ==================================================================
+        INÍCIO DAS MUDANÇAS NO JAVASCRIPT
+        ==================================================================
+    -->
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     // --- DADOS DOS PROJETOS (ESTÁTICO - Inalterado) ---
@@ -1725,65 +1706,70 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('project-modal');
     const closeModalBtn = modal.querySelector('.close-modal-btn');
 
-    projectCarousel.addEventListener('click', (e) => {
-        const card = e.target.closest('.project-preview-card');
-        if (card) {
-            const projectId = parseInt(card.dataset.id);
-            const project = projectsData.find(p => p.id === projectId);
-            if (project) {
-                document.getElementById('modal-image').src = project.imageSrc;
-                document.getElementById('modal-image').alt = `Imagem do projeto ${project.title}`;
-                document.getElementById('modal-title').textContent = project.title;
-                document.getElementById('modal-description').textContent = project.longDescription;
-                const skillsContainer = document.getElementById('modal-skills');
-                skillsContainer.innerHTML = '';
-                project.skills.forEach(skill => {
-                    const skillTag = document.createElement('span');
-                    skillTag.textContent = skill;
-                    skillsContainer.appendChild(skillTag);
-                });
-                const linksContainer = document.getElementById('modal-links');
-                linksContainer.innerHTML = ''; 
-                if (project.caseStudyLink) {
-                    const caseLink = document.createElement('a');
-                    caseLink.href = project.caseStudyLink;
-                    caseLink.className = 'btn btn-accent';
-                    caseLink.textContent = 'Ver Case Completo';
-                    caseLink.addEventListener('click', (e) => {
-                        closeModal();
+    if (projectCarousel) {
+        projectCarousel.addEventListener('click', (e) => {
+            const card = e.target.closest('.project-preview-card');
+            if (card) {
+                const projectId = parseInt(card.dataset.id);
+                const project = projectsData.find(p => p.id === projectId);
+                if (project) {
+                    document.getElementById('modal-image').src = project.imageSrc;
+                    document.getElementById('modal-image').alt = `Imagem do projeto ${project.title}`;
+                    document.getElementById('modal-title').textContent = project.title;
+                    document.getElementById('modal-description').textContent = project.longDescription;
+                    const skillsContainer = document.getElementById('modal-skills');
+                    skillsContainer.innerHTML = '';
+                    project.skills.forEach(skill => {
+                        const skillTag = document.createElement('span');
+                        skillTag.textContent = skill;
+                        skillsContainer.appendChild(skillTag);
                     });
-                    linksContainer.appendChild(caseLink);
+                    const linksContainer = document.getElementById('modal-links');
+                    linksContainer.innerHTML = ''; 
+                    if (project.caseStudyLink) {
+                        const caseLink = document.createElement('a');
+                        caseLink.href = project.caseStudyLink;
+                        caseLink.className = 'btn btn-accent';
+                        caseLink.textContent = 'Ver Case Completo';
+                        caseLink.addEventListener('click', (e) => {
+                            closeModal();
+                        });
+                        linksContainer.appendChild(caseLink);
+                    }
+                    if (project.liveLink) {
+                        const liveLink = document.createElement('a');
+                        liveLink.href = project.liveLink;
+                        liveLink.className = 'btn-live';
+                        liveLink.target = '_blank';
+                        liveLink.textContent = project.liveLinkText;
+                        linksContainer.appendChild(liveLink);
+                    }
+                    const githubLink = document.createElement('a');
+                    githubLink.href = project.githubLink;
+                    githubLink.className = 'btn btn-outline';
+                    githubLink.target = '_blank';
+                    githubLink.textContent = 'Ver no GitHub';
+                    linksContainer.appendChild(githubLink);
+                    if (project.disclaimer) {
+                        const disclaimerSpan = document.createElement('span');
+                        disclaimerSpan.className = 'disclaimer';
+                        disclaimerSpan.textContent = project.disclaimer;
+                        linksContainer.appendChild(disclaimerSpan);
+                    }
+                    modal.style.display = 'flex';
                 }
-                if (project.liveLink) {
-                    const liveLink = document.createElement('a');
-                    liveLink.href = project.liveLink;
-                    liveLink.className = 'btn-live';
-                    liveLink.target = '_blank';
-                    liveLink.textContent = project.liveLinkText;
-                    linksContainer.appendChild(liveLink);
-                }
-                const githubLink = document.createElement('a');
-                githubLink.href = project.githubLink;
-                githubLink.className = 'btn btn-outline';
-                githubLink.target = '_blank';
-                githubLink.textContent = 'Ver no GitHub';
-                linksContainer.appendChild(githubLink);
-                if (project.disclaimer) {
-                    const disclaimerSpan = document.createElement('span');
-                    disclaimerSpan.className = 'disclaimer';
-                    disclaimerSpan.textContent = project.disclaimer;
-                    linksContainer.appendChild(disclaimerSpan);
-                }
-                modal.style.display = 'flex';
             }
-        }
-    });
-    function closeModal() { modal.style.display = 'none'; }
-    closeModalBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) { closeModal(); } });
+        });
+    }
+    
+    function closeModal() { if (modal) modal.style.display = 'none'; }
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) { closeModal(); } });
 
     const header = document.querySelector('header');
-    window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 50); });
+    if (header) {
+        window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 50); });
+    }
 
     const slides = document.querySelectorAll('.hero-slide');
     let currentSlide = 0;
@@ -1807,14 +1793,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const menuToggle = document.getElementById('menu-toggle');
     const navMenu = document.getElementById('nav-menu');
-    menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
-    navMenu.querySelectorAll('a').forEach(link => { 
-        link.addEventListener('click', () => {
-            if (navMenu.classList.contains('active')) {
-                navMenu.classList.remove('active');
-            }
-        }); 
-    });
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+        navMenu.querySelectorAll('a').forEach(link => { 
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                }
+            }); 
+        });
+    }
 
     const faders = document.querySelectorAll('.fade-in');
     const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -80px 0px" };
@@ -1831,6 +1819,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // =============================================================
     // --- INÍCIO: LÓGICA COMPLETA DO CHATBOT E FUNIL DE VENDAS ---
+    // (COM LÓGICA DE PERMISSÃO "SIM/NÃO")
     // =============================================================
 
     // IDs dos elementos do Chatbot
@@ -1854,12 +1843,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentLeadId = null; 
     let currentUrlAnalisada = null; 
     let currentSeoScore = null; 
+    
+    // [MUDANÇA] Novos estados do funil
     let chatState = "QA"; // Estado inicial: "QA" (Perguntas e Respostas)
-    // Outros estados: "AGUARDANDO_NOME", "AGUARDANDO_CONTATO", "AGUARDANDO_DETALHES", "AGUARDANDO_ORCAMENTO"
+    // Outros estados: "LOADING", "AGUARDANDO_PERMISSAO", "AGUARDANDO_NOME", "AGUARDANDO_CONTATO", "AGUARDANDO_DETALHES", "AGUARDANDO_ORCAMENTO"
 
     let conversationHistory = []; // Armazena objetos { role, text }
 
-    // --- Lógica de Animação da Preview (Igual Elobot) ---
+    // --- Lógica de Animação da Preview (Inalterado) ---
     const previewMessages = [
         "Olá! 👋 Sou o assistente de IA do Leandro. Posso ajudar?",
         "Clique aqui para saber mais sobre meus projetos.",
@@ -1870,13 +1861,13 @@ document.addEventListener('DOMContentLoaded', function() {
     let previewInterval;
 
     function minimizePreview() {
-        chatbotButton.classList.add('minimized');
-        minimizedIcon.classList.add('minimized');
-        clearInterval(previewInterval);
+        if (chatbotButton) chatbotButton.classList.add('minimized');
+        if (minimizedIcon) minimizedIcon.classList.add('minimized');
+        if (previewInterval) clearInterval(previewInterval);
     }
     function maximizePreview() {
-        chatbotButton.classList.remove('minimized');
-        minimizedIcon.classList.remove('minimized');
+        if (chatbotButton) chatbotButton.classList.remove('minimized');
+        if (minimizedIcon) minimizedIcon.classList.remove('minimized');
         startPreviewAnimation();
     }
     function startPreviewAnimation() {
@@ -1896,30 +1887,30 @@ document.addEventListener('DOMContentLoaded', function() {
     if (minimizedIcon) minimizedIcon.addEventListener('click', maximizePreview);
     if (previewMessageEl) startPreviewAnimation();
 
-    // --- Lógica de Abrir/Fechar Chat (Igual Elobot) ---
+    // --- Lógica de Abrir/Fechar Chat (Inalterado) ---
     function toggleChat(e) {
         if (e) e.preventDefault();
-        const isActive = chatbotWindow.classList.contains('active');
+        const isActive = chatbotWindow && chatbotWindow.classList.contains('active');
         if (isActive) {
             chatbotWindow.classList.remove('active');
-            chatbotButton.classList.remove('active');
-            minimizedIcon.classList.remove('active');
-            if (!chatbotButton.classList.contains('minimized')) {
+            if (chatbotButton) chatbotButton.classList.remove('active');
+            if (minimizedIcon) minimizedIcon.classList.remove('active');
+            if (chatbotButton && !chatbotButton.classList.contains('minimized')) {
                  startPreviewAnimation();
             }
         } else {
-            chatbotWindow.classList.add('active');
-            chatbotButton.classList.add('active'); 
-            minimizedIcon.classList.add('active'); 
-            clearInterval(previewInterval); 
+            if (chatbotWindow) chatbotWindow.classList.add('active');
+            if (chatbotButton) chatbotButton.classList.add('active'); 
+            if (minimizedIcon) minimizedIcon.classList.add('active'); 
+            if (previewInterval) clearInterval(previewInterval); 
 
             setTimeout(() => {
                 // Adiciona a primeira mensagem do bot se for a primeira vez
                 // E se NÃO estivermos no meio de um diagnóstico
-                if (chatbotMessages.children.length === 0 && chatState === "QA") {
+                if (chatbotMessages && chatbotMessages.children.length === 0 && chatState === "QA") {
                     startChat(); // Inicia o chat de Q&A
                 }
-                chatbotInput.focus();
+                if (chatbotInput) chatbotInput.focus();
             }, 300);
         }
     }
@@ -1945,59 +1936,61 @@ document.addEventListener('DOMContentLoaded', function() {
         return now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
     }
 
+    // [MUDANÇA] Função AddMessage agora lida com [WHATSAPP_BUTTON] e novo fluxo [FORMULARIO_LEAD]
     function addMessage(text, isUser = false) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
 
         let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         formattedText = formattedText.replace(/\n/g, '<br>');
-        formattedText = formattedText.replace(/<a href/g, '<a style="color: var(--accent); text-decoration: underline;" target="_blank" href');
+        
+        // Define o botão de WhatsApp (será substituído se a tag existir)
+        const whatsappButtonHtml = `
+            <br><a href="http://wa.me/+5511913324827" target="_blank" 
+               style="display: inline-block; padding: 10px 15px; background-color: #25D366; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 10px;">
+               <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> Falar com Leandro
+            </a>`;
+        
+        // Substitui a tag [WHATSAPP_BUTTON] pelo HTML
+        formattedText = formattedText.replace("[WHATSAPP_BUTTON]", whatsappButtonHtml);
 
         // Adiciona ao histórico local
         // O histórico do funil é separado (adicionado em handleSendMessage)
-        if (chatState === "QA") {
+        if (chatState === "QA" || chatState === "LOADING") {
              conversationHistory.push({ 
                 role: isUser ? 'user' : 'bot', 
-                text: text 
+                text: text // Salva o texto original
             });
         }
-
-        // --- Lógica para detectar a Isca e mudar o estado ---
+        
+        // --- [MUDANÇA] Lógica da ISCA e mudança de estado ---
         if (text.includes("[FORMULARIO_LEAD]")) {
-            // A mensagem do SEO diagnóstico já está na variável 'text'.
-            const cleanText = text.replace("[FORMULARIO_LEAD]", "").trim();
+            // Limpa a tag da mensagem
+            formattedText = formattedText.replace("[FORMULARIO_LEAD]", "").trim();
 
-            messageDiv.innerHTML = `
-                <div class="message-avatar"><i class="fas fa-robot"></i></div>
-                <div class="message-content">
-                    <div class="message-bubble">${cleanText}</div>
-                    <div class="message-time">${getCurrentTime()}</div>
-                </div>
-            `;
-
-            // Muda o estado do chat para "Aguardando Nome"
-            chatState = "AGUARDANDO_NOME";
+            // Muda o estado do chat para "Aguardando Permissão"
+            chatState = "AGUARDANDO_PERMISSAO";
             conversationHistory = []; // Inicia um novo histórico (de funil)
 
             setTimeout(() => {
-                // Adiciona a pergunta sobre o nome 1s depois da mensagem Isca
-                addMessage("Para eu poder te enviar o diagnóstico completo, qual é o seu nome?", false);
-                chatbotInput.placeholder = "Digite seu nome...";
+                // [MUDANÇA] Pergunta se pode salvar os dados
+                addMessage("Eu posso salvar essas informações (URL, nome, contato) para o Leandro analisar e te enviar o diagnóstico completo? (Sim / Não)", false);
+                if (chatbotInput) chatbotInput.placeholder = "Digite 'Sim' ou 'Não'...";
             }, 1000);
 
-        } else {
-             messageDiv.innerHTML = `
-                <div class="message-avatar">
-                    <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
-                </div>
-                <div class="message-content">
-                    <div class="message-bubble">${formattedText}</div>
-                    <div class="message-time">${getCurrentTime()}</div>
-                </div>
-            `;
         }
         // --- FIM DA LÓGICA DA ISCA ---
 
+        messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
+            </div>
+            <div class="message-content">
+                <div class="message-bubble">${formattedText}</div>
+                <div class="message-time">${getCurrentTime()}</div>
+            </div>
+        `;
+        
         if (chatbotMessages) {
             chatbotMessages.appendChild(messageDiv);
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
@@ -2029,12 +2022,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- Lógica Principal de Envio (COM ESTADOS) ---
+    // --- [MUDANÇA] Lógica Principal de Envio (COM ESTADO DE PERMISSÃO) ---
     async function handleSendMessage() {
+        if (!chatbotInput || !chatbotSend || !chatbotMessages) return;
+
         const messageText = chatbotInput.value.trim();
         if (messageText === '' || chatbotSend.disabled) return;
 
-        addMessage(messageText, true); // Adiciona a mensagem do usuário (o histórico QA já está aqui)
+        addMessage(messageText, true); // Adiciona a mensagem do usuário
         chatbotInput.value = '';
         chatbotInput.disabled = true;
         chatbotSend.disabled = true;
@@ -2042,6 +2037,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Variável auxiliar para armazenar a resposta do bot (padrão Q&A)
         let botReply = '';
+        let shouldResetPlaceholder = false;
 
         // --- LÓGICA DE ESTADO DO CHATBOT ---
 
@@ -2062,7 +2058,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 botReply = "Desculpe, estou com problemas para me conectar ao meu cérebro de IA no momento. Tente novamente mais tarde.";
             }
 
-        // ESTADO 2: Coletando dados para o Orçamento (Funil de Vendas)
+        // [NOVO] ESTADO 2: Aguardando Permissão (Sim/Não)
+        } else if (chatState === "AGUARDANDO_PERMISSAO") {
+            const userInput = messageText.toLowerCase();
+            
+            if (userInput.includes('sim') || userInput.includes('s')) {
+                // Usuário permitiu
+                chatState = "AGUARDANDO_NOME";
+                botReply = "Ótimo! Para eu poder te enviar o diagnóstico completo, qual é o seu nome?";
+                chatbotInput.placeholder = "Digite seu nome...";
+            } 
+            else if (userInput.includes('não') || userInput.includes('nao') || userInput.includes('n')) {
+                // Usuário negou
+                chatState = "QA"; // Reseta o chatbot
+                // [MUDANÇA] Resposta com botão do WhatsApp
+                botReply = "Entendido. Sem problemas. Eu não posso enviar o relatório sem salvar seus dados.\n\nMas se preferir, você pode falar diretamente com o Leandro sobre essa análise pelo WhatsApp.\n[WHATSAPP_BUTTON]";
+                shouldResetPlaceholder = true; // Flag para resetar o placeholder
+            } 
+            else {
+                // Não entendeu
+                botReply = "Desculpe, não entendi. Por favor, digite 'Sim' ou 'Não' para eu saber se posso salvar seus dados.";
+                // O estado continua "AGUARDANDO_PERMISSAO"
+                chatbotInput.placeholder = "Digite 'Sim' ou 'Não'...";
+            }
+
+        // ESTADO 3: Coletando dados para o Orçamento (Funil de Vendas)
         } else if (chatState === "AGUARDANDO_NOME") {
             // Guarda o nome e avança o estado
             conversationHistory.push({ role: 'orcamento_nome', text: messageText }); 
@@ -2090,27 +2110,30 @@ document.addEventListener('DOMContentLoaded', function() {
             botReply = "🚀 **Excelente!**<br><br>Recebi todas as informações. O Leandro vai analisar seu projeto (baseado na URL que você digitou) e entrará em contato com você em breve pelo contato que você forneceu.<br><br>Obrigado pela confiança!";
             
             // Chama a função para salvar o Lead/Orçamento
-            await salvarOrcamento();
+            await salvarOrcamento(); // A função salvarOrcamento agora limpa o history
 
             chatState = "QA"; // Reseta o chatbot para Q&A
-            chatbotInput.placeholder = "Digite sua mensagem...";
+            shouldResetPlaceholder = true; // Flag para resetar o placeholder
         }
         // --- FIM DA LÓGICA DE ESTADO ---
 
         // Adiciona a resposta do bot (para Q&A ou Funil)
         if (botReply) {
-            // Para o Funil, a mensagem já está formatada no botReply
-            // Para o QA, a mensagem é o retorno da API
             addMessage(botReply, false);
         }
 
         removeTypingIndicator();
         chatbotInput.disabled = false;
         chatbotSend.disabled = false;
+        
+        if (shouldResetPlaceholder) {
+            chatbotInput.placeholder = "Digite sua mensagem...";
+        }
+        
         chatbotInput.focus();
     }
 
-    // --- FUNÇÃO HELPER PARA SALVAR O ORÇAMENTO ---
+    // --- FUNÇÃO HELPER PARA SALVAR O ORÇAMENTO (Inalterada) ---
     async function salvarOrcamento() {
         // Mapeia o histórico do funil (conversationHistory) para o payload de salvamento
         const dadosOrcamento = {
@@ -2158,7 +2181,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- FIM DA LÓGICA DO CHATBOT ---
 
 
-    // --- LÓGICA DO FORMULÁRIO DE DIAGNÓSTICO DE SEO ---
+    // --- [MUDANÇA] LÓGICA DO FORMULÁRIO DE DIAGNÓSTICO DE SEO ---
     if (seoFormButton && seoInput && seoNote) {
         seoFormButton.addEventListener('click', async () => {
             let url = seoInput.value.trim();
@@ -2178,13 +2201,11 @@ document.addEventListener('DOMContentLoaded', function() {
             seoNote.textContent = "Iniciando diagnóstico... Isso pode levar até 40 segundos. Abrindo o chat...";
             seoNote.className = 'search-bar-note';
 
-            // Limpa o chat e inicia o estado de carregamento
-            chatbotMessages.innerHTML = '';
-            conversationHistory = [];
+            // [MUDANÇA] NÃO limpa o chat. Apenas muda o estado e abre.
             chatState = "LOADING"; 
             
-            // Abre o chatbot para mostrar o processo (opcional, mas melhora UX)
-             if (!chatbotWindow.classList.contains('active')) {
+            // Abre o chatbot para mostrar o processo
+             if (chatbotWindow && !chatbotWindow.classList.contains('active')) {
                     toggleChat(); 
              }
             showTypingIndicator(); // Indicador de que algo está acontecendo
@@ -2198,6 +2219,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 const data = await response.json();
+                removeTypingIndicator(); // Remove o typing ANTES de adicionar a resposta
 
                 if (!response.ok) {
                     throw new Error(data.error || 'Erro desconhecido na API.');
@@ -2206,7 +2228,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 2. Salva os dados para o funil do chatbot
                 currentLeadId = data.lead_id;
                 currentUrlAnalisada = url;
-                currentSeoScore = data.seo_score; // Assume que a API retorna o score
+                currentSeoScore = data.seo_score; 
 
                 seoNote.textContent = "Análise concluída! Veja o resultado no chat.";
                 seoNote.className = 'search-bar-note success';
@@ -2220,16 +2242,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 seoNote.textContent = `Erro: ${error.message}`;
                 seoNote.className = 'search-bar-note error';
                 
-                // Em caso de erro, retorna ao modo Q&A padrão
-                chatState = "QA";
-                startChat(); 
+                // [MUDANÇA] Em caso de erro, avisa no chat, mas NÃO limpa o histórico
+                removeTypingIndicator();
+                addMessage(`Desculpe, ocorreu um erro ao analisar a URL: ${error.message}. Tente novamente.`, false);
+                chatState = "QA"; // Reseta o estado
 
             } finally {
                 seoFormButton.disabled = false;
                 seoFormButton.textContent = "Diagnosticar Agora";
-                chatbotInput.disabled = false;
-                chatbotSend.disabled = false;
-                removeTypingIndicator();
+                if (chatbotInput) chatbotInput.disabled = false;
+                if (chatbotSend) chatbotSend.disabled = false;
             }
         });
     }
@@ -2237,7 +2259,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // ========================================================
-    // --- INÍCIO: LÓGICA BOTÕES CARROSSEL PROJETOS ---
+    // --- LÓGICA BOTÕES CARROSSEL PROJETOS (Inalterado) ---
     // ========================================================
     const scrollLeftBtn = document.getElementById('scroll-left-btn');
     const scrollRightBtn = document.getElementById('scroll-right-btn');
@@ -2273,11 +2295,11 @@ document.addEventListener('DOMContentLoaded', function() {
         new ResizeObserver(updateProjectButtonState).observe(carousel);
         setTimeout(updateProjectButtonState, 200);
     }
-    // --- FIM: NOVA LÓGICA BOTÕES CARROSSEL PROJETOS ---
+    // --- FIM: LÓGICA BOTÕES CARROSSEL PROJETOS ---
 
 
     // ========================================================
-    // --- INÍCIO: LÓGICA BOTÕES CARROSSEL SERVIÇOS ---
+    // --- LÓGICA BOTÕES CARROSSEL SERVIÇOS (Inalterado) ---
     // ========================================================
     const serviceScrollLeftBtn = document.getElementById('service-scroll-left-btn');
     const serviceScrollRightBtn = document.getElementById('service-scroll-right-btn');
@@ -2313,10 +2335,10 @@ document.addEventListener('DOMContentLoaded', function() {
         new ResizeObserver(updateServiceButtonState).observe(serviceCarousel);
         updateServiceButtonState();
     }
-    // --- FIM: NOVA LÓGICA BOTÕES CARROSSEL SERVIÇOS ---
+    // --- FIM: LÓGICA BOTÕES CARROSSEL SERVIÇOS ---
 
     // ========================================================
-    // --- INÍCIO: LÓGICA BOTÕES CARROSSEL BLOG ---
+    // --- LÓGICA BOTÕES CARROSSEL BLOG (Inalterado) ---
     // ========================================================
     const blogScrollLeftBtn = document.getElementById('blog-scroll-left-btn');
     const blogScrollRightBtn = document.getElementById('blog-scroll-right-btn');
@@ -2351,7 +2373,7 @@ document.addEventListener('DOMContentLoaded', function() {
         blogCarousel.addEventListener('scroll', updateBlogButtonState);
         new ResizeObserver(updateBlogButtonState).observe(blogCarousel);
     }
-    // --- FIM: NOVA LÓGICA BOTÕES CARROSSEL BLOG ---
+    // --- FIM: LÓGICA BOTÕES CARROSSEL BLOG ---
 
     // Esta função será chamada para renderizar os cards do blog na tela
     function renderBlogPosts(posts) {
@@ -2436,6 +2458,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    // Chama as funções de inicialização
     renderProjects();
     iniciarCarregamentoDoBlog(); 
 });

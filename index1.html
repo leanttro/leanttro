@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leandro Andrade | Engenheiro de Dados & Desenvolvedor Full Stack</title>
     <meta name="description" content="Portfólio de Leandro Andrade, Engenheiro de Dados e Desenvolvedor Full Stack, apresentando projetos em nuvem, web e automação.">
+    <!-- O CSS do Font Awesome é necessário para os ícones do bot (fas) e do WhatsApp (fab) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="chatbot.css">
     
     <style>
         /* Importação da Fonte Inter */
@@ -41,7 +41,7 @@
             --font-heading: 'Montserrat', sans-serif; /* Fonte de destaque para o logo */
         }
 
-        /* ... (Reset e Base CSS - sem mudanças) ... */
+        /* ... (Reset e Base CSS - Inalterado) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -53,7 +53,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ... (Utilitários, Header, Hero, etc. - sem mudanças) ... */
+        /* ... (Utilitários, Header, Hero, etc. - Inalterado) ... */
          /* Utilitários */
          .container {
             max-width: 1120px;
@@ -621,52 +621,9 @@
         .service-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
         .service-card p { color: var(--text-secondary); }
 
-        /* Seção Contato */
+        /* Seção Contato (Removida conforme o novo design focado no chat) */
         #contato {
-            padding-top: 3rem; 
-            background-color: var(--surface);
-        }
-        #contato .container { max-width: 700px; text-align: center; }
-        #contato p { font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 2rem; }
-        .contact-form { display: flex; flex-direction: column; gap: 1.5rem; }
-        .form-group { text-align: left; }
-        .form-group input, .form-group select { 
-            width: 100%; 
-            padding: 0.85rem 1rem; 
-            border-radius: 8px; 
-            border: 1px solid var(--border); 
-            background-color: var(--background);
-            color: var(--text-primary); 
-            font-family: 'Inter', sans-serif; 
-            font-size: 1rem; 
-        }
-        .form-group input:focus, .form-group select:focus { 
-            outline: none; 
-            border-color: var(--accent); 
-            box-shadow: 0 0 0 3px (249, 115, 22, 0.3); 
-        }
-        .contact-form .btn-primary { background-color: var(--accent); color: var(--text-primary); transition: opacity 0.3s; }
-        .contact-form .btn-primary:hover { background-color: var(--accent-hover); }
-        .contact-form .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        /* Estilos para a mensagem de feedback */
-        #form-feedback {
-            margin-top: 1rem;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 500;
-            display: none; 
-        }
-        #form-feedback.success {
-            background-color: rgba(16, 185, 129, 0.2); 
-            color: var(--success-color);
-            border: 1px solid var(--success-color);
-        }
-        #form-feedback.error {
-            background-color: rgba(239, 68, 68, 0.2); 
-            color: var(--error-color);
-            border: 1px solid var(--error-color);
+           display: none;
         }
         
         /* Rodapé */
@@ -713,7 +670,7 @@
         /* ======================================================== */
 
         /* Font Awesome (Já importado no <head>) */
-        .fas {
+        .fas, .fab { /* Adicionado .fab para o WhatsApp */
             font-family: "Font Awesome 6 Free" !important;
             font-weight: 900 !important;
         }
@@ -858,6 +815,7 @@
         .preview-info strong span {
             color: var(--chat-accent); /* Laranja */
             text-transform: lowercase;
+            opacity: 0.8;
         }
         .preview-info span {
             display: block;
@@ -1037,6 +995,16 @@
             color: var(--chat-text-primary); /* Branco */
             border-bottom-right-radius: 4px;
         }
+        
+        /* [NOVO] Estilo para links e botões dentro da bolha */
+        .message-bubble a {
+            color: var(--text-primary); /* Cor branca para links em bolhas laranjas */
+            text-decoration: underline;
+        }
+        .message.bot .message-bubble a {
+            color: var(--accent); /* Cor laranja para links em bolhas de bot */
+        }
+
 
         .message-time {
             font-size: 0.7rem;
@@ -1323,7 +1291,7 @@
                     <li><a href="#projetos">Projetos</a></li>
                     <li><a href="#blog">Blog</a></li> <!-- Adicionado link Blog na navegação -->
                     <li><a href="#servicos">Serviços</a></li>
-                    <li><a href="#contato">Contato</a></li>
+                    <!-- O link de Contato foi removido do HTML, o que está correto -->
                 </ul>
             </nav>
             <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
@@ -1347,7 +1315,7 @@
                 <p>Eu construo soluções de dados eficientes e desenvolvo aplicações web completas, transformando problemas complexos em resultados tangíveis.</p>
                 <div class="hero-buttons">
                     <a href="#case-study-feiras" class="btn btn-primary">Ver Case de IA</a>
-                    <a href="#contato" class="btn btn-outline">Entrar em Contato</a>
+                    <a href="#google-search-intro" class="btn btn-outline">Diagnóstico de SEO</a>
                 </div>
             </div>
         </section>
@@ -1424,7 +1392,8 @@
             <div class="container fade-in">
                  <div class="project-carousel-wrapper">
                     <div class="project-carousel" id="project-carousel">
-                        </div>
+                        <!-- Cards de projeto serão injetados aqui pelo JS -->
+                    </div>
                     
                     <button class="carousel-nav-btn" id="scroll-left-btn" aria-label="Rolar para esquerda">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M165.66,202.34a8,8,0,0,1-11.32,0l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128l74.35,74.34A8,8,0,0,1,165.66,202.34Z"></path></svg>
@@ -1487,12 +1456,12 @@
         <!-- TAREFA 1: INÍCIO DO HTML DA NOVA SEÇÃO BLOG -->
         <section id="blog" class="products" style="padding-top: 3rem; background-color: var(--background);">
             <div class="container fade-in">
-                <div class="section-header">
-                    <div>
-                        <div class="section-label"> </div>
-                        <h2 class="section-title">Blog & Artigos</h2>
+                <!-- CSS INLINE ADICIONADO PARA HEADER DO BLOG -->
+                <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <div style="text-align: left;">
+                        <h2 class="section-title" style="text-align: left; margin: 0;">Blog & Artigos</h2>
                     </div>
-                    <div class="carousel-controls">
+                    <div class="carousel-controls" style="display: flex; gap: 0.5rem;">
                         <button id="blog-scroll-left-btn" class="carousel-nav-btn" aria-label="Anterior">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                         </button>
@@ -1502,6 +1471,7 @@
                     </div>
                 </div>
                 <div class="project-carousel" id="blog-carousel" style="min-height: 350px;">
+                    <!-- Posts do blog serão injetados aqui -->
                 </div>
             </div>
         </section>
@@ -1526,6 +1496,10 @@
                     </button>
                     </div>
             </div>
+        </section>
+        
+        <!-- Seção Contato (Removida) -->
+        <section id="contato" style="display: none;">
         </section>
         
         </main>
@@ -1581,7 +1555,8 @@
             </div>
 
             <div class="chatbot-messages" id="chatbotMessages">
-                </div>
+                <!-- Mensagens do chat serão injetadas aqui -->
+            </div>
 
             <div class="chatbot-input-area">
                 <input 
@@ -1617,656 +1592,874 @@
         </div>
     </footer>
 
+    <!-- 
+        ==================================================================
+        INÍCIO DAS MUDANÇAS NO JAVASCRIPT
+        ==================================================================
+    -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- DADOS DOS PROJETOS (sem mudanças) ---
-            const projectsData = [
-                {
-                    id: 1,
-                    title: "Case de Produto: Feiras de Rua - SP",
-                    shortTitle: "Feiras de Rua - SP",
-                    // REMOVIDA A PRIMEIRA PARTE DA DESCRIÇÃO (QUE CONTEMPLAVA O TÍTULO)
-                    longDescription: "Produto digital full-stack para encontrar feiras em SP. Inclui API em Flask, banco de dados PostgreSQL, frontend responsivo e um chatbot de IA (RAG) treinado com dados vivos do banco.",
-                    skills: ["Desenvolvimento Web", "Python", "SQL", "API Rest", "Machine Learning"], 
-                    githubLink: "https://github.com/leanttro/feiras-de-rua.git",
-                    liveLink: "https://www.feirasderua.com.br",
-                    liveLinkText: "Veja o Site ao Vivo",
-                    disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
-                    imageSrc: "principalfeiras.png",
-                    caseStudyLink: "#case-study-feiras" 
-                },
-                {
-                    id: 2,
-                    title: "Pipeline de Dados - NYC Taxi",
-                    shortTitle: "Pipeline NYC Taxi",
-                    longDescription: "Solução de Machine Learning de ponta a ponta para prever tarifas de táxi em NYC. O projeto inclui um pipeline de dados na GCP, treinamento de modelo e o deploy de um simulador interativo em Hugging Face Spaces.",
-                    skills: ["GCP", "Python", "SQL", "Databricks"],
-                    githubLink: "https://github.com/leanttro/taxi_nyc_cloud",
-                    liveLink: "https://leanttro.github.io/taxi_nyc_cloud",
-                    liveLinkText: "Ver Simulador de IA",
-                    disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
-                    imageSrc: "projeto-2.png"
-                },
-                {
-                    id: 3,
-                    title: "Automação de Leads de Marketing",
-                    shortTitle: "Automação Mkt",
-                    longDescription: "Sistema de automação low-code/high-code que qualifica e segmenta leads de marketing. Utiliza n8n para orquestrar o fluxo e scripts em Python para integrar com APIs externas, salvando os dados em um banco PostgreSQL para análise.",
-                    skills: ["Automação", "Python", "SQL", "API Rest"],
-                    githubLink: "https://github.com/leanttro/automacao_mkt_n8n.git",
-                    liveLink: "https://automacao-mkt-api.onrender.com/",
-                    liveLinkText: "Ver API Funcionando",
-                    disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
-                    imageSrc: "projeto-3.png"
-                },
-                {
-                    id: 4,
-                    title: "Dashboard de Risco de Crédito",
-                    shortTitle: "Análise Crédito-Risco",
-                    longDescription: "Análise de dados e criação de um dashboard interativo no Power BI para avaliar o risco de crédito de clientes. O projeto incluiu limpeza, tratamento de dados com Python (Pandas) e criação de métricas e KPIs estratégicos, aplicando conceitos de machine learning para a modelagem de risco.",
-                    skills: ["Power BI", "Python", "Machine Learning"],
-                    githubLink: "https://github.com/leanttro",
-                    imageSrc: "projeto-4.png"
-                },
-                {
-                    id: 5,
-                    title: "Pipeline de E-commerce",
-                    shortTitle: "Análise Logística",
-                    longDescription: "Pipeline de dados completo para um dataset de e-commerce do Kaggle. O projeto aborda a extração, limpeza, transformação e carga dos dados, preparando-os para análises de negócio e modelagem.",
-                    skills: ["Python", "SQL", "API Rest", "Docker"],
-                    githubLink: "https://github.com/leanttro/kaggle_ecommerce_pipeline.git",
-                    imageSrc: "projeto-5.png"
-                },
-                {
-                    id: 6,
-                    title: "Website Institucional",
-                    shortTitle: "Site Institucional",
-                    longDescription: "Website institucional responsivo para a empresa de logística Vick Express. Desenvolvido com foco em performance, design moderno e uma experiência de usuário intuitiva para apresentar os serviços da empresa.",
-                    skills: ["Desenvolvimento Web"],
-                    githubLink: "https://github.com/leanttro/vick_express",
-                    liveLink: "https://leanttro.github.io/vick_express/",
-                    liveLinkText: "Veja Funcionando",
-                    imageSrc: "projeto-6.png"
-                }
-            ];
+document.addEventListener('DOMContentLoaded', function() {
+    // --- DADOS DOS PROJETOS (ESTÁTICO - Inalterado) ---
+    const projectsData = [
+        {
+            id: 1,
+            title: "Case de Produto: Feiras de Rua - SP",
+            shortTitle: "Feiras de Rua - SP",
+            longDescription: "Produto digital full-stack para encontrar feiras em SP. Inclui API em Flask, banco de dados PostgreSQL, frontend responsivo e um chatbot de IA (RAG) treinado com dados vivos do banco.",
+            skills: ["Desenvolvimento Web", "Python", "SQL", "API Rest", "Machine Learning"], 
+            githubLink: "https://github.com/leanttro/feiras-de-rua.git",
+            liveLink: "https://www.feirasderua.com.br",
+            liveLinkText: "Veja o Site ao Vivo",
+            disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
+            imageSrc: "principalfeiras.png",
+            caseStudyLink: "#case-study-feiras" 
+        },
+        {
+            id: 2,
+            title: "Pipeline de Dados - NYC Taxi",
+            shortTitle: "Pipeline NYC Taxi",
+            longDescription: "Solução de Machine Learning de ponta a ponta para prever tarifas de táxi em NYC. O projeto inclui um pipeline de dados na GCP, treinamento de modelo e o deploy de um simulador interativo em Hugging Face Spaces.",
+            skills: ["GCP", "Python", "SQL", "Databricks"],
+            githubLink: "https://github.com/leanttro/taxi_nyc_cloud",
+            liveLink: "https://leanttro.github.io/taxi_nyc_cloud",
+            liveLinkText: "Ver Simulador de IA",
+            disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
+            imageSrc: "projeto-2.png"
+        },
+        {
+            id: 3,
+            title: "Automação de Leads de Marketing",
+            shortTitle: "Automação Mkt",
+            longDescription: "Sistema de automação low-code/high-code que qualifica e segmenta leads de marketing. Utiliza n8n para orquestrar o fluxo e scripts em Python para integrar com APIs externas, salvando os dados em um banco PostgreSQL para análise.",
+            skills: ["Automação", "Python", "SQL", "API Rest"],
+            githubLink: "https://github.com/leanttro/automacao_mkt_n8n.git",
+            liveLink: "https://automacao-mkt-api.onrender.com/",
+            liveLinkText: "Ver API Funcionando",
+            disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
+            imageSrc: "projeto-3.png"
+        },
+        {
+            id: 4,
+            title: "Dashboard de Risco de Crédito",
+            shortTitle: "Análise Crédito-Risco",
+            longDescription: "Análise de dados e criação de um dashboard interativo no Power BI para avaliar o risco de crédito de clientes. O projeto incluiu limpeza, tratamento de dados com Python (Pandas) e criação de métricas e KPIs estratégicos, aplicando conceitos de machine learning para a modelagem de risco.",
+            skills: ["Power BI", "Python", "Machine Learning"],
+            githubLink: "https://github.com/leanttro",
+            imageSrc: "projeto-4.png"
+        },
+        {
+            id: 5,
+            title: "Pipeline de E-commerce",
+            shortTitle: "Análise Logística",
+            longDescription: "Pipeline de dados completo para um dataset de e-commerce do Kaggle. O projeto aborda a extração, limpeza, transformação e carga dos dados, preparando-os para análises de negócio e modelagem.",
+            skills: ["Python", "SQL", "API Rest", "Docker"],
+            githubLink: "https://github.com/leanttro/kaggle_ecommerce_pipeline.git",
+            imageSrc: "projeto-5.png"
+        },
+        {
+            id: 6,
+            title: "Website Institucional",
+            shortTitle: "Site Institucional",
+            longDescription: "Website institucional responsivo para a empresa de logística Vick Express. Desenvolvido com foco em performance, design moderno e uma experiência de usuário intuitiva para apresentar os serviços da empresa.",
+            skills: ["Desenvolvimento Web"],
+            githubLink: "https://github.com/leanttro/vick_express",
+            liveLink: "https://leanttro.github.io/vick_express/",
+            liveLinkText: "Veja Funcionando",
+            imageSrc: "projeto-6.png"
+        }
+    ];
 
-            // --- LÓGICA DO SITE (Filtros, Modal, Header, etc. - sem mudanças) ---
-            
-            // Lógica de Filtro de Skills (MODIFICADA)
-            const projectCarousel = document.getElementById('project-carousel');
-            
-            // REMOVIDA A REFERÊNCIA ANTIGA
-            // const skillFiltersContainer = document.getElementById('skill-filters');
-            
-            function renderProjects(filter = 'Todas') {
-                projectCarousel.innerHTML = '';
-                const filteredProjects = filter === 'Todas'
-                    ? projectsData
-                    : projectsData.filter(p => p.skills.includes(filter));
+    // --- LÓGICA DO SITE (Filtros, Modal, Header, etc. - Inalterado) ---
 
-                filteredProjects.forEach(project => {
-                    const card = document.createElement('div');
-                    card.className = 'project-preview-card';
-                    card.dataset.id = project.id;
-                    const titleStyle = project.shortTitle === "Análise Crédito-Risco" ? 'style="left: -7px;"' : '';
-                    card.innerHTML = `
-                        <img src="${project.imageSrc}" alt="Imagem do projeto ${project.title}">
-                        <h3 ${titleStyle}>${project.shortTitle}</h3>
-                    `;
-                    projectCarousel.appendChild(card);
-                });
-            }
+    const projectCarousel = document.getElementById('project-carousel');
 
-            // EVENT LISTENER ANTIGO (REMOVIDO/SUBSTITUÍDO)
-            /*
-            skillFiltersContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('skill-filter-btn')) {
-                    const filter = e.target.dataset.filter;
-                    skillFiltersContainer.querySelector('.active').classList.remove('active');
-                    e.target.classList.add('active');
-                    renderProjects(filter);
-                }
-            });
-            */
+    function renderProjects(filter = 'Todas') {
+        if (!projectCarousel) return;
+        projectCarousel.innerHTML = '';
+        const filteredProjects = filter === 'Todas'
+            ? projectsData
+            : projectsData.filter(p => p.skills.includes(filter));
 
-            // NOVO: Event Listener para o Slicer (Dropdown)
-            const skillSlicer = document.getElementById('skill-slicer');
-            if (skillSlicer) { // Verifica se o elemento existe
-                skillSlicer.addEventListener('change', (e) => {
-                    const filter = e.target.value;
-                    renderProjects(filter);
-                });
-            }
+        filteredProjects.forEach(project => {
+            const card = document.createElement('div');
+            card.className = 'project-preview-card';
+            card.dataset.id = project.id;
+            const titleStyle = project.shortTitle === "Análise Crédito-Risco" ? 'style="left: -7px;"' : '';
+            card.innerHTML = `
+                <img src="${project.imageSrc}" alt="Imagem do projeto ${project.title}">
+                <h3 ${titleStyle}>${project.shortTitle}</h3>
+            `;
+            projectCarousel.appendChild(card);
+        });
+    }
 
-            // Lógica do Modal de Projetos
-            const modal = document.getElementById('project-modal');
-            const closeModalBtn = modal.querySelector('.close-modal-btn');
-            
-            projectCarousel.addEventListener('click', (e) => {
-                const card = e.target.closest('.project-preview-card');
-                if (card) {
-                    const projectId = parseInt(card.dataset.id);
-                    const project = projectsData.find(p => p.id === projectId);
-                    if (project) {
-                        document.getElementById('modal-image').src = project.imageSrc;
-                        document.getElementById('modal-image').alt = `Imagem do projeto ${project.title}`;
-                        document.getElementById('modal-title').textContent = project.title;
-                        document.getElementById('modal-description').textContent = project.longDescription;
-                        const skillsContainer = document.getElementById('modal-skills');
-                        skillsContainer.innerHTML = '';
-                        project.skills.forEach(skill => {
-                            const skillTag = document.createElement('span');
-                            skillTag.textContent = skill;
-                            skillsContainer.appendChild(skillTag);
+    const skillSlicer = document.getElementById('skill-slicer');
+    if (skillSlicer) { 
+        skillSlicer.addEventListener('change', (e) => {
+            const filter = e.target.value;
+            renderProjects(filter);
+        });
+    }
+
+    const modal = document.getElementById('project-modal');
+    const closeModalBtn = modal.querySelector('.close-modal-btn');
+
+    if (projectCarousel) {
+        projectCarousel.addEventListener('click', (e) => {
+            const card = e.target.closest('.project-preview-card');
+            if (card) {
+                const projectId = parseInt(card.dataset.id);
+                const project = projectsData.find(p => p.id === projectId);
+                if (project) {
+                    document.getElementById('modal-image').src = project.imageSrc;
+                    document.getElementById('modal-image').alt = `Imagem do projeto ${project.title}`;
+                    document.getElementById('modal-title').textContent = project.title;
+                    document.getElementById('modal-description').textContent = project.longDescription;
+                    const skillsContainer = document.getElementById('modal-skills');
+                    skillsContainer.innerHTML = '';
+                    project.skills.forEach(skill => {
+                        const skillTag = document.createElement('span');
+                        skillTag.textContent = skill;
+                        skillsContainer.appendChild(skillTag);
+                    });
+                    const linksContainer = document.getElementById('modal-links');
+                    linksContainer.innerHTML = ''; 
+                    if (project.caseStudyLink) {
+                        const caseLink = document.createElement('a');
+                        caseLink.href = project.caseStudyLink;
+                        caseLink.className = 'btn btn-accent';
+                        caseLink.textContent = 'Ver Case Completo';
+                        caseLink.addEventListener('click', (e) => {
+                            closeModal();
                         });
-                        const linksContainer = document.getElementById('modal-links');
-                        linksContainer.innerHTML = ''; 
-                        if (project.caseStudyLink) {
-                            const caseLink = document.createElement('a');
-                            caseLink.href = project.caseStudyLink;
-                            caseLink.className = 'btn btn-accent';
-                            caseLink.textContent = 'Ver Case Completo';
-                            caseLink.addEventListener('click', (e) => {
-                                closeModal();
-                            });
-                            linksContainer.appendChild(caseLink);
-                        }
-                        if (project.liveLink) {
-                            const liveLink = document.createElement('a');
-                            liveLink.href = project.liveLink;
-                            liveLink.className = 'btn-live';
-                            liveLink.target = '_blank';
-                            liveLink.textContent = project.liveLinkText;
-                            linksContainer.appendChild(liveLink);
-                        }
-                        const githubLink = document.createElement('a');
-                        githubLink.href = project.githubLink;
-                        githubLink.className = 'btn btn-outline';
-                        githubLink.target = '_blank';
-                        githubLink.textContent = 'Ver no GitHub';
-                        linksContainer.appendChild(githubLink);
-                        if (project.disclaimer) {
-                            const disclaimerSpan = document.createElement('span');
-                            disclaimerSpan.className = 'disclaimer';
-                            disclaimerSpan.textContent = project.disclaimer;
-                            linksContainer.appendChild(disclaimerSpan);
-                        }
-                        modal.style.display = 'flex';
+                        linksContainer.appendChild(caseLink);
                     }
+                    if (project.liveLink) {
+                        const liveLink = document.createElement('a');
+                        liveLink.href = project.liveLink;
+                        liveLink.className = 'btn-live';
+                        liveLink.target = '_blank';
+                        liveLink.textContent = project.liveLinkText;
+                        linksContainer.appendChild(liveLink);
+                    }
+                    const githubLink = document.createElement('a');
+                    githubLink.href = project.githubLink;
+                    githubLink.className = 'btn btn-outline';
+                    githubLink.target = '_blank';
+                    githubLink.textContent = 'Ver no GitHub';
+                    linksContainer.appendChild(githubLink);
+                    if (project.disclaimer) {
+                        const disclaimerSpan = document.createElement('span');
+                        disclaimerSpan.className = 'disclaimer';
+                        disclaimerSpan.textContent = project.disclaimer;
+                        linksContainer.appendChild(disclaimerSpan);
+                    }
+                    modal.style.display = 'flex';
                 }
-            });
-            function closeModal() { modal.style.display = 'none'; }
-            closeModalBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => { if (e.target === modal) { closeModal(); } });
-            
-            // Lógica do Header e Menu Mobile
-            const header = document.querySelector('header');
-            window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 50); });
-            
-            // Hero Slideshow
-            const slides = document.querySelectorAll('.hero-slide');
-            let currentSlide = 0;
-            if (slides.length > 0) {
-              setInterval(() => {
-                  slides[currentSlide].classList.remove('active');
-                  currentSlide = (currentSlide + 1) % slides.length;
-                  slides[currentSlide].classList.add('active');
-              }, 5000);
             }
+        });
+    }
+    
+    function closeModal() { if (modal) modal.style.display = 'none'; }
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) { closeModal(); } });
 
-            // NOVO: Lógica do Slideshow da Seção Skills
-            const skillsSlides = document.querySelectorAll('.skills-slide');
-            let currentSkillSlide = 0;
-            if (skillsSlides.length > 0) {
-              setInterval(() => {
-                  skillsSlides[currentSkillSlide].classList.remove('active');
-                  currentSkillSlide = (currentSkillSlide + 1) % skillsSlides.length;
-                  skillsSlides[currentSkillSlide].classList.add('active');
-              }, 5000); // Mesmo intervalo do hero
+    const header = document.querySelector('header');
+    if (header) {
+        window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 50); });
+    }
+
+    const slides = document.querySelectorAll('.hero-slide');
+    let currentSlide = 0;
+    if (slides.length > 0) {
+      setInterval(() => {
+          slides[currentSlide].classList.remove('active');
+          currentSlide = (currentSlide + 1) % slides.length;
+          slides[currentSlide].classList.add('active');
+      }, 5000);
+    }
+
+    const skillsSlides = document.querySelectorAll('.skills-slide');
+    let currentSkillSlide = 0;
+    if (skillsSlides.length > 0) {
+      setInterval(() => {
+          skillsSlides[currentSkillSlide].classList.remove('active');
+          currentSkillSlide = (currentSkillSlide + 1) % skillsSlides.length;
+          skillsSlides[currentSkillSlide].classList.add('active');
+      }, 5000);
+    }
+
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+        navMenu.querySelectorAll('a').forEach(link => { 
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                }
+            }); 
+        });
+    }
+
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -80px 0px" };
+    const appearOnScroll = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
             }
-            
-            const menuToggle = document.getElementById('menu-toggle');
-            const navMenu = document.getElementById('nav-menu');
-            menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
-            navMenu.querySelectorAll('a').forEach(link => { 
-                link.addEventListener('click', () => {
-                    if (navMenu.classList.contains('active')) {
-                        navMenu.classList.remove('active');
-                    }
-                }); 
+        });
+    }, appearOptions);
+    faders.forEach(fader => appearOnScroll.observe(fader));
+
+
+    // =============================================================
+    // --- INÍCIO: LÓGICA COMPLETA DO CHATBOT E FUNIL DE VENDAS ---
+    // (COM LÓGICA DE PERMISSÃO "SIM/NÃO")
+    // =============================================================
+
+    // IDs dos elementos do Chatbot
+    const chatbotButton = document.getElementById('chatbotButton');
+    const chatbotWindow = document.getElementById('chatbotWindow');
+    const chatbotClose = document.getElementById('chatbotClose');
+    const chatbotInput = document.getElementById('chatbotInput');
+    const chatbotSend = document.getElementById('chatbotSend');
+    const chatbotMessages = document.getElementById('chatbotMessages');
+    const previewClose = document.getElementById('previewClose');
+    const minimizedIcon = document.getElementById('minimizedIcon');
+    const leiaCtaButton = document.getElementById('leia-cta-button');
+    const previewMessageEl = document.getElementById('preview-message-text');
+
+    // IDs dos elementos do Formulário de SEO
+    const seoFormButton = document.getElementById('seo-submit-button');
+    const seoInput = document.getElementById('seo-url-input');
+    const seoNote = document.getElementById('seo-result-note');
+
+    // Variáveis de Estado para o Funil de Vendas
+    let currentLeadId = null; 
+    let currentUrlAnalisada = null; 
+    let currentSeoScore = null; 
+    
+    // [MUDANÇA] Novos estados do funil
+    let chatState = "QA"; // Estado inicial: "QA" (Perguntas e Respostas)
+    // Outros estados: "LOADING", "AGUARDANDO_PERMISSAO", "AGUARDANDO_NOME", "AGUARDANDO_CONTATO", "AGUARDANDO_DETALHES", "AGUARDANDO_ORCAMENTO"
+
+    let conversationHistory = []; // Armazena objetos { role, text }
+
+    // --- Lógica de Animação da Preview (Inalterado) ---
+    const previewMessages = [
+        "Olá! 👋 Sou o assistente de IA do Leandro. Posso ajudar?",
+        "Clique aqui para saber mais sobre meus projetos.",
+        "Posso te contar minhas skills em Python e IA.",
+        "Que tal um diagnóstico de SEO do seu site?"
+    ];
+    let messageIndex = 0;
+    let previewInterval;
+
+    function minimizePreview() {
+        if (chatbotButton) chatbotButton.classList.add('minimized');
+        if (minimizedIcon) minimizedIcon.classList.add('minimized');
+        if (previewInterval) clearInterval(previewInterval);
+    }
+    function maximizePreview() {
+        if (chatbotButton) chatbotButton.classList.remove('minimized');
+        if (minimizedIcon) minimizedIcon.classList.remove('minimized');
+        startPreviewAnimation();
+    }
+    function startPreviewAnimation() {
+         if (previewInterval) clearInterval(previewInterval);
+         previewInterval = setInterval(() => {
+            messageIndex = (messageIndex + 1) % previewMessages.length;
+            if(previewMessageEl) {
+                previewMessageEl.style.opacity = 0;
+                setTimeout(() => {
+                    previewMessageEl.textContent = previewMessages[messageIndex];
+                    previewMessageEl.style.opacity = 1;
+                }, 300);
+            }
+        }, 4000);
+    }
+    if (previewClose) previewClose.addEventListener('click', function(e) { e.stopPropagation(); minimizePreview(); });
+    if (minimizedIcon) minimizedIcon.addEventListener('click', maximizePreview);
+    if (previewMessageEl) startPreviewAnimation();
+
+    // --- Lógica de Abrir/Fechar Chat (Inalterado) ---
+    function toggleChat(e) {
+        if (e) e.preventDefault();
+        const isActive = chatbotWindow && chatbotWindow.classList.contains('active');
+        if (isActive) {
+            chatbotWindow.classList.remove('active');
+            if (chatbotButton) chatbotButton.classList.remove('active');
+            if (minimizedIcon) minimizedIcon.classList.remove('active');
+            if (chatbotButton && !chatbotButton.classList.contains('minimized')) {
+                 startPreviewAnimation();
+            }
+        } else {
+            if (chatbotWindow) chatbotWindow.classList.add('active');
+            if (chatbotButton) chatbotButton.classList.add('active'); 
+            if (minimizedIcon) minimizedIcon.classList.add('active'); 
+            if (previewInterval) clearInterval(previewInterval); 
+
+            setTimeout(() => {
+                // Adiciona a primeira mensagem do bot se for a primeira vez
+                // E se NÃO estivermos no meio de um diagnóstico
+                if (chatbotMessages && chatbotMessages.children.length === 0 && chatState === "QA") {
+                    startChat(); // Inicia o chat de Q&A
+                }
+                if (chatbotInput) chatbotInput.focus();
+            }, 300);
+        }
+    }
+
+    if (chatbotButton) chatbotButton.addEventListener('click', toggleChat);
+    if (chatbotClose) chatbotClose.addEventListener('click', toggleChat);
+    if (leiaCtaButton) leiaCtaButton.addEventListener('click', toggleChat);
+
+    // --- Funções de Chat (Adaptadas para LÊ-IA) ---
+
+    // Adiciona a primeira mensagem de Q&A
+    function startChat() {
+        addMessage(
+            "Olá! 👋 Sou o LÊ-IA, o assistente de IA do Leandro.<br><br>Estou aqui para te ajudar com dúvidas sobre projetos, carreira e como o Leandro pode somar na sua empresa!", 
+            false
+        );
+        chatState = "QA"; // Garante que o estado é Q&A
+        conversationHistory = []; // Limpa o histórico para um novo Q&A
+    }
+
+    function getCurrentTime() {
+        const now = new Date();
+        return now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // [MUDANÇA] Função AddMessage agora lida com [WHATSAPP_BUTTON] e novo fluxo [FORMULARIO_LEAD]
+    function addMessage(text, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+
+        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        formattedText = formattedText.replace(/\n/g, '<br>');
+        
+        // Define o botão de WhatsApp (será substituído se a tag existir)
+        const whatsappButtonHtml = `
+            <br><a href="http://wa.me/+5511913324827" target="_blank" 
+               style="display: inline-block; padding: 10px 15px; background-color: #25D366; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 10px;">
+               <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> Falar com Leandro
+            </a>`;
+        
+        // Substitui a tag [WHATSAPP_BUTTON] pelo HTML
+        formattedText = formattedText.replace("[WHATSAPP_BUTTON]", whatsappButtonHtml);
+
+        // Adiciona ao histórico local
+        // O histórico do funil é separado (adicionado em handleSendMessage)
+        if (chatState === "QA" || chatState === "LOADING") {
+             conversationHistory.push({ 
+                role: isUser ? 'user' : 'bot', 
+                text: text // Salva o texto original
             });
+        }
+        
+        // --- [MUDANÇA] Lógica da ISCA e mudança de estado ---
+        if (text.includes("[FORMULARIO_LEAD]")) {
+            // Limpa a tag da mensagem
+            formattedText = formattedText.replace("[FORMULARIO_LEAD]", "").trim();
 
-            // Lógica do Formulário de Contato (REMOVIDA)
+            // Muda o estado do chat para "Aguardando Permissão"
+            chatState = "AGUARDANDO_PERMISSAO";
+            conversationHistory = []; // Inicia um novo histórico (de funil)
 
-            // Lógica de Animação de Scroll
-            const faders = document.querySelectorAll('.fade-in');
-            const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -80px 0px" };
-            const appearOnScroll = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
+            setTimeout(() => {
+                // [MUDANÇA] Pergunta se pode salvar os dados
+                addMessage("Eu posso salvar essas informações (URL, nome, contato) para o Leandro analisar e te enviar o diagnóstico completo? (Sim / Não)", false);
+                if (chatbotInput) chatbotInput.placeholder = "Digite 'Sim' ou 'Não'...";
+            }, 1000);
+
+        }
+        // --- FIM DA LÓGICA DA ISCA ---
+
+        messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
+            </div>
+            <div class="message-content">
+                <div class="message-bubble">${formattedText}</div>
+                <div class="message-time">${getCurrentTime()}</div>
+            </div>
+        `;
+        
+        if (chatbotMessages) {
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+    }
+
+    function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message bot typing-message';
+        typingDiv.id = 'typing-indicator';
+        typingDiv.innerHTML = `
+            <div class="message-avatar"><i class="fas fa-robot"></i></div>
+            <div class="message-content">
+                <div class="message-bubble">
+                    <div class="typing-indicator"><span></span><span></span><span></span></div>
+                </div>
+            </div>
+        `;
+        if (chatbotMessages) {
+            chatbotMessages.appendChild(typingDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+    }
+
+    function removeTypingIndicator() {
+        const typingDiv = document.getElementById('typing-indicator');
+        if (typingDiv && typingDiv.parentNode) {
+            typingDiv.parentNode.removeChild(typingDiv);
+        }
+    }
+
+    // --- [MUDANÇA] Lógica Principal de Envio (COM ESTADO DE PERMISSÃO) ---
+    async function handleSendMessage() {
+        if (!chatbotInput || !chatbotSend || !chatbotMessages) return;
+
+        const messageText = chatbotInput.value.trim();
+        if (messageText === '' || chatbotSend.disabled) return;
+
+        addMessage(messageText, true); // Adiciona a mensagem do usuário
+        chatbotInput.value = '';
+        chatbotInput.disabled = true;
+        chatbotSend.disabled = true;
+        showTypingIndicator();
+
+        // Variável auxiliar para armazenar a resposta do bot (padrão Q&A)
+        let botReply = '';
+        let shouldResetPlaceholder = false;
+
+        // --- LÓGICA DE ESTADO DO CHATBOT ---
+
+        // ESTADO 1: Q&A Padrão (Recrutadores)
+        if (chatState === "QA") {
+            try {
+                // Envia todo o histórico para a API de chat
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ conversationHistory: conversationHistory })
                 });
-            }, appearOptions);
-            faders.forEach(fader => appearOnScroll.observe(fader));
-
-
-            // =============================================================
-            // --- INÍCIO: NOVA LÓGICA DO CHATBOT (BASEADA NO ELOBOT) ---
-            // =============================================================
-
-            // IDs dos elementos (agora correspondem ao novo HTML)
-            const chatbotButton = document.getElementById('chatbotButton'); // Preview
-            const chatbotWindow = document.getElementById('chatbotWindow'); // Janela Principal
-            const chatbotClose = document.getElementById('chatbotClose'); // Botão X (Janela)
-            const chatbotInput = document.getElementById('chatbotInput');
-            const chatbotSend = document.getElementById('chatbotSend');
-            const chatbotMessages = document.getElementById('chatbotMessages');
-            const previewClose = document.getElementById('previewClose'); // Botão X (Preview)
-            const minimizedIcon = document.getElementById('minimizedIcon'); // Ícone Robô
-            const leiaCtaButton = document.getElementById('leia-cta-button'); // Botão no card
-            const previewMessageEl = document.getElementById('preview-message-text');
-
-            let conversationHistory = []; // Mantém o placeholder
-
-            // --- Lógica de Animação da Preview (Igual Elobot) ---
-            const previewMessages = [
-                "Olá! 👋 Sou o assistente de IA do Leandro. Posso ajudar?",
-                "Clique aqui para saber mais sobre meus projetos.",
-                "Pergunte-me sobre a vaga na DOJO!",
-                "Posso te contar minhas skills em Python e IA."
-            ];
-            let messageIndex = 0;
-            let previewInterval;
-
-            function minimizePreview() {
-                chatbotButton.classList.add('minimized');
-                minimizedIcon.classList.add('minimized');
-                clearInterval(previewInterval);
+                if (!response.ok) throw new Error('Falha na resposta da IA.');
+                const data = await response.json();
+                botReply = data.reply;
+            } catch (error) {
+                console.error('Erro no /api/chat:', error);
+                botReply = "Desculpe, estou com problemas para me conectar ao meu cérebro de IA no momento. Tente novamente mais tarde.";
             }
-            function maximizePreview() {
-                chatbotButton.classList.remove('minimized');
-                minimizedIcon.classList.remove('minimized');
-                startPreviewAnimation();
+
+        // [NOVO] ESTADO 2: Aguardando Permissão (Sim/Não)
+        } else if (chatState === "AGUARDANDO_PERMISSAO") {
+            const userInput = messageText.toLowerCase();
+            
+            if (userInput.includes('sim') || userInput.includes('s')) {
+                // Usuário permitiu
+                chatState = "AGUARDANDO_NOME";
+                botReply = "Ótimo! Para eu poder te enviar o diagnóstico completo, qual é o seu nome?";
+                chatbotInput.placeholder = "Digite seu nome...";
+            } 
+            else if (userInput.includes('não') || userInput.includes('nao') || userInput.includes('n')) {
+                // Usuário negou
+                chatState = "QA"; // Reseta o chatbot
+                // [MUDANÇA] Resposta com botão do WhatsApp
+                botReply = "Entendido. Sem problemas. Eu não posso enviar o relatório sem salvar seus dados.\n\nMas se preferir, você pode falar diretamente com o Leandro sobre essa análise pelo WhatsApp.\n[WHATSAPP_BUTTON]";
+                shouldResetPlaceholder = true; // Flag para resetar o placeholder
+            } 
+            else {
+                // Não entendeu
+                botReply = "Desculpe, não entendi. Por favor, digite 'Sim' ou 'Não' para eu saber se posso salvar seus dados.";
+                // O estado continua "AGUARDANDO_PERMISSAO"
+                chatbotInput.placeholder = "Digite 'Sim' ou 'Não'...";
             }
-            function startPreviewAnimation() {
-                 if (previewInterval) clearInterval(previewInterval);
-                 previewInterval = setInterval(() => {
-                    messageIndex = (messageIndex + 1) % previewMessages.length;
-                    if(previewMessageEl) {
-                        previewMessageEl.style.opacity = 0;
-                        setTimeout(() => {
-                            previewMessageEl.textContent = previewMessages[messageIndex];
-                            previewMessageEl.style.opacity = 1;
-                        }, 300);
-                    }
-                }, 4000);
-            }
-            if (previewClose) previewClose.addEventListener('click', function(e) { e.stopPropagation(); minimizePreview(); });
-            if (minimizedIcon) minimizedIcon.addEventListener('click', maximizePreview);
-            if (previewMessageEl) startPreviewAnimation();
+
+        // ESTADO 3: Coletando dados para o Orçamento (Funil de Vendas)
+        } else if (chatState === "AGUARDANDO_NOME") {
+            // Guarda o nome e avança o estado
+            conversationHistory.push({ role: 'orcamento_nome', text: messageText }); 
+            chatState = "AGUARDANDO_CONTATO";
+            botReply = `Prazer, ${messageText}! 👋<br><br>Qual é o seu melhor e-mail ou WhatsApp para eu enviar o diagnóstico?`;
+            chatbotInput.placeholder = "Digite seu e-mail ou WhatsApp...";
+
+        } else if (chatState === "AGUARDANDO_CONTATO") {
+            // Guarda o contato e avança o estado
+            conversationHistory.push({ role: 'orcamento_contato', text: messageText });
+            chatState = "AGUARDANDO_DETALHES";
+            botReply = "Obrigado! 🙏<br><br>Para fechar: qual é o principal objetivo do seu site ou a ideia do seu projeto? (Ex: 'Quero vender mais', 'Preciso de automação', 'Quero um site novo')";
+            chatbotInput.placeholder = "Descreva sua ideia ou objetivo...";
+
+        } else if (chatState === "AGUARDANDO_DETALHES") {
+            // Guarda os detalhes e avança o estado
+            conversationHistory.push({ role: 'orcamento_detalhes', text: messageText });
+            chatState = "AGUARDANDO_ORCAMENTO";
+            botReply = "Perfeito! E qual é o orçamento (budget) que você tem em mente para este projeto? (Ex: 'Até R$1k', 'R$2k-5k', 'Mais de R$5k', 'Não sei ainda')";
+            chatbotInput.placeholder = "Digite sua faixa de orçamento...";
+
+        } else if (chatState === "AGUARDANDO_ORCAMENTO") {
+            // Guarda o orçamento, salva no DB e reseta
+            conversationHistory.push({ role: 'orcamento_budget', text: messageText });
+            botReply = "🚀 **Excelente!**<br><br>Recebi todas as informações. O Leandro vai analisar seu projeto (baseado na URL que você digitou) e entrará em contato com você em breve pelo contato que você forneceu.<br><br>Obrigado pela confiança!";
+            
+            // Chama a função para salvar o Lead/Orçamento
+            await salvarOrcamento(); // A função salvarOrcamento agora limpa o history
+
+            chatState = "QA"; // Reseta o chatbot para Q&A
+            shouldResetPlaceholder = true; // Flag para resetar o placeholder
+        }
+        // --- FIM DA LÓGICA DE ESTADO ---
+
+        // Adiciona a resposta do bot (para Q&A ou Funil)
+        if (botReply) {
+            addMessage(botReply, false);
+        }
+
+        removeTypingIndicator();
+        chatbotInput.disabled = false;
+        chatbotSend.disabled = false;
+        
+        if (shouldResetPlaceholder) {
+            chatbotInput.placeholder = "Digite sua mensagem...";
+        }
+        
+        chatbotInput.focus();
+    }
+
+    // --- FUNÇÃO HELPER PARA SALVAR O ORÇAMENTO (Inalterada) ---
+    async function salvarOrcamento() {
+        // Mapeia o histórico do funil (conversationHistory) para o payload de salvamento
+        const dadosOrcamento = {
+            lead_id: currentLeadId,
+            url_analisada: currentUrlAnalisada, // Adiciona a URL do diagnóstico
+            seo_score: currentSeoScore, // Adiciona o score do diagnóstico
+            nome_contato: conversationHistory.find(m => m.role === 'orcamento_nome')?.text || null,
+            email_ou_whatsapp: conversationHistory.find(m => m.role === 'orcamento_contato')?.text || null,
+            interesse_servico: "Diagnóstico de SEO + Orçamento", // Detalhe o interesse
+            detalhes_projeto: conversationHistory.find(m => m.role === 'orcamento_detalhes')?.text || null,
+            orcamento_estimado: conversationHistory.find(m => m.role === 'orcamento_budget')?.text || null
+        };
+
+        try {
+            const response = await fetch('/api/orcar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dadosOrcamento)
+            });
+            if (!response.ok) throw new Error('Falha ao salvar orçamento no DB.');
+
+            const data = await response.json();
+            console.log('Orçamento salvo com sucesso:', data);
+
+        } catch (error) {
+            console.error("ERRO CRÍTICO ao salvar orçamento:", error);
+            // Em caso de erro, avisa no console mas segue o fluxo do chat
+        } finally {
+            // Limpa o histórico e os dados temporários para um novo funil
+            conversationHistory = [];
+            currentLeadId = null; 
+            currentUrlAnalisada = null;
+            currentSeoScore = null;
+        }
+    }
+
+    if (chatbotSend) chatbotSend.addEventListener('click', handleSendMessage);
+    if (chatbotInput) chatbotInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    });
+
+    // --- FIM DA LÓGICA DO CHATBOT ---
 
 
-            // --- Lógica de Abrir/Fechar Chat (Igual Elobot) ---
-            function toggleChat(e) {
-                if (e) e.preventDefault();
-                const isActive = chatbotWindow.classList.contains('active');
-                if (isActive) {
-                    // Fecha a janela
-                    chatbotWindow.classList.remove('active');
-                    chatbotButton.classList.remove('active');
-                    minimizedIcon.classList.remove('active');
-                    // Volta para o estado de preview (ou minimizado, se o usuário clicou no 'x' da preview)
-                    if (!chatbotButton.classList.contains('minimized')) {
-                         startPreviewAnimation();
-                    }
-                } else {
-                    // Abre a janela
-                    chatbotWindow.classList.add('active');
-                    chatbotButton.classList.add('active'); // Esconde a preview
-                    minimizedIcon.classList.add('active'); // Esconde o ícone minimizado
-                    clearInterval(previewInterval); // Para a animação da preview
-                    
-                    setTimeout(() => {
-                        // Adiciona a primeira mensagem do bot se for a primeira vez
-                        if (chatbotMessages.children.length === 0) {
-                            startChat();
-                        }
-                        chatbotInput.focus();
-                    }, 300);
+    // --- [MUDANÇA] LÓGICA DO FORMULÁRIO DE DIAGNÓSTICO DE SEO ---
+    if (seoFormButton && seoInput && seoNote) {
+        seoFormButton.addEventListener('click', async () => {
+            let url = seoInput.value.trim();
+            if (!url) {
+                seoNote.textContent = "Por favor, insira uma URL para analisar.";
+                seoNote.className = 'search-bar-note error';
+                return;
+            }
+            // Garante que a URL tenha protocolo para o fetch
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
+            // Desabilita e muda o texto
+            seoFormButton.disabled = true;
+            seoFormButton.textContent = "Analisando...";
+            seoNote.textContent = "Iniciando diagnóstico... Isso pode levar até 40 segundos. Abrindo o chat...";
+            seoNote.className = 'search-bar-note';
+
+            // [MUDANÇA] NÃO limpa o chat. Apenas muda o estado e abre.
+            chatState = "LOADING"; 
+            
+            // Abre o chatbot para mostrar o processo
+             if (chatbotWindow && !chatbotWindow.classList.contains('active')) {
+                    toggleChat(); 
+             }
+            showTypingIndicator(); // Indicador de que algo está acontecendo
+
+            try {
+                // 1. Chama a API de diagnóstico
+                const response = await fetch('/api/diagnostico_seo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url_analisada: url })
+                });
+
+                const data = await response.json();
+                removeTypingIndicator(); // Remove o typing ANTES de adicionar a resposta
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro desconhecido na API.');
                 }
-            }
-            
-            if (chatbotButton) chatbotButton.addEventListener('click', toggleChat);
-            if (chatbotClose) chatbotClose.addEventListener('click', toggleChat);
-            if (leiaCtaButton) leiaCtaButton.addEventListener('click', toggleChat);
 
-            // --- Funções de Chat (Adaptadas para LÊ-IA) ---
-            
-            // Adiciona a primeira mensagem
-            function startChat() {
-                addMessage(
-                    "Olá! 👋 Sou o LÊ-IA, o assistente de IA do Leandro.<br><br>Fui treinado para responder perguntas sobre a carreira, projetos e habilidades dele. O que você gostaria de saber?", 
-                    false
-                );
-            }
+                // 2. Salva os dados para o funil do chatbot
+                currentLeadId = data.lead_id;
+                currentUrlAnalisada = url;
+                currentSeoScore = data.seo_score; 
 
-            function getCurrentTime() {
-                const now = new Date();
-                return now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            }
+                seoNote.textContent = "Análise concluída! Veja o resultado no chat.";
+                seoNote.className = 'search-bar-note success';
 
-            // (Adaptado do Elobot)
-            function addMessage(text, isUser = false) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+                // 3. Injeta a "ISCA" no chat.
+                // A função addMessage detecta a tag [FORMULARIO_LEAD] e inicia o funil.
+                addMessage(data.diagnosis, false);
+
+            } catch (error) {
+                console.error("Erro no handleSeoSubmit:", error);
+                seoNote.textContent = `Erro: ${error.message}`;
+                seoNote.className = 'search-bar-note error';
                 
-                // Converte markdown básico (negrito) e quebras de linha
-                let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                formattedText = formattedText.replace(/\n/g, '<br>');
+                // [MUDANÇA] Em caso de erro, avisa no chat, mas NÃO limpa o histórico
+                removeTypingIndicator();
+                addMessage(`Desculpe, ocorreu um erro ao analisar a URL: ${error.message}. Tente novamente.`, false);
+                chatState = "QA"; // Reseta o estado
 
-                // Adiciona links clicáveis (lógica do Elobot)
-                formattedText = formattedText.replace(/<a href/g, '<a style="color: var(--accent); text-decoration: underline;" target="_blank" href');
-
-                conversationHistory.push({ 
-                    role: isUser ? 'user' : 'bot', 
-                    text: text, 
-                    time: getCurrentTime()
-                });
-
-                messageDiv.innerHTML = `
-                    <div class="message-avatar">
-                        <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
-                    </div>
-                    <div class="message-content">
-                        <div class="message-bubble">${formattedText}</div>
-                        <div class="message-time">${getCurrentTime()}</div>
-                    </div>
-                `;
-                if (chatbotMessages) {
-                    chatbotMessages.appendChild(messageDiv);
-                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-                }
+            } finally {
+                seoFormButton.disabled = false;
+                seoFormButton.textContent = "Diagnosticar Agora";
+                if (chatbotInput) chatbotInput.disabled = false;
+                if (chatbotSend) chatbotSend.disabled = false;
             }
+        });
+    }
+    // --- FIM DA LÓGICA DO FORMULÁRIO ---
 
-            function showTypingIndicator() {
-                const typingDiv = document.createElement('div');
-                typingDiv.className = 'message bot typing-message';
-                typingDiv.id = 'typing-indicator';
-                typingDiv.innerHTML = `
-                    <div class="message-avatar"><i class="fas fa-robot"></i></div>
-                    <div class="message-content">
-                        <div class="message-bubble">
-                            <div class="typing-indicator"><span></span><span></span><span></span></div>
-                        </div>
-                    </div>
-                `;
-                if (chatbotMessages) {
-                    chatbotMessages.appendChild(typingDiv);
-                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-                }
-            }
 
-            function removeTypingIndicator() {
-                const typingDiv = document.getElementById('typing-indicator');
-                if (typingDiv && typingDiv.parentNode) {
-                    typingDiv.parentNode.removeChild(typingDiv);
-                }
-            }
+    // ========================================================
+    // --- LÓGICA BOTÕES CARROSSEL PROJETOS (Inalterado) ---
+    // ========================================================
+    const scrollLeftBtn = document.getElementById('scroll-left-btn');
+    const scrollRightBtn = document.getElementById('scroll-right-btn');
+    const carousel = document.getElementById('project-carousel');
 
-            // --- Lógica Principal de Envio (MODIFICADA) ---
-            
-            function handleSendMessage() {
-                // Lógica de resposta temporariamente desativada
-                // Apenas a mensagem do usuário será adicionada
-                const messageText = chatbotInput.value.trim();
-                if (messageText === '' || chatbotSend.disabled) return;
-                addMessage(messageText, true);
-                chatbotInput.value = '';
+    if (scrollLeftBtn && scrollRightBtn && carousel) {
+        const updateProjectButtonState = () => {
+            if (!carousel || !scrollLeftBtn || !scrollRightBtn) return;
+            setTimeout(() => {
+                const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+                scrollLeftBtn.disabled = carousel.scrollLeft <= 1;
+                scrollRightBtn.disabled = carousel.scrollLeft >= maxScroll - 1;
+            }, 100);
+        };
+
+        const getProjectScrollAmount = () => {
+            const card = carousel.querySelector('.project-preview-card');
+            if (!card) return 300; 
+            const cardWidth = card.offsetWidth;
+            const gap = parseFloat(window.getComputedStyle(carousel).gap) || (1.5 * 16); 
+            return cardWidth + gap;
+        };
+
+        scrollLeftBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: -getProjectScrollAmount(), behavior: 'smooth' });
+        });
+
+        scrollRightBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: getProjectScrollAmount(), behavior: 'smooth' });
+        });
+
+        carousel.addEventListener('scroll', updateProjectButtonState);
+        new ResizeObserver(updateProjectButtonState).observe(carousel);
+        setTimeout(updateProjectButtonState, 200);
+    }
+    // --- FIM: LÓGICA BOTÕES CARROSSEL PROJETOS ---
+
+
+    // ========================================================
+    // --- LÓGICA BOTÕES CARROSSEL SERVIÇOS (Inalterado) ---
+    // ========================================================
+    const serviceScrollLeftBtn = document.getElementById('service-scroll-left-btn');
+    const serviceScrollRightBtn = document.getElementById('service-scroll-right-btn');
+    const serviceCarousel = document.getElementById('service-grid'); 
+
+    if (serviceScrollLeftBtn && serviceScrollRightBtn && serviceCarousel) {
+        const updateServiceButtonState = () => {
+            if (!serviceCarousel || !serviceScrollLeftBtn || !serviceScrollRightBtn) return;
+            setTimeout(() => {
+                const maxScroll = serviceCarousel.scrollWidth - serviceCarousel.clientWidth;
+                serviceScrollLeftBtn.disabled = serviceCarousel.scrollLeft <= 1;
+                serviceScrollRightBtn.disabled = serviceCarousel.scrollLeft >= maxScroll - 1;
+            }, 100);
+        };
+
+        const getServiceScrollAmount = () => {
+            const card = serviceCarousel.querySelector('.service-card'); 
+            if (!card) return 320 + (2 * 16); 
+            const cardWidth = card.offsetWidth;
+            const gap = parseFloat(window.getComputedStyle(serviceCarousel).gap) || (2 * 16); 
+            return cardWidth + gap;
+        };
+
+        serviceScrollLeftBtn.addEventListener('click', () => {
+            serviceCarousel.scrollBy({ left: -getServiceScrollAmount(), behavior: 'smooth' });
+        });
+
+        serviceScrollRightBtn.addEventListener('click', () => {
+            serviceCarousel.scrollBy({ left: getServiceScrollAmount(), behavior: 'smooth' });
+        });
+
+        serviceCarousel.addEventListener('scroll', updateServiceButtonState);
+        new ResizeObserver(updateServiceButtonState).observe(serviceCarousel);
+        updateServiceButtonState();
+    }
+    // --- FIM: LÓGICA BOTÕES CARROSSEL SERVIÇOS ---
+
+    // ========================================================
+    // --- LÓGICA BOTÕES CARROSSEL BLOG (Inalterado) ---
+    // ========================================================
+    const blogScrollLeftBtn = document.getElementById('blog-scroll-left-btn');
+    const blogScrollRightBtn = document.getElementById('blog-scroll-right-btn');
+    const blogCarousel = document.getElementById('blog-carousel'); 
+
+    if (blogScrollLeftBtn && blogScrollRightBtn && blogCarousel) {
+        const updateBlogButtonState = () => {
+            if (!blogCarousel || !blogScrollLeftBtn || !blogScrollRightBtn) return;
+            setTimeout(() => {
+                const maxScroll = blogCarousel.scrollWidth - blogCarousel.clientWidth;
+                blogScrollLeftBtn.disabled = blogCarousel.scrollLeft <= 1;
+                blogScrollRightBtn.disabled = blogCarousel.scrollLeft >= maxScroll - 1;
+            }, 100);
+        };
+
+        const getBlogScrollAmount = () => {
+            const card = blogCarousel.querySelector('.project-preview-card'); 
+            if (!card) return 300; 
+            const cardWidth = card.offsetWidth;
+            const gap = parseFloat(window.getComputedStyle(blogCarousel).gap) || (1.5 * 16); 
+            return cardWidth + gap;
+        };
+
+        blogScrollLeftBtn.addEventListener('click', () => {
+            blogCarousel.scrollBy({ left: -getBlogScrollAmount(), behavior: 'smooth' });
+        });
+
+        blogScrollRightBtn.addEventListener('click', () => {
+            blogCarousel.scrollBy({ left: getBlogScrollAmount(), behavior: 'smooth' });
+        });
+
+        blogCarousel.addEventListener('scroll', updateBlogButtonState);
+        new ResizeObserver(updateBlogButtonState).observe(blogCarousel);
+    }
+    // --- FIM: LÓGICA BOTÕES CARROSSEL BLOG ---
+
+    // Esta função será chamada para renderizar os cards do blog na tela
+    function renderBlogPosts(posts) {
+        const blogCarousel = document.getElementById('blog-carousel');
+        if (!blogCarousel) return;
+
+        blogCarousel.innerHTML = ''; 
+
+        if (!posts || posts.length === 0) {
+            blogCarousel.innerHTML = '<p style="color: var(--text-secondary); width: 100%; text-align: center;">Nenhum post encontrado.</p>';
+            if (blogScrollLeftBtn) {
+                // Se não há posts, desabilita os botões de scroll
+                blogScrollLeftBtn.disabled = true;
+                blogScrollRightBtn.disabled = true;
             }
-            
-            // Lógica Placeholder (REMOVIDA)
-            
-            if (chatbotSend) chatbotSend.addEventListener('click', handleSendMessage);
-            if (chatbotInput) chatbotInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleSendMessage();
-                }
+            return;
+        }
+
+        posts.forEach(post => {
+            const card = document.createElement('div');
+            card.className = 'project-preview-card'; 
+
+            const imageUrl = post.imagem_url || 'https://placehold.co/280x350/1E293B/94A3B8?text=Blog+Post';
+            const altText = `Imagem do post ${post.titulo}`;
+            const postUrl = `/blog/${post.slug}`; // URL dinâmica
+
+            card.innerHTML = `
+                <img src="${imageUrl}" alt="${altText}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/280x350/1E293B/94A3B8?text=Blog+Post';">
+                <a href="${postUrl}" style="text-decoration: none; z-index: 3; position: relative;">
+                   <h3 style="left: -12px; text-align: center; width: 100%;">${post.titulo || 'Post Sem Título'}</h3>
+                </a>
+            `;
+
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', (e) => {
+                 if (e.target.tagName !== 'A' && e.target.tagName !== 'H3') {
+                     window.location.href = postUrl;
+                 }
             });
 
-            // --- FIM DA LÓGICA DO CHATBOT ---
+            blogCarousel.appendChild(card);
+        });
 
-            
-            // ========================================================
-            // --- INÍCIO: NOVA LÓGICA BOTÕES CARROSSEL PROJETOS ---
-            // ========================================================
-            const scrollLeftBtn = document.getElementById('scroll-left-btn');
-            const scrollRightBtn = document.getElementById('scroll-right-btn');
-            const carousel = document.getElementById('project-carousel');
-
-            if (scrollLeftBtn && scrollRightBtn && carousel) {
-                // Função para checar o estado dos botões dos projetos (mantida para reuso no blog)
-                const updateProjectButtonState = () => {
-                    if (!carousel || !scrollLeftBtn || !scrollRightBtn) return;
-                    // Atraso de 100ms para dar tempo dos cards renderizarem antes de calcular
-                    setTimeout(() => {
-                        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-                        scrollLeftBtn.disabled = carousel.scrollLeft <= 1;
-                        scrollRightBtn.disabled = carousel.scrollLeft >= maxScroll - 1;
-                    }, 100);
-                };
-
-                const getProjectScrollAmount = () => {
-                    const card = carousel.querySelector('.project-preview-card');
-                    if (!card) return 300; // Valor padrão
-                    const cardWidth = card.offsetWidth;
-                    const gap = parseFloat(window.getComputedStyle(carousel).gap) || (1.5 * 16); 
-                    return cardWidth + gap;
-                };
-
-                scrollLeftBtn.addEventListener('click', () => {
-                    carousel.scrollBy({ left: -getProjectScrollAmount(), behavior: 'smooth' });
-                });
-
-                scrollRightBtn.addEventListener('click', () => {
-                    carousel.scrollBy({ left: getProjectScrollAmount(), behavior: 'smooth' });
-                });
-
-                // Observa o scroll para atualizar os botões
-                carousel.addEventListener('scroll', updateProjectButtonState);
-                new ResizeObserver(updateProjectButtonState).observe(carousel);
-                // Define o estado inicial após renderizar
-                setTimeout(updateProjectButtonState, 200);
-            }
-            // --- FIM: NOVA LÓGICA BOTÕES CARROSSEL PROJETOS ---
-
-
-            // ========================================================
-            // --- INÍCIO: NOVA LÓGICA BOTÕES CARROSSEL SERVIÇOS ---
-            // ========================================================
-            const serviceScrollLeftBtn = document.getElementById('service-scroll-left-btn');
-            const serviceScrollRightBtn = document.getElementById('service-scroll-right-btn');
-            const serviceCarousel = document.getElementById('service-grid'); // Usando o ID que adicionei
-
-            if (serviceScrollLeftBtn && serviceScrollRightBtn && serviceCarousel) {
-                // Função para checar o estado dos botões dos serviços
-                const updateServiceButtonState = () => {
-                    if (!serviceCarousel || !serviceScrollLeftBtn || !serviceScrollRightBtn) return;
-                    setTimeout(() => {
-                        const maxScroll = serviceCarousel.scrollWidth - serviceCarousel.clientWidth;
-                        serviceScrollLeftBtn.disabled = serviceCarousel.scrollLeft <= 1;
-                        serviceScrollRightBtn.disabled = serviceCarousel.scrollLeft >= maxScroll - 1;
-                    }, 100);
-                };
-
-                const getServiceScrollAmount = () => {
-                    const card = serviceCarousel.querySelector('.service-card'); // Seletor do card de serviço
-                    if (!card) return 320 + (2 * 16); // Valor padrão
-                    const cardWidth = card.offsetWidth;
-                    // Pega o 'gap' computado do carrossel
-                    const gap = parseFloat(window.getComputedStyle(serviceCarousel).gap) || (2 * 16); // Fallback 2rem
-                    return cardWidth + gap;
-                };
-
-                serviceScrollLeftBtn.addEventListener('click', () => {
-                    serviceCarousel.scrollBy({ left: -getServiceScrollAmount(), behavior: 'smooth' });
-                });
-
-                serviceScrollRightBtn.addEventListener('click', () => {
-                    serviceCarousel.scrollBy({ left: getServiceScrollAmount(), behavior: 'smooth' });
-                });
-
-                // Observa o scroll para atualizar os botões
-                serviceCarousel.addEventListener('scroll', updateServiceButtonState);
-                new ResizeObserver(updateServiceButtonState).observe(serviceCarousel);
-                // Define o estado inicial
-                updateServiceButtonState();
-            }
-            // --- FIM: NOVA LÓGICA BOTÕES CARROSSEL SERVIÇOS ---
-
-            // ========================================================
-            // --- INÍCIO: NOVA LÓGICA BOTÕES CARROSSEL BLOG ---
-            // ========================================================
-            const blogScrollLeftBtn = document.getElementById('blog-scroll-left-btn');
-            const blogScrollRightBtn = document.getElementById('blog-scroll-right-btn');
-            const blogCarousel = document.getElementById('blog-carousel'); // Usando o ID do novo HTML
-
-            if (blogScrollLeftBtn && blogScrollRightBtn && blogCarousel) {
-
-                // Função para checar o estado dos botões do blog
-                const updateBlogButtonState = () => {
-                    if (!blogCarousel || !blogScrollLeftBtn || !blogScrollRightBtn) return;
-                    // Atraso de 100ms para dar tempo dos cards renderizarem antes de calcular
-                    setTimeout(() => {
-                        const maxScroll = blogCarousel.scrollWidth - blogCarousel.clientWidth;
-                        blogScrollLeftBtn.disabled = blogCarousel.scrollLeft <= 1;
-                        blogScrollRightBtn.disabled = blogCarousel.scrollLeft >= maxScroll - 1;
-                    }, 100);
-                };
-
-                const getBlogScrollAmount = () => {
-                    const card = blogCarousel.querySelector('.project-preview-card'); // Reusa a classe
-                    if (!card) return 300; // Valor padrão
-                    const cardWidth = card.offsetWidth;
-                    const gap = parseFloat(window.getComputedStyle(blogCarousel).gap) || (1.5 * 16); 
-                    return cardWidth + gap;
-                };
-
-                blogScrollLeftBtn.addEventListener('click', () => {
-                    blogCarousel.scrollBy({ left: -getBlogScrollAmount(), behavior: 'smooth' });
-                });
-
-                blogScrollRightBtn.addEventListener('click', () => {
-                    blogCarousel.scrollBy({ left: getBlogScrollAmount(), behavior: 'smooth' });
-                });
-
-                // Observa o scroll para atualizar os botões
-                blogCarousel.addEventListener('scroll', updateBlogButtonState);
-                new ResizeObserver(updateBlogButtonState).observe(blogCarousel);
-                // Define o estado inicial
-                // A chamada inicial será feita depois da renderização do blog para garantir que haja conteúdo.
-            }
-            // --- FIM: NOVA LÓGICA BOTÕES CARROSSEL BLOG ---
-
-            // Esta função será chamada para renderizar os cards do blog na tela
-            function renderBlogPosts(posts) {
+        // Atualiza os botões do carrossel
+        if (blogScrollLeftBtn) {
+            setTimeout(() => {
                 const blogCarousel = document.getElementById('blog-carousel');
                 if (!blogCarousel) return;
+                const maxScroll = blogCarousel.scrollWidth - blogCarousel.clientWidth;
+                blogScrollLeftBtn.disabled = blogCarousel.scrollLeft <= 1;
+                blogScrollRightBtn.disabled = blogCarousel.scrollLeft >= maxScroll - 1;
+            }, 150);
+        }
+    }
 
-                blogCarousel.innerHTML = ''; // Limpa o "Carregando..."
+    // Esta função será chamada quando a página carregar
+    function iniciarCarregamentoDoBlog() {
+        const blogCarousel = document.getElementById('blog-carousel');
+        if (blogCarousel) {
+            blogCarousel.innerHTML = '<p style="color: var(--text-secondary); width: 100%; text-align: center;">Carregando posts...</p>';
+        }
 
-                if (!posts || posts.length === 0) {
-                    blogCarousel.innerHTML = '<p style="color: var(--text-secondary); width: 100%; text-align: center;">Nenhum post encontrado.</p>';
-                    // Desabilita botões se não houver posts
-                    if (blogScrollLeftBtn) {
-                        blogScrollLeftBtn.disabled = true;
-                        blogScrollRightBtn.disabled = true;
-                    }
-                    return;
-                }
-
-                posts.forEach(post => {
-                    const card = document.createElement('div');
-                    // Reutilizando a classe CSS dos projetos para manter o estilo
-                    card.className = 'project-preview-card'; 
-
-                    const imageUrl = post.imagem_url || 'https://placehold.co/280x350/1E293B/94A3B8?text=Blog+Post'; // Imagem placeholder
-                    const altText = `Imagem do post ${post.titulo}`;
-                    const postUrl = post.postUrl || `/blog/${post.slug}`; // URL dinâmica
-
-                    // Renderiza o HTML do card do blog
-                    card.innerHTML = `
-                        <img src="${imageUrl}" alt="${altText}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/280x350/1E293B/94A3B8?text=Blog+Post';">
-                        <a href="${postUrl}" style="text-decoration: none; z-index: 3; position: relative;">
-                            <h3 style="left: -12px; text-align: center; width: 100%;">${post.titulo || 'Post Sem Título'}</h3>
-                        </a>
-                    `;
-
-                    // Adiciona um clique no card inteiro (mas o título já é o link)
-                    card.style.cursor = 'pointer';
-                    card.addEventListener('click', (e) => {
-                            if (e.target.tagName !== 'A') {
-                                window.location.href = postUrl;
-                            }
+        // AGORA O FETCH ESTÁ ATIVO! (Chamada real da API)
+        fetch('/api/leanttro_blog') // URL que o backend (app.py) define
+            .then(response => {
+                if (!response.ok) {
+                    // Tenta ler o erro do corpo da resposta, se disponível
+                    return response.json().then(err => {
+                        throw new Error(err.error || 'Falha ao carregar posts.');
                     });
-
-                    blogCarousel.appendChild(card);
-                });
-
-                // Atualiza os botões do carrossel depois que os cards forem renderizados
-                if (blogScrollLeftBtn) {
-                    setTimeout(() => {
-                        const blogCarousel = document.getElementById('blog-carousel');
-                        if (!blogCarousel) return;
-                        const maxScroll = blogCarousel.scrollWidth - blogCarousel.clientWidth;
-                        blogScrollLeftBtn.disabled = blogCarousel.scrollLeft <= 1;
-                        blogScrollRightBtn.disabled = blogCarousel.scrollLeft >= maxScroll - 1;
-                    }, 150); // Atraso um pouco maior para renderização
                 }
-            }
-
-            // Esta função será chamada quando a página carregar
-            function iniciarCarregamentoDoBlog() {
-                const blogCarousel = document.getElementById('blog-carousel');
+                return response.json();
+            })
+            .then(data => {
+                renderBlogPosts(data); // Chama a função acima para construir os cards
+            })
+            .catch(error => {
+                console.error('Erro ao buscar posts:', error);
                 if (blogCarousel) {
-                    blogCarousel.innerHTML = '<p style="color: var(--text-secondary); width: 100%; text-align: center;">Carregando posts...</p>';
+                    blogCarousel.innerHTML = `<p style="color: var(--error-color); width: 100%; text-align: center;">Erro ao carregar posts: ${error.message}.</p>`;
                 }
-
-                /* // ETAPA FUTURA: Quando o backend estiver pronto, vamos descomentar esta parte.
-                fetch('/api/leanttro_blog') // Esta é a URL que vamos criar no backend
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Falha ao carregar posts.');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        renderBlogPosts(data); // Chama a função acima para construir os cards
-                    })
-                    .catch(error => {
-                        console.error('Erro ao buscar posts:', error);
-                        if (blogCarousel) {
-                            blogCarousel.innerHTML = '<p style="color: var(--error-color); width: 100%; text-align: center;">Erro ao carregar posts.</p>';
-                        }
-                    });
-                */
-
-                // Por enquanto, como o fetch está comentado, vamos chamar a renderBlogPosts com um array de dados mock para visualização.
-                const mockBlogPosts = [
-                    { titulo: "O Futuro da IA e Eng. de Dados", slug: "futuro-ia-eng-dados", imagem_url: "https://placehold.co/280x350/0F172A/F97316?text=IA+e+Dados", postUrl: "#" },
-                    { titulo: "Top 5 Frameworks de Python para Backend", slug: "top-5-python-frameworks", imagem_url: "https://placehold.co/280x350/0F172A/F97316?text=Python+Flask", postUrl: "#" },
-                    { titulo: "SQL Avançado: Dicas de Performance", slug: "sql-avancado-performance", imagem_url: "https://placehold.co/280x350/0F172A/F97316?text=SQL+Query", postUrl: "#" },
-                    { titulo: "Por Que Usar Databricks para ETL?", slug: "databricks-para-etl", imagem_url: "https://placehold.co/280x350/0F172A/F97316?text=Databricks", postUrl: "#" },
-                    { titulo: "Minha Experiência com GCP Cloud Run", slug: "experiencia-gcp-cloud-run", imagem_url: "https://placehold.co/280x350/0F172A/F97316?text=GCP+Cloud", postUrl: "#" },
-                ];
-                renderBlogPosts(mockBlogPosts);
-            }
-            
-            renderProjects();
-            iniciarCarregamentoDoBlog(); // TAREFA 4: ADICIONADA A CHAMADA DO BLOG AQUI
             });
+    }
+
+    // Chama as funções de inicialização
+    renderProjects();
+    iniciarCarregamentoDoBlog(); 
+});
     </script>
 </body>
 </html>
