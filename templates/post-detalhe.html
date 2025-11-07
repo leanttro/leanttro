@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5SDJYV66KE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5SDJYV66KE');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.titulo }} | Blog Feiras de Rua</title>
+    <meta name="description" content="{{ post.subtitulo or post.conteudo | truncate(155) }}">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* ==================================== */
+        /* --- VARIÁVEIS DO TEMA DARK (index1.html) --- */
+        /* ==================================== */
+        :root {
+            --background: #0F172A; /* Slate 900 */
+            --surface: #1E293B; /* Slate 800 */
+            --border: #334155; /* Slate 700 */
+            --text-primary: #F8FAFC; /* Slate 50 */
+            --text-secondary: #94A3B8; /* Slate 400 */
+            --accent: #F97316; /* Orange 500 */
+            --accent-hover: #EA580C; /* Orange 600 */
+            --shadow-medium: rgba(0, 0, 0, 0.4); /* Sombra adaptada */
+        }
+        
+        /* ESTILOS GERAIS */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            background-color: var(--background); 
+            line-height: 1.7; 
+            color: var(--text-secondary); /* Cor de texto padrão do body */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        h1, h2, h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        /* CONTAINER PRINCIPAL DO POST */
+        .post-container { 
+            max-width: 900px; /* Um pouco mais largo que o 800px anterior */
+            margin: 60px auto 40px auto; /* Aumenta a margem superior para o header */
+            padding: 30px 50px 50px 50px; 
+            background: var(--surface); 
+            border-radius: 16px; 
+            box-shadow: 0 10px 40px var(--shadow-medium); 
+            border: 1px solid var(--border);
+        }
+        .breadcrumb { 
+            margin-bottom: 30px; 
+            font-size: 0.9em; 
+        }
+        .breadcrumb a { 
+            color: var(--accent); 
+            text-decoration: none; 
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .breadcrumb a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+        
+        /* HEADER DO POST */
+        .post-header h1 { 
+            font-size: 3.2em; 
+            margin: 0 0 10px 0; 
+            color: var(--text-primary); 
+            line-height: 1.1; 
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .post-header .subtitulo { 
+            font-size: 1.5em; 
+            color: var(--text-secondary); 
+            margin-bottom: 25px; 
+            font-weight: 500;
+        }
+        .post-header .meta { 
+            color: var(--text-secondary); 
+            font-size: 0.9em; 
+            border-bottom: 1px solid var(--border); 
+            padding-bottom: 20px; 
+        }
+        .post-header .meta strong {
+            color: var(--text-primary);
+        }
+        
+        /* IMAGEM */
+        .post-imagem { 
+            width: 100%; 
+            height: 450px; /* Aumentado um pouco para desktop */
+            object-fit: cover;
+            border-radius: 12px; 
+            margin: 40px 0; 
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* CONTEÚDO DO POST */
+        .post-conteudo { 
+            font-size: 1.15em; 
+            color: var(--text-secondary); 
+        }
+        .post-conteudo p {
+            margin-bottom: 1.5em;
+        }
+        .post-conteudo h2 { 
+            font-size: 2em; 
+            margin-top: 45px; 
+            margin-bottom: 15px;
+            color: var(--accent); /* Destaque para subtítulos */
+            font-weight: 700;
+        }
+        .post-conteudo h3 {
+             font-size: 1.5em; 
+             margin-top: 35px; 
+             margin-bottom: 10px;
+        }
+        .post-conteudo a { 
+            color: var(--accent); 
+            font-weight: 600; 
+            text-decoration: underline;
+        }
+        .post-conteudo a:hover { 
+            color: var(--accent-hover); 
+        }
+        .post-conteudo strong {
+            color: var(--text-primary);
+        }
+        
+        /* MEDIA QUERIES PARA RESPONSIVIDADE */
+        @media (max-width: 992px) {
+            .post-container {
+                margin: 40px 20px;
+                padding: 20px 30px 30px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .post-container {
+                margin: 20px 10px;
+                padding: 15px 20px 20px 20px;
+                border-radius: 8px;
+            }
+            .post-header h1 {
+                font-size: 2.2em;
+            }
+            .post-header .subtitulo {
+                font-size: 1.1em;
+            }
+            .post-imagem { 
+                height: 250px; 
+                margin: 25px 0;
+            }
+            .post-conteudo { 
+                font-size: 1em; 
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div style="height: 60px;"></div> 
+
+    <main>
+        <article class="post-container">
+            <div class="breadcrumb">
+                <a href="/">❮ Voltar para o Início / Blog</a>
+            </div>
+            <header class="post-header">
+                <h1>{{ post.titulo }}</h1>
+                {% if post.subtitulo %}
+                    <p class="subtitulo">{{ post.subtitulo }}</p>
+                {% endif %}
+                <p class="meta">Publicado por <strong>{{ post.autor }}</strong> em {{ post.data_publicacao }}</p>
+            </header>
+
+            {% if post.imagem_url %}
+                <img class="post-imagem" 
+                     src="{{ post.imagem_url }}" 
+                     alt="{{ post.titulo }}"
+                     onerror="this.onerror=null;this.src='https://placehold.co/900x450/1E293B/94A3B8?text=Imagem+Indisponível';">
+            {% endif %}
+
+            <section class="post-conteudo">
+                {{ post.conteudo | safe }}
+            </section>
+        </article>
+    </main>
+
+    </body>
+</html>
