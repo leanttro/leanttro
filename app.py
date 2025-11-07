@@ -121,8 +121,9 @@ try:
         2.  **PERSONA:** Você é amigável, confiante e técnico.
         3.  **FOCO:** Responda apenas sobre Leandro. Recuse educadamente outros assuntos.
         4.  **DIRECIONAMENTO DE VENDAS (IMPORTANTE):**
-            - Se perguntarem sobre "orçamento", "preço", "custo" ou "contratar", direcione-os IMEDIATAMENTE para a seção de diagnóstico de SEO.
-            - Resposta para orçamento: "O Leandro pode analisar seu projeto! A melhor forma de começar é usando o formulário 'Diagnóstico de SEO' na página principal. Ele receberá sua solicitação e eu (LÊ-IA) iniciarei o processo de orçamento."
+            - Se perguntarem sobre "orçamento", "preço", "custo" ou "contratar", sua resposta DEVE seguir este script:
+            - "O Leandro pode analisar seu projeto! A melhor forma de começar é usando o formulário 'Diagnóstico de SEO' na página principal, caso você já tenha um site. Se não tiver, não tem problema! Podemos começar a coleta de informações para o orçamento por aqui mesmo. [INICIAR_ORCAMENTO_MANUAL]"
+            - (A tag [INICIAR_ORCAMENTO_MANUAL] é um comando secreto que o frontend vai entender para iniciar o funil de orçamento.)
 
         --- BASE DE CONHECIMENTO (CURRÍCULO DO LEANDRO - V2) ---
 
@@ -347,7 +348,7 @@ def handle_diagnostico_e_isca():
 
         Identifiquei **{num_falhas} falhas técnicas** que estão impedindo seu site de alcançar a nota 100/100 e de se posicionar melhor no Google.
 
-        Eu preparei um relatório detalhado e gratuito com o "como corrigir" para cada um desses {num_falhas} pontos. Para eu enviar a análise completa para você, por favor, preencha os campos abaixo:
+        Eu preparei um relatório detalhado e gratuito com o "como corrigir" para cada um desses {num_falhas} pontos. 
         [FORMULARIO_LEAD]"
         
         ---
@@ -386,28 +387,63 @@ def handle_diagnostico_e_isca():
 # --- FIM DO ENDPOINT DE DIAGNÓSTICO ---
 
 
+# --- [MUDANÇA CRÍTICA] ENDPOINT /api/orcar AGORA ACEITA LEADS MANUAIS ---
 @app.route('/api/orcar', methods=['POST'])
 def handle_orcamento():
     """
     API para o chatbot salvar um pedido de orçamento (lead quente).
-    (Inalterado)
+    AGORA TRATA DOIS CASOS:
+    1.  Lead ID EXISTE (Veio do Funil SEO).
+    2.  Lead ID é NULL (Veio do Funil Manual [INICIAR_ORCAMENTO_MANUAL]).
     """
     print("\n--- [FUNIL-ETAPA-2] Recebido trigger para /api/orcar ---")
     data = request.json
-    lead_id = data.get('lead_id')
+    
+    # Dados do Orçamento
+    lead_id = data.get('lead_id') # Pode ser null
     nome = data.get('nome_contato')
     contato = data.get('email_ou_whatsapp')
-    interesse = data.get('interesse_servico')
+    
+    # [NOVOS CAMPOS V3] - Vem do novo fluxo do JS (que faremos depois)
+    perfil = data.get('perfil_lead', 'Cliente') # (Cliente ou Recrutador)
+    tem_site = data.get('tem_site', 'Não Informado') # (Sim, Não, N/A)
+    
     detalhes = data.get('detalhes_projeto')
     orcamento = data.get('orcamento_estimado')
+    
+    # [NOVO CAMPO V3] - Define o interesse
+    interesse = f"Perfil: {perfil} | Tem Site: {tem_site}"
 
-    if not lead_id or not nome or not contato or not detalhes:
+    # Dados do Lead (se for um novo lead manual)
+    url_analisada = data.get('url_analisada', 'N/A - Orçamento Manual')
+    seo_score = data.get('seo_score') # Será null se for manual
+    origem_lead = 'CHATBOT_MANUAL' if not lead_id else 'SEO_DIAGNOSTICO'
+
+    if not nome or not contato or not detalhes:
         return jsonify({'error': 'Dados incompletos para orçamento.'}), 400
 
     conn = None
     try:
         conn = get_db_connection()
         cur = conn.cursor()
+
+        # --- [NOVA LÓGICA V3] ---
+        # Se o lead_id NÃO foi fornecido (veio do funil manual), crie um novo lead
+        if not lead_id:
+            print(f"ℹ️  [DB] lead_id NULO. Criando novo 'Lead Frio' (Manual)...")
+            cur.execute(
+                "INSERT INTO leanttro_leads (url_analisada, score_seo, origem, status_analise) "
+                "VALUES (%s, %s, %s, 'PENDENTE') "
+                "RETURNING id;",
+                (url_analisada, seo_score, origem_lead)
+            )
+            lead_id = cur.fetchone()[0] # Pega o ID do novo lead criado
+            conn.commit() # Comita a criação do novo lead
+            print(f"✅  [DB] Novo lead frio (Manual) criado com ID: {lead_id}")
+        else:
+            print(f"ℹ️  [DB] Usando lead_id existente (SEO): {lead_id}")
+        # --- [FIM DA NOVA LÓGICA V3] ---
+
         print(f"ℹ️  [DB] Salvando lead quente (orçamento) para Lead ID: {lead_id}")
         cur.execute(
             "INSERT INTO leanttro_orcar (lead_id, nome_contato, email_ou_whatsapp, interesse_servico, detalhes_projeto, orcamento_estimado, status_orcamento) "
@@ -418,8 +454,10 @@ def handle_orcamento():
         cur.close()
         print(f"✅  [DB] Lead quente (orçamento) salvo com sucesso.")
         return jsonify({'success': True, 'message': 'Solicitação de orçamento recebida!'}), 201
+        
     except Exception as e:
         print(f"❌ ERRO no endpoint /api/orcar: {e}")
+        traceback.print_exc()
         if conn: conn.rollback()
         return jsonify({'error': 'Erro interno ao salvar orçamento.'}), 500
     finally:
