@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leandro Andrade | Engenheiro de Dados & Desenvolvedor Full Stack</title>
     <meta name="description" content="Portfólio de Leandro Andrade, Engenheiro de Dados e Desenvolvedor Full Stack, apresentando projetos em nuvem, web e automação.">
-    <!-- O CSS do Font Awesome é necessário para os ícones do bot (fas) e do WhatsApp (fab) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -1289,10 +1288,8 @@
                     <li><a href="#inicio">Início</a></li>
                     <li><a href="#case-study-feiras">Case Feiras</a></li>
                     <li><a href="#projetos">Projetos</a></li>
-                    <li><a href="#blog">Blog</a></li> <!-- Adicionado link Blog na navegação -->
-                    <li><a href="#servicos">Serviços</a></li>
-                    <!-- O link de Contato foi removido do HTML, o que está correto -->
-                </ul>
+                    <li><a href="#blog">Blog</a></li> <li><a href="#servicos">Serviços</a></li>
+                    </ul>
             </nav>
             <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
                 <span class="bar"></span>
@@ -1392,8 +1389,7 @@
             <div class="container fade-in">
                  <div class="project-carousel-wrapper">
                     <div class="project-carousel" id="project-carousel">
-                        <!-- Cards de projeto serão injetados aqui pelo JS -->
-                    </div>
+                        </div>
                     
                     <button class="carousel-nav-btn" id="scroll-left-btn" aria-label="Rolar para esquerda">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M165.66,202.34a8,8,0,0,1-11.32,0l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128l74.35,74.34A8,8,0,0,1,165.66,202.34Z"></path></svg>
@@ -1453,16 +1449,12 @@
             </ul>
         </section>
 
-        <!-- TAREFA 1: INÍCIO DO HTML DA NOVA SEÇÃO BLOG -->
         <section id="blog" class="products" style="padding-top: 3rem; background-color: var(--background);">
             <div class="container fade-in">
-                <!-- CSS INLINE ADICIONADO PARA HEADER DO BLOG -->
-                <!-- [MUDANÇA AQUI] Adicionado justify-content: center e text-align: center para centralizar -->
                 <div class="section-header" style="display: flex; justify-content: center; align-items: center; margin-bottom: 2rem; flex-direction: column;">
                     <div style="text-align: center;">
                         <h2 class="section-title" style="text-align: center; margin: 0;">Blog & Artigos</h2>
                     </div>
-                    <!-- Controles de carrossel movidos para o centro e estilizados abaixo do título para centralização total -->
                     <div class="carousel-controls" style="display: flex; gap: 0.5rem; margin-top: 1rem;">
                         <button id="blog-scroll-left-btn" class="carousel-nav-btn" aria-label="Anterior">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -1473,13 +1465,9 @@
                     </div>
                 </div>
                 <div class="project-carousel" id="blog-carousel" style="min-height: 350px; justify-content: center;">
-                    <!-- Posts do blog serão injetados aqui -->
-                </div>
+                    </div>
             </div>
         </section>
-        <!-- TAREFA 1: FIM DO HTML DA NOVA SEÇÃO BLOG -->
-
-
         <section id="servicos">
              <div class="container fade-in">
                 <h2>Vamos Conversar ?</h2>
@@ -1500,7 +1488,6 @@
             </div>
         </section>
         
-        <!-- Seção Contato (Removida) -->
         <section id="contato" style="display: none;">
         </section>
         
@@ -1557,8 +1544,7 @@
             </div>
 
             <div class="chatbot-messages" id="chatbotMessages">
-                <!-- Mensagens do chat serão injetadas aqui -->
-            </div>
+                </div>
 
             <div class="chatbot-input-area">
                 <input 
@@ -1594,11 +1580,6 @@
         </div>
     </footer>
 
-    <!-- 
-        ==================================================================
-        INÍCIO DAS MUDANÇAS NO JAVASCRIPT
-        ==================================================================
-    -->
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     // --- DADOS DOS PROJETOS (ESTÁTICO - Inalterado) ---
@@ -1818,8 +1799,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // =============================================================
-    // --- INÍCIO: LÓGICA COMPLETA DO CHATBOT E FUNIL DE VENDAS ---
-    // (COM LÓGICA DE PERMISSÃO "SIM/NÃO")
+    // --- INÍCIO: LÓGICA COMPLETA DO CHATBOT E FUNIL DE VENDAS (V3) ---
     // =============================================================
 
     // IDs dos elementos do Chatbot
@@ -1839,14 +1819,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const seoInput = document.getElementById('seo-url-input');
     const seoNote = document.getElementById('seo-result-note');
 
-    // Variáveis de Estado para o Funil de Vendas
+    // Variáveis de Estado para o Funil de Vendas (SEO)
     let currentLeadId = null; 
     let currentUrlAnalisada = null; 
     let currentSeoScore = null; 
     
-    // [MUDANÇA] Novos estados do funil
+    // [MUDANÇA V3] Novos estados do funil
     let chatState = "QA"; // Estado inicial: "QA" (Perguntas e Respostas)
-    // Outros estados: "LOADING", "AGUARDANDO_PERMISSAO", "AGUARDANDO_NOME", "AGUARDANDO_CONTATO", "AGUARDANDO_DETALHES", "AGUARDANDO_ORCAMENTO"
+    // Outros estados: 
+    // "LOADING", 
+    // "AGUARDANDO_PERMISSAO" (Funil SEO), 
+    // "AGUARDANDO_TIPO_LEAD" (Funil Manual V3)
+    // "AGUARDANDO_TEM_SITE" (Funil Manual V3)
+    // "AGUARDANDO_NOME", 
+    // "AGUARDANDO_CONTATO", 
+    // "AGUARDANDO_DETALHES", 
+    // "AGUARDANDO_ORCAMENTO"
 
     let conversationHistory = []; // Armazena objetos { role, text }
 
@@ -1936,7 +1924,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
     }
 
-    // [MUDANÇA] Função AddMessage agora lida com [WHATSAPP_BUTTON] e novo fluxo [FORMULARIO_LEAD]
+    // [MUDANÇA V3] Função AddMessage agora lida com [INICIAR_ORCAMENTO_MANUAL]
     function addMessage(text, isUser = false) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
@@ -1963,23 +1951,41 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // --- [MUDANÇA] Lógica da ISCA e mudança de estado ---
-        if (text.includes("[FORMULARIO_LEAD]")) {
+        // --- [MUDANÇA V3] Lógica do GATILHO MANUAL ---
+        if (text.includes("[INICIAR_ORCAMENTO_MANUAL]")) {
+            // Limpa a tag da mensagem
+            formattedText = formattedText.replace("[INICIAR_ORCAMENTO_MANUAL]", "").trim();
+            
+             // Limpa os dados do funil SEO (caso existam)
+            currentLeadId = null;
+            currentUrlAnalisada = null;
+            currentSeoScore = null;
+
+            // Muda o estado do chat para o NOVO funil
+            chatState = "AGUARDANDO_TIPO_LEAD";
+            conversationHistory = []; // Inicia um novo histórico (de funil)
+
+            setTimeout(() => {
+                // [MUDANÇA V3] Pergunta o tipo de lead
+                addMessage("Entendido. Para eu direcionar seu atendimento, você é um <strong>cliente buscando um orçamento</strong> ou um <strong>recrutador</strong>?", false);
+                if (chatbotInput) chatbotInput.placeholder = "Digite 'Cliente' ou 'Recrutador'...";
+            }, 1000);
+
+        // --- Lógica da ISCA (Funil SEO) ---
+        } else if (text.includes("[FORMULARIO_LEAD]")) {
             // Limpa a tag da mensagem
             formattedText = formattedText.replace("[FORMULARIO_LEAD]", "").trim();
 
-            // Muda o estado do chat para "Aguardando Permissão"
+            // Muda o estado do chat para "Aguardando Permissão" (Funil SEO)
             chatState = "AGUARDANDO_PERMISSAO";
             conversationHistory = []; // Inicia um novo histórico (de funil)
 
             setTimeout(() => {
-                // [MUDANÇA] Pergunta se pode salvar os dados
                 addMessage("Eu posso salvar essas informações (URL, nome, contato) para o Leandro analisar e te enviar o diagnóstico completo? (Sim / Não)", false);
                 if (chatbotInput) chatbotInput.placeholder = "Digite 'Sim' ou 'Não'...";
             }, 1000);
-
         }
-        // --- FIM DA LÓGICA DA ISCA ---
+        // --- FIM DAS LÓGICAS DE GATILHO ---
 
         messageDiv.innerHTML = `
             <div class="message-avatar">
@@ -2022,7 +2028,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- [MUDANÇA] Lógica Principal de Envio (COM ESTADO DE PERMISSÃO) ---
+    // --- [MUDANÇA V3] Lógica Principal de Envio (COM NOVOS ESTADOS) ---
     async function handleSendMessage() {
         if (!chatbotInput || !chatbotSend || !chatbotMessages) return;
 
@@ -2058,12 +2064,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 botReply = "Desculpe, estou com problemas para me conectar ao meu cérebro de IA no momento. Tente novamente mais tarde.";
             }
 
-        // [NOVO] ESTADO 2: Aguardando Permissão (Sim/Não)
+        // ESTADO 2 (Funil SEO): Aguardando Permissão (Sim/Não)
         } else if (chatState === "AGUARDANDO_PERMISSAO") {
             const userInput = messageText.toLowerCase();
             
             if (userInput.includes('sim') || userInput.includes('s')) {
-                // Usuário permitiu
+                // Usuário permitiu (continua funil SEO)
                 chatState = "AGUARDANDO_NOME";
                 botReply = "Ótimo! Para eu poder te enviar o diagnóstico completo, qual é o seu nome?";
                 chatbotInput.placeholder = "Digite seu nome...";
@@ -2071,7 +2077,6 @@ document.addEventListener('DOMContentLoaded', function() {
             else if (userInput.includes('não') || userInput.includes('nao') || userInput.includes('n')) {
                 // Usuário negou
                 chatState = "QA"; // Reseta o chatbot
-                // [MUDANÇA] Resposta com botão do WhatsApp
                 botReply = "Entendido. Sem problemas. Eu não posso enviar o relatório sem salvar seus dados.\n\nMas se preferir, você pode falar diretamente com o Leandro sobre essa análise pelo WhatsApp.\n[WHATSAPP_BUTTON]";
                 shouldResetPlaceholder = true; // Flag para resetar o placeholder
             } 
@@ -2082,12 +2087,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 chatbotInput.placeholder = "Digite 'Sim' ou 'Não'...";
             }
 
-        // ESTADO 3: Coletando dados para o Orçamento (Funil de Vendas)
+        // [NOVO] ESTADO 3 (Funil Manual V3): Coletando Tipo de Lead
+        } else if (chatState === "AGUARDANDO_TIPO_LEAD") {
+            conversationHistory.push({ role: 'orcamento_perfil', text: messageText }); 
+            chatState = "AGUARDANDO_TEM_SITE";
+            botReply = "Certo. E você já possui um site ou domínio? (Sim / Não / Não se aplica)";
+            chatbotInput.placeholder = "Digite 'Sim', 'Não' ou 'N/A'...";
+        
+        // [NOVO] ESTADO 4 (Funil Manual V3): Coletando se tem site
+        } else if (chatState === "AGUARDANDO_TEM_SITE") {
+            conversationHistory.push({ role: 'orcamento_tem_site', text: messageText });
+            chatState = "AGUARDANDO_NOME"; // Avança para o funil comum
+            botReply = "Perfeito. Para começar o orçamento, qual é o seu nome?";
+            chatbotInput.placeholder = "Digite seu nome...";
+
+        // ESTADO 5: Coletando dados para o Orçamento (Funil Comum)
         } else if (chatState === "AGUARDANDO_NOME") {
             // Guarda o nome e avança o estado
             conversationHistory.push({ role: 'orcamento_nome', text: messageText }); 
             chatState = "AGUARDANDO_CONTATO";
-            botReply = `Prazer, ${messageText}! 👋<br><br>Qual é o seu melhor e-mail ou WhatsApp para eu enviar o diagnóstico?`;
+            botReply = `Prazer, ${messageText}! 👋<br><br>Qual é o seu melhor e-mail ou WhatsApp para o Leandro entrar em contato?`;
             chatbotInput.placeholder = "Digite seu e-mail ou WhatsApp...";
 
         } else if (chatState === "AGUARDANDO_CONTATO") {
@@ -2107,10 +2126,10 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (chatState === "AGUARDANDO_ORCAMENTO") {
             // Guarda o orçamento, salva no DB e reseta
             conversationHistory.push({ role: 'orcamento_budget', text: messageText });
-            botReply = "🚀 **Excelente!**<br><br>Recebi todas as informações. O Leandro vai analisar seu projeto (baseado na URL que você digitou) e entrará em contato com você em breve pelo contato que você forneceu.<br><br>Obrigado pela confiança!";
+            botReply = "🚀 **Excelente!**<br><br>Recebi todas as informações. O Leandro vai analisar seu pedido e entrará em contato com você em breve pelo contato que você forneceu.<br><br>Obrigado pela confiança!";
             
             // Chama a função para salvar o Lead/Orçamento
-            await salvarOrcamento(); // A função salvarOrcamento agora limpa o history
+            await salvarOrcamento(); // A função salvarOrcamento agora envia os dados V3
 
             chatState = "QA"; // Reseta o chatbot para Q&A
             shouldResetPlaceholder = true; // Flag para resetar o placeholder
@@ -2133,18 +2152,26 @@ document.addEventListener('DOMContentLoaded', function() {
         chatbotInput.focus();
     }
 
-    // --- FUNÇÃO HELPER PARA SALVAR O ORÇAMENTO (Inalterada) ---
+    // --- [MUDANÇA V3] FUNÇÃO HELPER PARA SALVAR O ORÇAMENTO (COM DADOS V3) ---
     async function salvarOrcamento() {
         // Mapeia o histórico do funil (conversationHistory) para o payload de salvamento
         const dadosOrcamento = {
+            // Dados do Funil SEO (serão null se for funil manual)
             lead_id: currentLeadId,
-            url_analisada: currentUrlAnalisada, // Adiciona a URL do diagnóstico
-            seo_score: currentSeoScore, // Adiciona o score do diagnóstico
+            url_analisada: currentUrlAnalisada, 
+            seo_score: currentSeoScore, 
+            
+            // [NOVOS CAMPOS V3] - Dados do Funil Manual
+            perfil_lead: conversationHistory.find(m => m.role === 'orcamento_perfil')?.text || 'Não informado',
+            tem_site: conversationHistory.find(m => m.role === 'orcamento_tem_site')?.text || 'Não informado',
+            
+            // Dados Comuns
             nome_contato: conversationHistory.find(m => m.role === 'orcamento_nome')?.text || null,
             email_ou_whatsapp: conversationHistory.find(m => m.role === 'orcamento_contato')?.text || null,
-            interesse_servico: "Diagnóstico de SEO + Orçamento", // Detalhe o interesse
             detalhes_projeto: conversationHistory.find(m => m.role === 'orcamento_detalhes')?.text || null,
             orcamento_estimado: conversationHistory.find(m => m.role === 'orcamento_budget')?.text || null
+            
+            // 'interesse_servico' será montado pelo backend (app.py)
         };
 
         try {
@@ -2181,7 +2208,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- FIM DA LÓGICA DO CHATBOT ---
 
 
-    // --- [MUDANÇA] LÓGICA DO FORMULÁRIO DE DIAGNÓSTICO DE SEO ---
+    // --- LÓGICA DO FORMULÁRIO DE DIAGNÓSTICO DE SEO (Inalterada) ---
+    // (A mudança aqui é que a 'addMessage' agora detecta o [FORMULARIO_LEAD])
     if (seoFormButton && seoInput && seoNote) {
         seoFormButton.addEventListener('click', async () => {
             let url = seoInput.value.trim();
@@ -2201,7 +2229,6 @@ document.addEventListener('DOMContentLoaded', function() {
             seoNote.textContent = "Iniciando diagnóstico... Isso pode levar até 40 segundos. Abrindo o chat...";
             seoNote.className = 'search-bar-note';
 
-            // [MUDANÇA] NÃO limpa o chat. Apenas muda o estado e abre.
             chatState = "LOADING"; 
             
             // Abre o chatbot para mostrar o processo
@@ -2234,7 +2261,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 seoNote.className = 'search-bar-note success';
 
                 // 3. Injeta a "ISCA" no chat.
-                // A função addMessage detecta a tag [FORMULARIO_LEAD] e inicia o funil.
+                // A função addMessage detecta a tag [FORMULARIO_LEAD] e inicia o funil SEO.
                 addMessage(data.diagnosis, false);
 
             } catch (error) {
@@ -2242,7 +2269,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 seoNote.textContent = `Erro: ${error.message}`;
                 seoNote.className = 'search-bar-note error';
                 
-                // [MUDANÇA] Em caso de erro, avisa no chat, mas NÃO limpa o histórico
                 removeTypingIndicator();
                 addMessage(`Desculpe, ocorreu um erro ao analisar a URL: ${error.message}. Tente novamente.`, false);
                 chatState = "QA"; // Reseta o estado
