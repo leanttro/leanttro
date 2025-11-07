@@ -24,7 +24,7 @@ PAGESPEED_API_KEY = os.getenv('PAGESPEED_API_KEY') # API Key do Google PageSpeed
 # --- FIM DA CONFIGURAÇÃO ---
 
 # --- INICIALIZAÇÃO DO FLASK ---
-app = Flask(__name__, template_folder='.', static_folder='.')
+app = Flask(__name__, template_folder='templates', static_folder='.')
 CORS(app) 
 
 # --- FUNÇÃO DE SETUP DO BANCO DE DADOS ---
