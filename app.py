@@ -501,8 +501,8 @@ def get_post_detalhe(slug):
 
 @app.route('/')
 def index_route():
-    """Serve o 'index1.html' como a página raiz."""
-    return send_from_directory('.', 'index1.html')
+    """Serve o 'index.html' como a página raiz."""
+    return send_from_directory('.', 'index.html')
 
 @app.route('/<path:path>')
 def serve_static_files(path):
