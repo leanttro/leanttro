@@ -12,8 +12,6 @@ import traceback
 # --- [NOVO] IMPORTAÇÕES PARA O FUNIL ---
 import requests
 import google.generativeai as genai
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
 # --- FIM DA IMPORTAÇÃO ---
 
 # Carrega variáveis de ambiente (para rodar localmente)
@@ -29,13 +27,9 @@ PAGESPEED_API_KEY = os.getenv('PAGESPEED_API_KEY') # API Key do Google PageSpeed
 app = Flask(__name__, template_folder='.', static_folder='.')
 CORS(app) 
 
-# --- [NOVO] FUNÇÃO DE SETUP DO BANCO DE DADOS ---
+# --- FUNÇÃO DE SETUP DO BANCO DE DADOS ---
+# (Garante que as tabelas existam na inicialização)
 def setup_database():
-    """
-    Garante que TODAS as 3 tabelas (`leanttro_blog`, `leanttro_leads`, `leanttro_orcar`)
-    existam no banco de dados ANTES de o servidor iniciar.
-    Este código é 100% SEGURO e não apaga nada.
-    """
     if not DATABASE_URL:
         print("❌ ERRO CRÍTICO: DATABASE_URL não encontrada. Setup do banco falhou.")
         return
@@ -111,55 +105,62 @@ def setup_database():
 
 # --- CONFIGURAÇÃO DO GEMINI ---
 chat_model = None
+diag_model = None
 try:
     if GEMINI_API_KEY:
         genai.configure(api_key=GEMINI_API_KEY)
         
-        # PROMPT DE SISTEMA PARA O "LÊ-IA" (Q&A de Recrutador)
+        # --- [PROMPT ATUALIZADO] ---
+        # (Baseado nos novos CVs enviados)
         SYSTEM_PROMPT_LEIA = """
         Você é o "LÊ-IA", o assistente de IA pessoal de Leandro Andrade (apelido "Leanttro").
         Seu propósito é responder perguntas de recrutadores e potenciais clientes de forma profissional, amigável e baseada ESTRITAMENTE nos fatos abaixo.
 
-        REGRAS:
+        REGRAS DE OURO:
         1.  **NÃO ALUCINE:** Se a informação não estiver abaixo, diga "Essa é uma ótima pergunta, mas não tenho essa informação no meu banco de dados. Você pode perguntar diretamente ao Leandro."
         2.  **PERSONA:** Você é amigável, confiante e técnico.
         3.  **FOCO:** Responda apenas sobre Leandro. Recuse educadamente outros assuntos.
-        4.  **DIRECIONAMENTO (IMPORTANTE):**
-            - Se perguntarem sobre "orçamento", "preço", "custo" ou "contratar", direcione-os para a seção de diagnóstico de SEO no site.
+        4.  **DIRECIONAMENTO DE VENDAS (IMPORTANTE):**
+            - Se perguntarem sobre "orçamento", "preço", "custo" ou "contratar", direcione-os IMEDIATAMENTE para a seção de diagnóstico de SEO.
             - Resposta para orçamento: "O Leandro pode analisar seu projeto! A melhor forma de começar é usando o formulário 'Diagnóstico de SEO' na página principal. Ele receberá sua solicitação e eu (LÊ-IA) iniciarei o processo de orçamento."
 
-        --- BASE DE CONHECIMENTO (CURRÍCULO DO LEANDRO) ---
+        --- BASE DE CONHECIMENTO (CURRÍCULO DO LEANDRO - V2) ---
 
         **TÍTULO PROFISSIONAL:**
-        Engenheiro de Dados & Desenvolvedor Full Stack.
+        Analista e Engenheiro de Soluções | Automação | Dados | BI.
+        (Ele também atua como Desenvolvedor Full Stack e Engenheiro de Dados).
 
-        **PERFIL HÍBRIDO:**
-        Leandro tem uma combinação rara: ele é um desenvolvedor técnico (Python, GCP, SQL) com um forte background em Marketing, Design e Comercial. Isso permite que ele entenda a dor do negócio (vendas, marketing) e construa a solução técnica (automação, dados).
+        **PERFIL HÍBRIDO (O GRANDE DIFERENCIAL):**
+        Leandro tem uma combinação rara: ele é um profissional de dados e automação com "mentalidade de arquiteto", focado em construir sistemas end-to-end. Ele possui experiência sólida em pipelines de dados, orquestração (N8N, Docker) e IA (GCP, Gemini).
+        Ele une isso a um forte background em Marketing, Design e Análise Comercial (de 2015-2025), o que permite que ele entenda a dor do negócio (vendas, marketing) e construa a solução técnica (automação, dados) que resolve o problema.
 
         **HABILIDADES TÉCNICAS (HARD SKILLS):**
-        * **Engenharia de Dados & Cloud:** Python (Avançado), SQL (Avançado), Google Cloud Platform (GCP), Google BigQuery, Pipelines de ETL/ELT.
-        * **Business Intelligence (BI):** Power BI (Avançado), DAX, Análise de Dados (Pandas).
-        * **Automação:** N8N (Nível Expert), Docker, API REST, Flask.
-        * **Machine Learning:** Scikit-Learn, Sistemas de Recomendação.
-        * **Desenvolvimento Web:** HTML, CSS, JavaScript, Flask.
+        * **Automação & Orquestração:** N8N (Nível Expert), Docker, CI/CD, FinOps, Webhooks, APIs REST.
+        * **Engenharia de Dados & Cloud:** Python (Avançado, com Pandas, Scikit-learn), SQL (Avançado), Google Cloud Platform (GCP), Google BigQuery, Pipelines de ETL/ELT, Arquitetura de Dados (Silver/Gold).
+        * **Business Intelligence (BI):** Power BI (Avançado), DAX, Power Query, Visualização de Dados, Análise Exploratória (EDA).
+        * **Desenvolvimento Web:** Flask (Python), HTML, CSS, JavaScript.
+        * **Banco de Dados:** PostgreSQL, MySQL, SQLite.
 
-        **PROJETOS PRINCIPAIS:**
-        1.  **Feiras de Rua (www.feirasderua.com.br):**
-            * **O que é:** Um portal completo (produto digital) para encontrar feiras em São Paulo.
-            * **Tecnologias:** É um projeto Full-Stack com Backend em Python (Flask), API REST, banco de dados PostgreSQL (no Render).
-            * **Destaque de IA:** O chatbot deste site (o "Feirinha") usa RAG (Retrieval-Augmented Generation), buscando dados AO VIVO do banco de dados para alimentar a API do Gemini e dar respostas precisas.
-        2.  **Pipeline de Dados (NYC Taxi):**
-            * **O que é:** Um projeto de ML de ponta a ponta para prever tarifas de táxi.
-            * **Tecnologias:** Demonstra um pipeline de dados completo na GCP, treinamento de modelo e deploy em Hugging Face.
-        3.  **Dashboard de Risco de Crédito (Power BI):**
-            * **O que é:** Um dashboard de BI para um banco digital, analisando risco de crédito.
-            * **Tecnologias:** Demonstra limpeza de dados (Pandas) e criação de KPIs complexos no Power BI.
+        **EXPERIÊNCIA PROFISSIONAL:**
+        * **Engenheiro de Automação e Dados (Freelance) @ Feiras de Rua SP (Jan/2025 - O momento):**
+            * Ele arquitetou e implementou o pipeline de automação da plataforma (feirasderua.com.br).
+            * Ele usa N8N para orquestrar o deploy contínuo (CI/CD) e monitorar a aplicação no Render, garantindo 100% de uptime com custo zero de infraestrutura (FinOps).
+            * No mesmo projeto, ele atua como Desenvolvedor Full Stack, gerenciando o backend em Flask, o banco de dados PostgreSQL, a API REST e o chatbot "Feirinha" (que usa RAG e Gemini).
+        * **Engenheiro de Soluções (Autônomo/Portfólio):**
+            * Desenvolveu um sistema E2E (End-to-End) de classificação de leads com IA (usando N8N) e um front-end live. A automação envia leads qualificados ao Power BI e nutre os demais.
+        * **Experiências Anteriores (2015-2025):**
+            * Atuou em empresas como Corum, Arte Rox e Oceano, com foco em marketing digital, design e análise comercial.
 
-        **COMO RESPONDER (EXEMPLOS):**
-        * **Usuário:** "O Leandro sabe Python?"
-        * **Você:** "Sim! Python é uma das suas habilidades principais (nível avançado). Ele usa Python extensivamente para pipelines de dados, backend com Flask e em projetos de Machine Learning."
-        * **Usuário:** "Quanto custa um site?"
-        * **Você:** "O Leandro pode analisar seu projeto! A melhor forma de começar é usando o formulário 'Diagnóstico de SEO' na página principal. Ele receberá sua solicitação e eu (LÊ-IA) iniciarei o processo de orçamento."
+        **PROJETOS DE DESTAQUE (Links no GitHub: github.com/leanttro):**
+        1.  **Case: Análise de Risco de Crédito (Data Science & BI):** Conduziu um case completo para um banco digital, desde a Análise Exploratória (EDA) e modelagem de Machine Learning (Risco) até a arquitetura de dados na GCP (Silver/Gold) e a entrega de um dashboard final em Power BI.
+        2.  **Pipeline de Dados Cloud (NYC Taxi):** Construiu um pipeline de dados na GCP (BigQuery) e desenvolveu um front-end interativo para consumir os dados processados.
+        3.  **Pipeline de BI E-commerce (Olist):** Criou um pipeline ponta a ponta (MySQL para GCP), aplicando ETL com Python/Pandas e estruturando um Data Warehouse no BigQuery.
+        4.  **Sistema de Recomendação de Produtos (ML):** Desenvolveu um sistema de recomendação (filtragem colaborativa) com Python (Pandas, Scikit-Learn).
+
+        **FORMAÇÃO E CURSOS (Resumo):**
+        * **Graduação:** Tecnologia em Inteligência Artificial | Universidade Cruzeiro do Sul (Cursando, 2025-2027).
+        * **Graduação Anterior:** Marketing | Universidade Anhembi Morumbi (2014 - 2016).
+        * **Especializações (SENAI):** Power BI, Python para Data Science, Bancos de Dados (MySQL), IoT e IA Generativa.
         --- FIM DA BASE DE CONHECIMENTO ---
         """
 
@@ -169,13 +170,11 @@ try:
             system_instruction=SYSTEM_PROMPT_LEIA
         )
         
-        # Modelo para a "ISCA" de SEO (sem prompt de sistema, será enviado em cada chamada)
+        # Modelo para a "ISCA" de SEO
         diag_model = genai.GenerativeModel('gemini-2.5-flash-preview-09-2025')
         
-        print("✅  [Gemini] Modelos de Chat (LÊ-IA) e Diagnóstico (ISCA) inicializados.")
+        print("✅  [Gemini] Modelos de Chat (LÊ-IA V2) e Diagnóstico (ISCA) inicializados.")
     else:
-        chat_model = None
-        diag_model = None
         print("❌ ERRO: GEMINI_API_KEY não encontrada. Os Chatbots não funcionarão.")
 except Exception as e:
     chat_model = None
@@ -199,7 +198,7 @@ def format_db_data(data_dict):
             data_dict[key] = float(value)
     return data_dict
 
-# --- [NOVO] HELPER FUNCTIONS DO PAGESPEED (Copiadas do app-elo.py) ---
+# --- HELPER FUNCTIONS DO PAGESPEED (Inalteradas) ---
 def fetch_full_pagespeed_json(url_to_check, api_key):
     """
     Função helper que chama a API PageSpeed e retorna o JSON completo.
@@ -234,11 +233,14 @@ def extract_failing_audits(report_json):
     failed_audits = []
     
     for audit_key, audit_details in audits.items():
-        if audit_details.get('scoreDisplayMode') != 'informative' and audit_details.get('score') is not None and audit_details.get('score') < 1:
+        # Captura auditorias que não são 'informativas' E (têm score < 1 OU score == 0)
+        # Isso garante que peguemos "opportunities" e "diagnostics" que falharam.
+        score_val = audit_details.get('score')
+        if audit_details.get('scoreDisplayMode') != 'informative' and score_val is not None and score_val < 1:
             failed_audits.append({
                 "title": audit_details.get('title'),
                 "description": audit_details.get('description'),
-                "score": audit_details.get('score')
+                "score": score_val
             })
     print(f"ℹ️  [Parser] Extraídas {len(failed_audits)} auditorias com falha.")
     return failed_audits
@@ -279,9 +281,9 @@ def handle_diagnostico_e_isca():
     API para a barra de "Diagnóstico de SEO".
     1. Recebe a URL.
     2. Chama a API do PageSpeed.
-    3. Salva o URL e o Score na tabela `leanttro_leads` e obtém o `new_lead_id`.
-    4. Chama o Gemini para criar uma "ISCA" (teaser) de diagnóstico.
-    5. Retorna a "ISCA" e o `lead_id` para o frontend.
+    3. Salva o URL e o Score na tabela `leanttro_leads` (lead frio).
+    4. Chama o Gemini para criar a "ISCA V2" (teaser SEM detalhes).
+    5. Retorna a "ISCA V2" e o `lead_id` para o frontend.
     """
     print("\n--- [FUNIL-ETAPA-1] Recebido trigger para /api/diagnostico_seo ---")
     
@@ -304,7 +306,7 @@ def handle_diagnostico_e_isca():
         user_seo_score = (user_report.get('lighthouseResult', {}).get('categories', {}).get('seo', {}).get('score', 0)) * 100
         user_seo_score_int = int(user_seo_score)
 
-        # 2. Salvar na Tabela 'leanttro_leads'
+        # 2. Salvar na Tabela 'leanttro_leads' (Lead Frio)
         print(f"ℹ️  [DB] Salvando lead frio para: {url_analisada} (Score: {user_seo_score_int})")
         conn = get_db_connection()
         cur = conn.cursor()
@@ -320,55 +322,57 @@ def handle_diagnostico_e_isca():
         conn.close() # Fecha a conexão após salvar
         print(f"✅  [DB] Lead frio salvo com ID: {new_lead_id}")
 
-        # 3. Chamar Gemini para criar a "ISCA" (baseado no app-elo.py)
+        # 3. Chamar Gemini para criar a "ISCA V2"
         user_failing_audits = extract_failing_audits(user_report)
+        num_falhas = len(user_failing_audits)
         
-        # PROMPT DA ISCA (do app-elo.py)
-        system_prompt_isca = f"""
+        # --- [PROMPT DA ISCA ATUALIZADO] ---
+        # (Não revela mais os detalhes, apenas a contagem)
+        system_prompt_isca_v2 = f"""
         Você é o "Analista de Ouro", um especialista sênior em SEO.
         Sua missão é dar um DIAGNÓSTICO-ISCA para um usuário que enviou a URL do site dele.
 
         REGRAS:
         1.  **Tom de Voz:** Profissional, especialista, mas com senso de urgência. Use 🚀 e 💡.
         2.  **NÃO DÊ A SOLUÇÃO:** Seu objetivo NÃO é dar o diagnóstico completo, mas sim provar que você o encontrou e que ele é valioso.
-        3.  **A ISCA:** Seu trabalho é analisar a lista de 'Auditorias com Falha' e o 'Score' do usuário e gerar um texto curto (2-3 parágrafos) que:
+        3.  **A ISCA (Nova Lógica):** Seu trabalho é analisar a *quantidade* de falhas e o *Score* do usuário e gerar um texto curto (2-3 parágrafos) que:
             a. Confirma a nota (ex: "💡 Certo, analisei o {url_analisada} e a nota de SEO mobile é {user_seo_score:.0f}/100.").
-            b. Menciona a *quantidade* de falhas (ex: "Identifiquei **{len(user_failing_audits)} falhas técnicas** que estão impedindo seu site de performar melhor...").
-            c. Cita 1 ou 2 *exemplos* de falhas (ex: "...incluindo problemas com `meta descriptions` e imagens não otimizadas.").
+            b. Menciona a *quantidade* de falhas (ex: "Identifiquei **{num_falhas} falhas técnicas** que estão impedindo seu site de performar melhor...").
+            c. **NÃO CITE AS FALHAS!** Não diga "problemas com meta description" ou "imagens". Apenas o número.
             d. **O GANCHO (IMPORTANTE):** Termine induzindo o usuário a fornecer os dados para receber a análise completa.
         4.  **FORMULÁRIO DE CAPTURA:** O seu texto DEVE terminar exatamente com o comando para o frontend exibir o formulário. Use a tag especial: [FORMULARIO_LEAD]
 
-        EXEMPLO DE RESPOSTA PERFEITA:
+        EXEMPLO DE RESPOSTA PERFEITA (com {num_falhas} falhas):
         "💡 Certo, analisei o {url_analisada} e a nota de SEO mobile é **{user_seo_score:.0f}/100**.
 
-        Identifiquei **{len(user_failing_audits)} falhas técnicas** que estão impedindo seu site de alcançar a nota 100/100, incluindo problemas com `meta descriptions` e imagens que não estão otimizadas para mobile.
+        Identifiquei **{num_falhas} falhas técnicas** que estão impedindo seu site de alcançar a nota 100/100 e de se posicionar melhor no Google.
 
-        Eu preparei um relatório detalhado com o "como corrigir" para cada um desses {len(user_failing_audits)} pontos. Por favor, preencha os campos abaixo para eu enviar a análise completa para você:
+        Eu preparei um relatório detalhado e gratuito com o "como corrigir" para cada um desses {num_falhas} pontos. Para eu enviar a análise completa para você, por favor, preencha os campos abaixo:
         [FORMULARIO_LEAD]"
         
         ---
         ANÁLISE DO SITE DO USUÁRIO ({url_analisada}):
         - Score Geral de SEO: {user_seo_score:.0f}/100
-        - Auditorias com Falha: {json.dumps(user_failing_audits, ensure_ascii=False)}
+        - Número de Auditorias com Falha: {num_falhas}
         ---
         
-        DIAGNÓSTICO-ISCA (comece aqui):
+        DIAGNÓSTICO-ISCA V2 (comece aqui):
         """
         
-        print("ℹ️  [Gemini-ISCA] Gerando diagnóstico-isca...")
+        print("ℹ️  [Gemini-ISCA V2] Gerando diagnóstico-isca (sem detalhes)...")
         chat_session = diag_model.start_chat(history=[]) # Usa o 'diag_model'
         response = chat_session.send_message(
-            system_prompt_isca,
+            system_prompt_isca_v2,
             generation_config=genai.types.GenerationConfig(temperature=0.3),
             safety_settings={'HATE': 'BLOCK_NONE', 'HARASSMENT': 'BLOCK_NONE', 'SEXUAL' : 'BLOCK_NONE', 'DANGEROUS' : 'BLOCK_NONE'}
         )
-        print(f"✅  [Gemini-ISCA] Diagnóstico-isca gerado: {response.text[:50]}...")
+        print(f"✅  [Gemini-ISCA V2] Diagnóstico-isca gerado: {response.text[:50]}...")
 
         # 4. Retornar o ID do Lead + a Resposta da IA (a isca)
         return jsonify({
             'success': True, 
             'lead_id': new_lead_id,
-            'diagnosis': response.text,
+            'diagnosis': response.text, # A nova "isca"
             'seo_score': user_seo_score_int
         }), 200
 
@@ -386,7 +390,7 @@ def handle_diagnostico_e_isca():
 def handle_orcamento():
     """
     API para o chatbot salvar um pedido de orçamento (lead quente).
-    Recebe os dados e salva na tabela 'leanttro_orcar'.
+    (Inalterado)
     """
     print("\n--- [FUNIL-ETAPA-2] Recebido trigger para /api/orcar ---")
     data = request.json
@@ -426,6 +430,7 @@ def handle_orcamento():
 def handle_chat():
     """
     Endpoint para o chatbot LÊ-IA (Q&A sobre o Leandro).
+    (Inalterado, mas agora usa o novo PROMPT de sistema)
     """
     print("\n--- [Q&A-CHAT] Recebido trigger para /api/chat ---")
     
@@ -445,7 +450,7 @@ def handle_chat():
         chat_session = chat_model.start_chat(history=gemini_history)
         user_message = history[-1]['text'] if history and history[-1]['role'] == 'user' else "Olá"
 
-        print(f"ℹ️  [LÊ-IA] Recebida pergunta: '{user_message}'")
+        print(f"ℹ️  [LÊ-IA V2] Recebida pergunta: '{user_message}'")
         response = chat_session.send_message(
             user_message,
             generation_config=genai.types.GenerationConfig(temperature=0.7),
@@ -454,7 +459,7 @@ def handle_chat():
                  'SEXUAL' : 'BLOCK_NONE', 'DANGEROUS' : 'BLOCK_NONE'
             }
         )
-        print(f"✅  [LÊ-IA] Resposta da IA gerada.")
+        print(f"✅  [LÊ-IA V2] Resposta da IA gerada.")
         return jsonify({'reply': response.text})
 
     except genai.types.generation_types.StopCandidateException as stop_ex:
@@ -472,6 +477,7 @@ def handle_chat():
 def get_post_detalhe(slug):
     """
     Renderiza a página 'post-detalhe.html'.
+    (Inalterado)
     """
     conn = None
     try:
@@ -511,6 +517,10 @@ def serve_static_files(path):
     """
     if '.' not in os.path.basename(path):
         abort(404, description="Caminho inválido")
+        
+    # Medida de segurança básica: Evitar "directory traversal"
+    if '..' in path:
+        abort(400, description="Caminho malicioso detectado")
         
     if os.path.exists(os.path.join('.', path)):
         return send_from_directory('.', path)
