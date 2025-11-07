@@ -757,6 +757,8 @@
             visibility: hidden;
             transform: scale(0.5);
             transition: all 0.3s ease;
+            /* [MUDANÇA FOTO] Garante que a imagem não vaze */
+            overflow: hidden; 
         }
 
         .chatbot-minimized-icon.minimized {
@@ -804,6 +806,8 @@
             font-size: 1.2rem;
             color: var(--chat-text-primary); /* Branco */
             flex-shrink: 0;
+            /* [MUDANÇA FOTO] Garante que a imagem não vaze */
+            overflow: hidden;
         }
         .preview-info strong {
             font-family: var(--font-body);
@@ -893,6 +897,8 @@
             font-size: 1.5rem;
             color: var(--chat-text-primary); /* Branco */
             flex-shrink: 0;
+            /* [MUDANÇA FOTO] Garante que a imagem não vaze */
+            overflow: hidden;
         }
 
         .chatbot-header-info h3 {
@@ -967,6 +973,8 @@
             font-size: 1rem;
             flex-shrink: 0;
             color: var(--chat-text-primary); /* Branco */
+            /* [MUDANÇA FOTO] Garante que a imagem não vaze */
+            overflow: hidden;
         }
         .message.bot .message-avatar { background: var(--chat-accent); } /* Laranja */
         .message.user .message-avatar { background-color: var(--chat-text-secondary); } /* Cinza */
@@ -1508,7 +1516,7 @@
     <div class="floating-chatbot">
         <div id="chatbotButtonContainer">
              <div class="chatbot-minimized-icon" id="minimizedIcon" aria-label="Abrir Chatbot">
-                <i class="fas fa-robot"></i>
+                <img src="leanttro.png" alt="Leanttro Chatbot Icon" style="width: 100%; height: 100%; border-radius: 50%;">
             </div>
             <div class="chatbot-preview-button" id="chatbotButton" aria-label="Abrir LÊ-IA">
                 <button class="preview-close" id="previewClose" aria-label="Minimizar Preview">
@@ -1516,7 +1524,7 @@
                 </button>
                 <div class="preview-header">
                     <div class="preview-avatar">
-                        <i class="fas fa-robot"></i>
+                        <img src="leanttro.png" alt="Leanttro Preview Icon" style="width: 100%; height: 100%; border-radius: 50%;">
                     </div>
                     <div class="preview-info">
                         <strong>LÊ<span>ia</span></strong>
@@ -1532,7 +1540,7 @@
         <div class="chatbot-window" id="chatbotWindow">
             <div class="chatbot-header">
                 <div class="chatbot-header-avatar">
-                    <i class="fas fa-robot"></i>
+                    <img src="leanttro.png" alt="Leanttro Header Icon" style="width: 100%; height: 100%; border-radius: 50%;">
                 </div>
                 <div class="chatbot-header-info">
                     <h3>LÊ<span>ia</span></h3>
@@ -1924,7 +1932,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
     }
 
-    // [MUDANÇA V3] Função AddMessage agora lida com [INICIAR_ORCAMENTO_MANUAL]
+    // [MUDANÇA FOTO] Função AddMessage agora lida com <img> para o bot
     function addMessage(text, isUser = false) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
@@ -1987,9 +1995,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // --- FIM DAS LÓGICAS DE GATILHO ---
 
+        // [MUDANÇA FOTO] Lógica do avatar (usuário vs bot)
+        const avatarHtml = isUser
+            ? '<i class="fas fa-user"></i>'
+            : '<img src="leanttro.png" alt="Bot Avatar" style="width: 100%; height: 100%; border-radius: 50%;">';
+
         messageDiv.innerHTML = `
             <div class="message-avatar">
-                <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
+                ${avatarHtml}
             </div>
             <div class="message-content">
                 <div class="message-bubble">${formattedText}</div>
@@ -2003,12 +2016,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // [MUDANÇA FOTO] Função showTypingIndicator agora usa <img>
     function showTypingIndicator() {
         const typingDiv = document.createElement('div');
         typingDiv.className = 'message bot typing-message';
         typingDiv.id = 'typing-indicator';
         typingDiv.innerHTML = `
-            <div class="message-avatar"><i class="fas fa-robot"></i></div>
+            <div class="message-avatar">
+                <img src="leanttro.png" alt="Bot Avatar" style="width: 100%; height: 100%; border-radius: 50%;">
+            </div>
             <div class="message-content">
                 <div class="message-bubble">
                     <div class="typing-indicator"><span></span><span></span><span></span></div>
@@ -2077,7 +2093,7 @@ document.addEventListener('DOMContentLoaded', function() {
             else if (userInput.includes('não') || userInput.includes('nao') || userInput.includes('n')) {
                 // Usuário negou
                 chatState = "QA"; // Reseta o chatbot
-                botReply = "Entendido. Sem problemas. Eu não posso enviar o relatório sem salvar seus dados.\n\nMas se preferir, você pode falar diretamente com o Leandro sobre essa análise pelo WhatsApp.\n[WHATSAPP_BUTTON]";
+                botReply = "Entendido. Sem problemas. Eu não posso enviar o relatório sem salvar seus dados.\n\NMas se preferir, você pode falar diretamente com o Leandro sobre essa análise pelo WhatsApp.\n[WHATSAPP_BUTTON]";
                 shouldResetPlaceholder = true; // Flag para resetar o placeholder
             } 
             else {
