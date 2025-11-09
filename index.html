@@ -1663,7 +1663,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Torna o JS robusto, aceitando o formato novo (camelCase) OU o antigo (snake_case)
             
             // Verifica se a propriedade 'imageSrc' (nova) existe, senão, usa 'image_src' (antiga)
-            const imgSrc = project.imageSrc || project.image_src || project.imagem_url;
+            const img_src = project.imagem_url;
             const title = project.title || project.titulo;
             const shortTitle = project.shortTitle || project.short_title;
             
@@ -1673,7 +1673,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const displayTitle = shortTitle || "Projeto"; 
             
             // Correção V2: Usa o caminho relativo exato que está no banco de dados
-            const absoluteImgSrc = imgSrc;
+            const absoluteimg_src = img_src;
             
             
             // ================================================================
@@ -1687,7 +1687,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // O card agora é clicável e leva para a nova página, EXCETO se clicar nos botões.
             // O título também é um link para a mesma página.
             card.innerHTML = `
-                <img src="${imgSrc}" alt="Imagem do projeto ${title}">
+                <img src="${img_src}" alt="Imagem do projeto ${title}">
                 
                 <a href="${projectUrl}" style="text-decoration: none; z-index: 3; position: relative;">
                     <h3 ${titleStyle}>${title || 'Projeto'}</h3>
