@@ -169,8 +169,6 @@
         }
         .post-conteudo p { margin-bottom: 1.5em; }
         
-        /* Removidos os estilos de <ul> e <li> pois não serão gerados */
-
         .post-conteudo h2 { 
             font-size: 2em; 
             margin-top: 45px; 
@@ -181,7 +179,7 @@
         .post-conteudo h3 { font-size: 1.5em; margin-top: 35px; margin-bottom: 10px; }
         .post-conteudo a { color: var(--accent); font-weight: 600; text-decoration: underline; }
         .post-conteudo a:hover { color: var(--accent-hover); }
-        .post-conteudo strong { color: var(--text-primary); } /* Isso ainda vai funcionar para tags <strong> */
+        .post-conteudo strong { color: var(--text-primary); } 
         
         /* DISCLAIMER (NOVO PARA PROJETOS) */
         .project-disclaimer {
@@ -264,7 +262,7 @@
             {% endif %}
 
             <section class="post-conteudo">
-                {{ projeto.long_description | replace('\n', '<br>') | safe }}
+                {{ projeto.long_description | replace('**', '<strong>') | replace('</strong>', '</strong>') | replace('\n', '<br>') | safe }}
             </section>
 
             {% if projeto.disclaimer %}

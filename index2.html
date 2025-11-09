@@ -634,7 +634,28 @@
             flex: 0 0 320px;
             min-width: 320px;
         }
-        .service-card .icon { color: var(--accent); margin-bottom: 1.5rem; display: inline-block; background: var(--background); padding: 1rem; border-radius: 50%; }
+        .service-card .icon { 
+            color: var(--accent); 
+            margin-bottom: 1.5rem; 
+            display: inline-block; 
+            background: var(--background); 
+            padding: 1rem; 
+            border-radius: 50%; 
+            /* ADICIONADO: Flex para centralizar a imagem */
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            width: 56px; /* Tamanho fixo do ícone (32px + 2*12px padding, aprox 56px) */
+            height: 56px;
+        }
+        /* NOVO: Estilo para as imagens dentro do .icon */
+        .service-card .icon img {
+            width: 100%; /* Ajusta a largura para o container do ícone */
+            height: 100%; /* Ajusta a altura para o container do ícone */
+            object-fit: contain; /* Garante que a imagem caiba sem cortar */
+            max-width: 32px; /* Limita o tamanho interno da imagem */
+            max-height: 32px; /* Limita o tamanho interno da imagem */
+        }
         .service-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
         .service-card p { color: var(--text-secondary); }
 
@@ -1351,28 +1372,28 @@
                     <div class="service-grid" id="service-grid">
                         <div class="service-card">
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M244.24,68.24l-60-60A8,8,0,0,0,176,12H96a16,16,0,0,0-16,16V224a16,16,0,0,0,16,16h88a16,16,0,0,0,16-16V76a8,8,0,0,0-2.34-5.66ZM184,31.06,224.94,72H184ZM200,232H96a8,8,0,0,1-8-8V28a8,8,0,0,1,8-8h72v56a8,8,0,0,0,8,8h56v32H72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V144H200a8,8,0,0,0,0-16H80V96H200Z"></path></svg>
+                                <img src="cart1.png" alt="Ícone Vitrine Virtual">
                             </div>
                             <h3>Vitrine Virtual</h3>
                             <p>Crio sites institucionais e catálogos de produtos dinâmicos que seus clientes podem navegar e sua equipe pode usar como uma poderosa ferramenta de vendas.</p>
                         </div>
                         <div class="service-card">
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V88H40V56ZM40,104H216v96H40ZM128,128v48a8,8,0,0,1-16,0V128a8,8,0,0,1,16,0Zm48,24v24a8,8,0,0,1-16,0V152a8,8,0,0,1,16,0ZM80,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Z"></path></svg>
+                                <img src="cart2.png" alt="Ícone Business Intelligence">
                             </div>
                             <h3>Business Intelligence </h3>
                             <p>Eu construo os pipelines (ETL) que buscam seus dados (Google, Meta, APIs) e os transformo em Dashboards (Power BI) que mostram seu ROI real e onde otimizar.</p>
                         </div>
                         <div class="service-card">
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M229.66,114.34l-48-48a8,8,0,0,0-11.32,11.32L192.69,100H40a8,8,0,0,0,0,16H192.69l-22.35,22.34a8,8,0,0,0,11.32,11.32l48-48a8,8,0,0,0,0-11.32Z" transform="rotate(45 140 128)"></path></svg>
+                                <img src="cart3.png" alt="Ícone Chatbot de Vendas">
                             </div>
                             <h3>Chatbot de Vendas</h3>
                             <p>Transformo seu site em um vendedor 24/7. Meu sistema de IA qualifica leads (em 6 etapas), coleta orçamentos e notifica sua equipe, entregando apenas clientes prontos para comprar.</p>
                         </div>
                         <div class="service-card">
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M224,128a96,96,0,0,1-96,96H104a96,96,0,0,1,0-192h24A96,96,0,0,1,224,128Zm-8,0a88,88,0,0,0-88-88H104a88,88,0,0,0,0,176h24A88,88,0,0,0,216,128Zm-87.6-32.91a8,8,0,1,0-10.8,11.82A32,32,0,0,1,128,128a8,8,0,0,0,16,0,48,48,0,0,0-35.13-46.74,8,8,0,0,0-1.27-.17ZM128,144a32,32,0,0,1-20.4,29.09,8,8,0,1,0,10.8,11.82A48,48,0,0,0,160,128a8,8,0,0,0-16,0A32,32,0,0,1,128,144Z"></path></svg>
+                                <img src="cart4.png" alt="Ícone Atendente IA">
                             </div>
                             <h3>Atendente IA</h3>
                             <p>Um assistente de IA que se conecta ao seu WooCommerce/Shopify ou Banco de Dados. Ele rastreia pedidos, consulta orçamentos passados, responde dúvidas sobre produtos em tempo real e reduz drasticamente seu custo de suporte.</p>
@@ -2208,7 +2229,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 const maxScroll = serviceCarousel.scrollWidth - serviceCarousel.clientWidth;
                 serviceScrollLeftBtn.disabled = serviceCarousel.scrollLeft <= 1;
-                serviceScrollRightBtn.disabled = serviceCarousel.scrollLeft >= maxScroll - 1;
+                scrollRightBtn.disabled = serviceCarousel.scrollLeft >= maxScroll - 1;
             }, 100);
         };
         const getServiceScrollAmount = () => {
