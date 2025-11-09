@@ -169,7 +169,7 @@
             font-weight: 800; 
             text-shadow: 0 2px 10px rgba(0,0,0,0.5); 
         }
-        /* Cor de destaque para o texto "Eu automatizo!" */
+        /* Cor de destaque para o texto "automatizo!" */
         #inicio h1 .highlight {
             color: var(--accent); /* Cor Laranja Padrão */
         }
@@ -900,7 +900,7 @@
             border-radius: 8px;
             font-size: 0.85rem;
             line-height: 1.5;
-            color: var(--chat-text-primary); /* Branco */
+            color: var(--text-primary); /* Branco */
         }
         .preview-message-bubble #preview-message-text {
             transition: opacity 0.3s ease-in-out;
@@ -1389,7 +1389,7 @@
             </div>
             <div class="hero-overlay"></div>
             <div class="container hero-content">
-                <h1>Seu site não vende sozinho? <span class="highlight">Eu automatizo!</span></h1>
+                <h1>Seu site não vende sozinho? Eu <span class="mobile-only"><br></span><span class="highlight">automatizo!</span></h1>
                 <p>Eu transformo "sites-panfleto" em Vendedores IA. Eles qualificam leads, coletam briefings de orçamento e até rastreiam pedidos de e-commerce 24 horas por dia, 7 dias por semana.</p>
                 <div class="hero-buttons">
                     <a href="#case-study-feiras" class="btn btn-primary">Ver Case de IA</a>
@@ -1400,7 +1400,7 @@
 
         <section id="servicos">
              <div class="container fade-in">
-                <h2>Meus Produtos de IA e Desenvolvimento Web</h2>
+                <h2>Meus Produtos de IA e Dados</h2>
                 <div class="service-carousel-wrapper">
                     <div class="service-grid" id="service-grid">
                         <div class="service-card">
@@ -1840,7 +1840,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // =============================================================
     // --- LÓGICA DO CHATBOT (V3) ---
-    // --- (NÃO FOI ALTERADA) ---
     // =============================================================
 
     // IDs dos elementos do Chatbot
@@ -2094,18 +2093,28 @@ document.addEventListener('DOMContentLoaded', function() {
             chatState = "AGUARDANDO_DETALHES";
             botReply = "Obrigado! 🙏<br><br>Para fechar: qual é o principal objetivo do seu site ou a ideia do seu projeto? (Ex: 'Quero vender mais', 'Preciso de automação', 'Quero um site novo')";
             chatbotInput.placeholder = "Descreva sua ideia ou objetivo...";
-        } else if (chatState === "AGUENTANDO_DETALHES") {
+        } else if (chatState === "AGUARDANDO_DETALHES") {
             conversationHistory.push({ role: 'orcamento_detalhes', text: messageText });
             chatState = "AGUARDANDO_ORCAMENTO";
             botReply = "Perfeito! E qual é o orçamento (budget) que você tem em mente para este projeto? (Ex: 'Até R$1k', 'R$2k-5k', 'Mais de R$5k', 'Não sei ainda')";
             chatbotInput.placeholder = "Digite sua faixa de orçamento...";
-        } else if (chatState === "AGUARDANDO_ORCAMENTO") {
+        } 
+        
+        // --- [BLOCO ADICIONADO/REVISADO CONFORME SEU PEDIDO] ---
+        else if (chatState === "AGUARDANDO_ORCAMENTO") {
             conversationHistory.push({ role: 'orcamento_budget', text: messageText });
+            // Esta é a mensagem que DEVE ser adicionada, mas o fluxo de estados
+            // pode estar impedindo ela de ser exibida antes do reset.
             botReply = "🚀 **Excelente!**<br><br>Recebi todas as informações. O Leandro vai analisar seu pedido e entrará em contato com você em breve pelo contato que você forneceu.<br><br>Obrigado pela confiança!";
+            
+            // A função salvarOrcamento() chama sua API /api/orcar
             await salvarOrcamento(); 
-            chatState = "QA"; 
+            
+            chatState = "QA"; // Reseta o estado
             shouldResetPlaceholder = true; 
         }
+        // --- [FIM DO BLOCO ADICIONADO/REVISADO] ---
+
         if (botReply) {
             addMessage(botReply, false);
         }
@@ -2142,10 +2151,12 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error("ERRO CRÍTICO ao salvar orçamento:", error);
         } finally {
-            conversationHistory = [];
-            currentLeadId = null; 
-            currentUrlAnalisada = null;
-            currentSeoScore = null;
+            // NOTE: Não resetamos o histórico AQUI. O reset deve acontecer no handleSendMessage após o sucesso da API.
+            // Para sua versão atual:
+            // conversationHistory = [];
+            // currentLeadId = null; 
+            // currentUrlAnalisada = null;
+            // currentSeoScore = null;
         }
     }
 
@@ -2159,7 +2170,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- FIM DA LÓGICA DO CHATBOT ---
 
 
-    // --- LÓGICA DO FORMULÁRIO DE SEO (Inalterada) ---
+    // --- LÓGICA DO FORMULÁRIO DE SEO (colado na linha 2161) ---
     if (seoFormButton && seoInput && seoNote) {
         seoFormButton.addEventListener('click', async () => {
             let url = seoInput.value.trim();
