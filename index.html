@@ -1672,10 +1672,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Adiciona um fallback para o caso de shortTitle ser nulo ou undefined
             const displayTitle = shortTitle || "Projeto"; 
             
-            // ** CORREÇÃO: Garante que o src da imagem NÃO adicione uma / se for um link http **
-            const absoluteImgSrc = (imgSrc && (imgSrc.startsWith('http://') || imgSrc.startsWith('https://')))
-                ? imgSrc // Se já for um link completo, usa ele
-                : (imgSrc && !imgSrc.startsWith('/') ? '/' + imgSrc : imgSrc); // Senão, trata como caminho local
+            // Correção V2: Usa o caminho relativo exato que está no banco de dados
+            const absoluteImgSrc = imgSrc;
             
             
             // ================================================================
