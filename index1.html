@@ -1488,7 +1488,6 @@
                         <p>O "Feiras de Rua" é um produto digital completo que lista feiras em São Paulo. Mais do que um site, é um ecossistema de dados projetado para provar competências de ponta a ponta em Engenharia de IA.</p>
                         <p>A aplicação inclui um chatbot de IA que utiliza <strong>RAG (Retrieval-Augmented Generation)</strong>: ele busca dados ao vivo do banco PostgreSQL e os injeta na API do Gemini para fornecer respostas precisas e atualizadas sobre as feiras cadastrada.</p>
                         
-                        <a href="https://www.feirasderua.com.br" class="btn btn-accent" target="_blank" style="margin-top: 1.5rem;">Ver Ao Vivo</a>
                         </div>
                 </div>
             </div>
@@ -1519,6 +1518,10 @@
                     <span>Hospedagem (Render/Cloud)</span>
                 </li>
             </ul>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="https://www.feirasderua.com.br" class="btn btn-accent" target="_blank">Ver Ao Vivo</a>
+            </div>
         </section>
 
         <section id="blog" class="products" style="padding-top: 3rem; background-color: var(--background);">
@@ -1657,7 +1660,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const card = document.createElement('div');
             card.className = 'project-preview-card';
             card.dataset.id = project.id;
-            const projectUrl = /projeto/${project.slug}; // NOVA URL PARA PÁGINA DE DETALHES
+            const projectUrl = /projeto/${project.slug};`; // NOVA URL PARA PÁGINA DE DETALHES
             
             // ================================================================
             // --- [CORREÇÃO APLICADA AQUI] ---
