@@ -1545,8 +1545,6 @@
         
         </main>
     
-    <!-- MODAL HTML REMOVIDO -->
-
     <div class="floating-chatbot">
         <div id="chatbotButtonContainer">
              <div class="chatbot-minimized-icon" id="minimizedIcon" aria-label="Abrir Chatbot">
@@ -1691,11 +1689,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // O card agora é clicável e leva para a nova página, EXCETO se clicar nos botões.
             // O título também é um link para a mesma página.
             card.innerHTML = `
-                <img src="${absoluteImgSrc}" alt="Imagem do projeto ${title}">
+                <img src="${imgSrc}" alt="Imagem do projeto ${title}">
                 
-                <!-- Título como link para a página de detalhes -->
                 <a href="${projectUrl}" style="text-decoration: none; z-index: 3; position: relative;">
-                    <h3 ${titleStyle}>${displayTitle}</h3>
+                    <h3 ${titleStyle}>${title || 'Projeto'}</h3>
                 </a>
                 
                 <div class="project-card-buttons">
