@@ -1656,7 +1656,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const card = document.createElement('div');
             card.className = 'project-preview-card';
             card.dataset.id = project.id;
-            const projectUrl = /projeto/${project.slug}; // NOVA URL PARA PÁGINA DE DETALHES
+            const projectUrl = `/projeto/${project.slug}`; // NOVA URL PARA PÁGINA DE DETALHES
             
             // ================================================================
             // --- [CORREÇÃO APLICADA AQUI] ---
