@@ -1668,24 +1668,27 @@ document.addEventListener('DOMContentLoaded', function() {
             card.dataset.id = project.id;
             
             // ================================================================
-            // --- [INÍCIO DA CORREÇÃO 2-EM-1] ---
-            // 1. Aceita 'project.imageSrc' (novo) OU 'project.image_src' (antigo)
-            // 2. Aceita 'project.shortTitle' (novo) OU 'project.short_title' (antigo)
+            // --- [CORREÇÃO APLICADA AQUI] ---
+            // Torna o JS robusto, aceitando o formato novo (camelCase) OU o antigo (snake_case)
             
+            // Verifica se a propriedade 'imageSrc' (nova) existe, senão, usa 'image_src' (antiga)
             const imgSrc = project.imageSrc || project.image_src; 
             const title = project.title || project.titulo;
             const shortTitle = project.shortTitle || project.short_title;
             
             const titleStyle = shortTitle === "Análise Crédito-Risco" ? 'style="left: -7px;"' : '';
             
-            // 3. Adiciona a '/' na frente do imgSrc para criar o caminho absoluto
-            const finalImgSrc = imgSrc ? `/${imgSrc}` : ''; // <--- CORREÇÃO DO CAMINHO
+            // Adiciona um fallback para o caso de shortTitle ser nulo ou undefined
+            const displayTitle = shortTitle || "Projeto"; 
+            
+            // ** CORREÇÃO 1: Garante que o src da imagem comece com "/" **
+            const absoluteImgSrc = imgSrc && !imgSrc.startsWith('/') ? '/' + imgSrc : imgSrc; 
             
             card.innerHTML = `
-                <img src="${finalImgSrc}" alt="Imagem do projeto ${title}">
-                <h3 ${titleStyle}>${shortTitle}</h3>
+                <img src="${absoluteImgSrc}" alt="Imagem do projeto ${title}">
+                <h3 ${titleStyle}>${displayTitle}</h3>
             `;
-            // --- [FIM DA CORREÇÃO] ---
+            // --- [FIM DA CORREÇÃO APLICADA] ---
             // ================================================================
 
             projectCarousel.appendChild(card);
@@ -1715,22 +1718,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (project) {
                     
                     // ================================================================
-                    // --- [INÍCIO DA CORREÇÃO 2-EM-1 NO MODAL] ---
+                    // --- [CORREÇÃO APLICADA AQUI] ---
+                    // Adiciona a mesma lógica defensiva para todas as propriedades
                     
-                    // 1. lógica "OU" para os nomes das variáveis
-                    const imgSrc = project.imageSrc || project.image_src;
-                    const title = project.title || project.titulo;
-                    const longDescription = project.longDescription || project.long_description;
-                    const caseStudyLink = project.caseStudyLink || project.case_study_link;
-                    const liveLinkUrl = project.liveLink || project.live_link;
-                    const liveLinkText = project.liveLinkText || project.live_link_text;
-                    const githubLinkUrl = project.githubLink || project.github_link;
-
-                    // 2. Adiciona a '/' no caminho da imagem do modal
-                    document.getElementById('modal-image').src = imgSrc ? `/${imgSrc}` : ''; // <--- CORREÇÃO DO CAMINHO
-                    document.getElementById('modal-image').alt = `Imagem do projeto ${title}`;
-                    document.getElementById('modal-title').textContent = title;
-                    document.getElementById('modal-description').textContent = longDescription;
+                    const modalImgSrc = project.imageSrc || project.image_src;
+                    // ** CORREÇÃO 2: Garante que o src da imagem do modal comece com "/" **
+                    const absoluteModalImgSrc = modalImgSrc && !modalImgSrc.startsWith('/') ? '/' + modalImgSrc : modalImgSrc;
+                    
+                    document.getElementById('modal-image').src = absoluteModalImgSrc;
+                    document.getElementById('modal-image').alt = `Imagem do projeto ${project.title || project.titulo}`;
+                    document.getElementById('modal-title').textContent = project.title || project.titulo;
+                    document.getElementById('modal-description').textContent = project.longDescription || project.long_description;
                     
                     const skillsContainer = document.getElementById('modal-skills');
                     skillsContainer.innerHTML = '';
@@ -1745,6 +1743,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const linksContainer = document.getElementById('modal-links');
                     linksContainer.innerHTML = ''; 
                     
+                    const caseStudyLink = project.caseStudyLink || project.case_study_link;
                     if (caseStudyLink) {
                         const caseLink = document.createElement('a');
                         caseLink.href = caseStudyLink;
@@ -1756,24 +1755,25 @@ document.addEventListener('DOMContentLoaded', function() {
                         linksContainer.appendChild(caseLink);
                     }
                     
+                    const liveLinkUrl = project.liveLink || project.live_link;
                     if (liveLinkUrl) {
                         const liveLink = document.createElement('a');
                         liveLink.href = liveLinkUrl;
                         liveLink.className = 'btn-live';
                         liveLink.target = '_blank';
-                        liveLink.textContent = liveLinkText; // Usa a variável corrigida
+                        liveLink.textContent = project.liveLinkText || project.live_link_text; // Também corrigido
                         linksContainer.appendChild(liveLink);
                     }
                     
-                    if (githubLinkUrl) {
-                        const githubLink = document.createElement('a');
-                        githubLink.href = githubLinkUrl;
-                        githubLink.className = 'btn btn-outline';
-                        githubLink.target = '_blank';
-                        githubLink.textContent = 'Ver no GitHub';
-                        linksContainer.appendChild(githubLink);
-                    }
-                    // --- [FIM DA CORREÇÃO DO MODAL] ---
+                    const githubLinkUrl = project.githubLink || project.github_link;
+                    const githubLink = document.createElement('a');
+                    githubLink.href = githubLinkUrl;
+                    githubLink.className = 'btn btn-outline';
+                    githubLink.target = '_blank';
+                    githubLink.textContent = 'Ver no GitHub';
+                    linksContainer.appendChild(githubLink);
+                    
+                    // --- [FIM DA CORREÇÃO APLICADA] ---
                     // ================================================================
                     
                     if (project.disclaimer) {
@@ -2096,7 +2096,7 @@ document.addEventListener('DOMContentLoaded', function() {
             chatState = "AGUARDANDO_DETALHES";
             botReply = "Obrigado! 🙏<br><br>Para fechar: qual é o principal objetivo do seu site ou a ideia do seu projeto? (Ex: 'Quero vender mais', 'Preciso de automação', 'Quero um site novo')";
             chatbotInput.placeholder = "Descreva sua ideia ou objetivo...";
-        } else if (chatState === "AGUARDANDO_DETALHES") {
+        } else if (chatState === "AGUENTANDO_DETALHES") {
             conversationHistory.push({ role: 'orcamento_detalhes', text: messageText });
             chatState = "AGUARDANDO_ORCAMENTO";
             botReply = "Perfeito! E qual é o orçamento (budget) que você tem em mente para este projeto? (Ex: 'Até R$1k', 'R$2k-5k', 'Mais de R$5k', 'Não sei ainda')";
@@ -2304,7 +2304,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 const maxScroll = blogCarousel.scrollWidth - blogCarousel.clientWidth;
                 blogScrollLeftBtn.disabled = blogCarousel.scrollLeft <= 1;
-                blogScrollRightBtn.disabled = blogCarousel.scrollLeft >= maxScroll - 1;
+                blogScrollRightBtn.disabled = carousel.scrollLeft >= maxScroll - 1;
             }, 100);
         };
         const getBlogScrollAmount = () => {
