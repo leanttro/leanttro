@@ -1,0 +1,14 @@
+# Ignorar o ambiente virtual
+.venv
+venv/
+
+# Ignorar caches do Python
+__pycache__/
+*.pyc
+
+# Ignorar arquivos do Git
+.git
+.gitignore
+
+# Ignorar o arquivo de variáveis de ambiente
+.env

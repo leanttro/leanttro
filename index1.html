@@ -42,13 +42,7 @@
 
         /* ... (Reset e Base CSS - Inalterado) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        html { 
-            scroll-behavior: smooth;
-            /* NOVO: Garante que o scroll pare ANTES do cabeçalho fixo cobrir o título da seção */
-            scroll-padding-top: 80px; 
-        }
-        
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--background);
@@ -81,13 +75,6 @@
             text-align: center;
             margin-bottom: 3rem;
         }
-        
-        /* NOVO: Ajuste de espaçamento para o título da seção Serviços */
-        #servicos h2 {
-            margin-top: 2.5rem; /* Adicionado 1rem de margin-top */
-            margin-bottom: 3rem; /* Mantida a margem inferior original */
-        }
-
         /* Ajuste específico para o novo título de FeirasDeRua */
         .case-study-main-title {
             /* COR ALTERADA PARA #4caf50 */
@@ -1308,10 +1295,9 @@
                 <ul id="nav-menu">
                     <li><a href="#inicio">Início</a></li>
                     <li><a href="#case-study-feiras">Case Feiras</a></li>
-                    <li><a href="#skills">Projetos</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#servicos">Serviços</a></li>
-                </ul>
+                    <li><a href="#projetos">Projetos</a></li>
+                    <li><a href="#blog">Blog</a></li> <li><a href="#servicos">Serviços</a></li>
+                    </ul>
             </nav>
             <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
                 <span class="bar"></span>
@@ -1338,54 +1324,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- SEÇÃO MOVIDA: MEUS PRODUTOS DE IA E DADOS -->
-        <section id="servicos">
-             <div class="container fade-in">
-                <!-- O espaçamento vertical deste H2 foi ajustado no CSS (seletor #servicos h2) -->
-                <h2>Meus Produtos de IA e Dados</h2>
-                <div class="service-carousel-wrapper">
-                    <div class="service-grid" id="service-grid">
-                        <div class="service-card">
-                            <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M244.24,68.24l-60-60A8,8,0,0,0,176,12H96a16,16,0,0,0-16,16V224a16,16,0,0,0,16,16h88a16,16,0,0,0,16-16V76a8,8,0,0,0-2.34-5.66ZM184,31.06,224.94,72H184ZM200,232H96a8,8,0,0,1-8-8V28a8,8,0,0,1,8-8h72v56a8,8,0,0,0,8,8h56v32H72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V144H200a8,8,0,0,0,0-16H80V96H200Z"></path></svg>
-                            </div>
-                            <h3>Portal-Catálogo B2B</h3>
-                            <p>Crio portais B2B e catálogos de produtos dinâmicos (Full Stack) que seus clientes podem navegar e sua equipe pode usar como uma poderosa ferramenta de vendas.</p>
-                        </div>
-                        <div class="service-card">
-                            <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V88H40V56ZM40,104H216v96H40ZM128,128v48a8,8,0,0,1-16,0V128a8,8,0,0,1,16,0Zm48,24v24a8,8,0,0,1-16,0V152a8,8,0,0,1,16,0ZM80,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Z"></path></svg>
-                            </div>
-                            <h3>Pipelines de Dados e BI</h3>
-                            <p>Eu construo os pipelines (ETL) que buscam seus dados (Google, Meta, APIs) e os transformo em Dashboards (Power BI) que mostram seu ROI real e onde otimizar.</p>
-                        </div>
-                        <div class="service-card">
-                            <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M229.66,114.34l-48-48a8,8,0,0,0-11.32,11.32L192.69,100H40a8,8,0,0,0,0,16H192.69l-22.35,22.34a8,8,0,0,0,11.32,11.32l48-48a8,8,0,0,0,0-11.32Z" transform="rotate(45 140 128)"></path></svg>
-                            </div>
-                            <h3>Funil de Vendas com IA</h3>
-                            <p>Transformo seu site em um vendedor 24/7. Meu sistema de IA qualifica leads (em 6 etapas), coleta orçamentos e notifica sua equipe, entregando apenas clientes prontos para comprar.</p>
-                        </div>
-                        <div class="service-card">
-                            <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M224,128a96,96,0,0,1-96,96H104a96,96,0,0,1,0-192h24A96,96,0,0,1,224,128Zm-8,0a88,88,0,0,0-88-88H104a88,88,0,0,0,0,176h24A88,88,0,0,0,216,128Zm-87.6-32.91a8,8,0,1,0-10.8,11.82A32,32,0,0,1,128,128a8,8,0,0,0,16,0,48,48,0,0,0-35.13-46.74,8,8,0,0,0-1.27-.17ZM128,144a32,32,0,0,1-20.4,29.09,8,8,0,1,0,10.8,11.82A48,48,0,0,0,160,128a8,8,0,0,0-16,0A32,32,0,0,1,128,144Z"></path></svg>
-                            </div>
-                            <h3>Agente de IA (E-commerce)</h3>
-                            <p>Um assistente de IA que se conecta ao seu WooCommerce/Shopify. Ele rastreia pedidos, responde dúvidas sobre produtos em tempo real e reduz drasticamente seu custo de suporte.</p>
-                        </div>
-                    </div>
-
-                    <button class="carousel-nav-btn" id="service-scroll-left-btn" aria-label="Rolar para esquerda">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M165.66,202.34a8,8,0,0,1-11.32,0l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128l74.35,74.34A8,8,0,0,1,165.66,202.34Z"></path></svg>
-                    </button>
-                    <button class="carousel-nav-btn" id="service-scroll-right-btn" aria-label="Rolar para direita">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </section>
-        <!-- FIM DA SEÇÃO MOVIDA -->
 
         <section id="direcionamento">
             <div class="direction-grid">
@@ -1535,6 +1473,25 @@
                     </div>
                 </div>
                 <div class="project-carousel" id="blog-carousel" style="min-height: 350px; justify-content: center;">
+                    </div>
+            </div>
+        </section>
+        <section id="servicos">
+             <div class="container fade-in">
+                <h2>Vamos Conversar ?</h2>
+                <div class="service-carousel-wrapper">
+                    <div class="service-grid" id="service-grid"> <div class="service-card"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M244.24,68.24l-60-60A8,8,0,0,0,176,12H96a16,16,0,0,0-16,16V224a16,16,0,0,0,16,16h88a16,16,0,0,0,16-16V76a8,8,0,0,0-2.34-5.66ZM184,31.06,224.94,72H184ZM200,232H96a8,8,0,0,1-8-8V28a8,8,0,0,1,8-8h72v56a8,8,0,0,0,8,8h56v32H72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V144H200a8,8,0,0,0,0-16H80V96H200Z"></path></svg></div><h3>Desenvolvimento Web</h3><p>Criação de sites e landing pages profissionais, rápidos e responsivos para alavancar sua presença online e atrair mais clientes.</p></div>
+                        <div class="service-card"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V88H40V56ZM40,104H216v96H40ZM128,128v48a8,8,0,0,1-16,0V128a8,8,0,0,1,16,0Zm48,24v24a8,8,0,0,1-16,0V152a8,8,0,0,1,16,0ZM80,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Z"></path></svg></div><h3>Análise de Dados e BI</h3><p>Transformo seus dados brutos em dashboards interativos e relatórios inteligentes (Power BI) para que você tome decisões melhores.</p></div>
+                        <div class="service-card"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M229.66,114.34l-48-48a8,8,0,0,0-11.32,11.32L192.69,100H40a8,8,0,0,0,0,16H192.69l-22.35,22.34a8,8,0,0,0,11.32,11.32l48-48a8,8,0,0,0,0-11.32Z" transform="rotate(45 140 128)"></path></svg></div><h3>Automação de Processos</h3><p>Desenvolvo soluções para automatizar tarefas manuais e repetitivas, economizando seu tempo e aumentando a eficiência do seu negócio.</p></div>
+                        <div class="service-card"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M224,128a96,96,0,0,1-96,96H104a96,96,0,0,1,0-192h24A96,96,0,0,1,224,128Zm-8,0a88,88,0,0,0-88-88H104a88,88,0,0,0,0,176h24A88,88,0,0,0,216,128Zm-87.6-32.91a8,8,0,1,0-10.8,11.82A32,32,0,0,1,128,128a8,8,0,0,0,16,0,48,48,0,0,0-35.13-46.74,8,8,0,0,0-1.27-.17ZM128,144a32,32,0,0,1-20.4,29.09,8,8,0,1,0,10.8,11.82A48,48,0,0,0,160,128a8,8,0,0,0-16,0A32,32,0,0,1,128,144Z"></path></svg></div><h3>Machine Learning</h3><p>Aplico modelos de Machine Learning para criar sistemas de recomendação, otimizar campanhas de marketing, analisar risco em setores financeiros e extrair insights preditivos dos seus dados.</p></div>
+                    </div>
+
+                    <button class="carousel-nav-btn" id="service-scroll-left-btn" aria-label="Rolar para esquerda">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M165.66,202.34a8,8,0,0,1-11.32,0l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128l74.35,74.34A8,8,0,0,1,165.66,202.34Z"></path></svg>
+                    </button>
+                    <button class="carousel-nav-btn" id="service-scroll-right-btn" aria-label="Rolar para direita">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path></svg>
+                    </button>
                     </div>
             </div>
         </section>
@@ -2538,7 +2495,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Erro ao buscar posts:', error);
                 if (blogCarousel) {
-                    blogCarousel.innerHTML = `<p style=\"color: var(--error-color); width: 100%; text-align: center;\">Erro ao carregar posts: ${error.message}.</p>`;
+                    blogCarousel.innerHTML = `<p style="color: var(--error-color); width: 100%; text-align: center;">Erro ao carregar posts: ${error.message}.</p>`;
                 }
             });
     }
