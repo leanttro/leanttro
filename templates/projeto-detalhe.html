@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5SDJYV66KE"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -11,7 +10,6 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Título adaptado para Projeto -->
     <title>{{ projeto.titulo }} | Projetos Leanttro</title>
     <meta name="description" content="{{ projeto.short_title or projeto.long_description | truncate(155) }}">
     
@@ -147,16 +145,8 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(249, 115, 22, 0.3);
         }
-        .btn-github {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 2px solid var(--border);
-        }
-        .btn-github:hover {
-            border-color: var(--text-primary);
-            background-color: var(--background);
-            transform: translateY(-2px);
-        }
+        /* Classe .btn-github removida pois o botão foi excluído */
+        
 
         /* IMAGEM (REAPROVEITADA) */
         .post-imagem { 
@@ -212,7 +202,13 @@
             .post-imagem { height: auto; min-height: 200px; margin: 25px 0; }
             .post-conteudo { font-size: 1em; }
             .project-actions { flex-direction: column; gap: 10px; }
-            .btn-project { width: 100%; }
+            
+            /* --- ALTERAÇÃO AQUI --- */
+            .btn-project { 
+                width: 100%; 
+                box-sizing: border-box; /* ADICIONADO: Corrige o overflow do botão */
+            }
+            /* Regra .btn-github removida pois o botão foi excluído */
         }
     </style>
 </head>
@@ -221,10 +217,8 @@
     <div style="height: 60px;"></div> 
 
     <main>
-        <!-- Usando a mesma classe 'post-container' para manter o design exato -->
         <article class="post-container">
             <div class="breadcrumb">
-                <!-- Link volta para a seção de projetos na home -->
                 <a href="/#projetos">❮ Voltar para Projetos</a>
             </div>
             
@@ -235,7 +229,6 @@
                     <p class="subtitulo">{{ projeto.short_title }}</p>
                 {% endif %}
                 
-                <!-- Área de Meta adaptada para Skills -->
                 <div class="meta">
                     <strong>Tech Stack:</strong>
                     {% if projeto.skills %}
@@ -247,7 +240,6 @@
                     {% endif %}
                 </div>
 
-                <!-- Novos Botões de Ação (Destaque do Projeto) -->
                 <div class="project-actions">
                     {% if projeto.live_link %}
                     <a href="{{ projeto.live_link }}" target="_blank" class="btn-project btn-live">
@@ -255,16 +247,10 @@
                     </a>
                     {% endif %}
                     
-                    {% if projeto.github_link %}
-                    <a href="{{ projeto.github_link }}" target="_blank" class="btn-project btn-github">
-                        <i class="fab fa-github"></i> Ver Código / Repositório
-                    </a>
-                    {% endif %}
-                </div>
+                    </div>
             </header>
 
             {% if projeto.image_src %}
-                <!-- Lógica para usar Cloudinary ou caminho local, igual ao index.html -->
                 {% set image_url = projeto.image_src %}
                 {% if not image_url.startswith('http') %}
                     {% set image_url = '/' + image_url if not image_url.startswith('/') else image_url %}
@@ -277,8 +263,6 @@
             {% endif %}
 
             <section class="post-conteudo">
-                <!-- Usa 'nl2br' caso a descrição venha sem HTML do banco, 
-                     ou 'safe' se você começar a usar HTML nas descrições longas -->
                 {{ projeto.long_description | replace('\n', '<br>') | safe }}
             </section>
 
