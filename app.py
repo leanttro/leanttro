@@ -78,6 +78,7 @@ def setup_database():
     """
     
     # SQL para Tabela 4: leanttro_projetos
+    # --- [ALTERAÇÃO 1 (Setup)] ---
     CREATE_PROJETOS_TABLE_SQL = """
     CREATE TABLE IF NOT EXISTS leanttro_projetos (
         id SERIAL PRIMARY KEY,
@@ -92,9 +93,11 @@ def setup_database():
         disclaimer TEXT,
         image_src TEXT,
         case_study_link TEXT,
-        publicado BOOLEAN DEFAULT true
+        publicado BOOLEAN DEFAULT true,
+        slug TEXT UNIQUE 
     );
     """
+    # --- [FIM DA ALTERAÇÃO 1] ---
     
     conn = None
     try:
@@ -305,6 +308,7 @@ def get_projetos():
         conn = get_db_connection()
         cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         
+        # --- [ALTERAÇÃO 2 (API)] ---
         cur.execute(
             "SELECT "
             "    id, "
@@ -316,12 +320,15 @@ def get_projetos():
             "    live_link AS liveLink, "
             "    live_link_text AS liveLinkText, "
             "    disclaimer, "
-            "    image_src AS imagem_url, " # --- ALTERAÇÃO AQUI --- (de imageSrc para imagem_url)
-            "    case_study_link AS caseStudyLink "
+            "    image_src AS imagem_url, "
+            "    case_study_link AS caseStudyLink, "
+            "    slug "
             "FROM leanttro_projetos "
             "WHERE publicado = true "
             "ORDER BY ordem ASC;"
         )
+        # --- [FIM DA ALTERAÇÃO 2] ---
+        
         projetos_raw = cur.fetchall()
         cur.close()
         
@@ -643,20 +650,20 @@ def get_post_detalhe(slug):
     finally:
         if conn: conn.close()
 
-# --- [NOVO] ROTA PARA DETALHES DO PROJETO ---
-@app.route('/projeto/<int:projeto_id>')
-def get_projeto_detalhe(projeto_id):
+# --- [ALTERAÇÃO 3 (Rota)] ---
+@app.route('/projeto/<slug>')
+def get_projeto_detalhe(slug):
     """
-    Renderiza a página 'projeto-detalhe.html' com dados do banco.
+    Renderiza a página 'projeto-detalhe.html' com dados do banco (usando slug).
     """
     conn = None
     try:
         conn = get_db_connection()
         cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        # Busca o projeto pelo ID, garantindo que esteja publicado
+        # Busca o projeto pelo SLUG, garantindo que esteja publicado
         cur.execute(
-            "SELECT * FROM leanttro_projetos WHERE id = %s AND publicado = true;",
-            (projeto_id,)
+            "SELECT * FROM leanttro_projetos WHERE slug = %s AND publicado = true;",
+            (slug,)
         )
         projeto_raw = cur.fetchone()
         cur.close()
@@ -668,11 +675,11 @@ def get_projeto_detalhe(projeto_id):
             abort(404, description="Projeto não encontrado ou não publicado")
             
     except Exception as e:
-        print(f"ERRO na rota /projeto/{projeto_id}: {e}")
+        print(f"ERRO na rota /projeto/{slug}: {e}")
         return "Erro ao carregar a página do projeto", 500
     finally:
         if conn: conn.close()
-# --- FIM DA NOVA ROTA ---
+# --- [FIM DA ALTERAÇÃO 3] ---
 
 # --- ROTAS ESTÁTICAS (DEVE VIR POR ÚLTIMO) ---
 

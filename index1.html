@@ -1436,7 +1436,24 @@
             <div class="container fade-in">
                 <h2>Habilidades</h2>
                 
+                <div class="skill-slicer-wrapper">
+                    <div class="skill-slicer-container">
+                        <select id="skill-slicer" class="skill-slicer">
+                            <option value="Todas">Todas as Habilidades</option>
+                            <option value="Python">Python</option>
+                            <option value="GCP">GCP</option>
+                            <option value="SQL">SQL</option>
+                            <option value="Machine Learning">Machine Learning</option>
+                            <option value="Power BI">Power BI</option>
+                            <option value="Desenvolvimento Web">Desenvolvimento Web</option>
+                            <option value="Automação">Automação</option>
+                            <option value="Docker">Docker</option>
+                            <option value="API Rest">API Rest</option>
+                            <option value="Databricks">Databricks</option>
+                        </select>
+                    </div>
                 </div>
+            </div>
         </section>
 
         <section id="projetos">
@@ -1471,6 +1488,7 @@
                         <p>O "Feiras de Rua" é um produto digital completo que lista feiras em São Paulo. Mais do que um site, é um ecossistema de dados projetado para provar competências de ponta a ponta em Engenharia de IA.</p>
                         <p>A aplicação inclui um chatbot de IA que utiliza <strong>RAG (Retrieval-Augmented Generation)</strong>: ele busca dados ao vivo do banco PostgreSQL e os injeta na API do Gemini para fornecer respostas precisas e atualizadas sobre as feiras cadastrada.</p>
                         
+                        <a href="https://www.feirasderua.com.br" class="btn btn-accent" target="_blank" style="margin-top: 1.5rem;">Ver Ao Vivo</a>
                         </div>
                 </div>
             </div>
@@ -1490,7 +1508,6 @@
                 </li>
                 <li>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-40-88a8,8,0,0,1,8-8h24V96a8,8,0,0,1,16,0v24h24a8,8,0,0,1,0,16H136v24a8,8,0,0,1-16,0V144H96A8,8,0,0,1,88,128Z"></path></svg>
-
                     <span>Analytics (Power BI)</span>
                 </li>
                 <li>
@@ -1640,14 +1657,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const card = document.createElement('div');
             card.className = 'project-preview-card';
             card.dataset.id = project.id;
-            const projectUrl = `/projeto/${project.id}`; // NOVA URL PARA PÁGINA DE DETALHES
+            const projectUrl = /projeto/${project.slug}; // NOVA URL PARA PÁGINA DE DETALHES
             
             // ================================================================
             // --- [CORREÇÃO APLICADA AQUI] ---
             // Torna o JS robusto, aceitando o formato novo (camelCase) OU o antigo (snake_case)
             
             // Verifica se a propriedade 'imageSrc' (nova) existe, senão, usa 'image_src' (antiga)
-            const imgSrc = project.imageSrc || project.image_src; 
+            const img_src = project.imagem_url;
             const title = project.title || project.titulo;
             const shortTitle = project.shortTitle || project.short_title;
             
@@ -1656,10 +1673,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Adiciona um fallback para o caso de shortTitle ser nulo ou undefined
             const displayTitle = shortTitle || "Projeto"; 
             
-            // ** CORREÇÃO: Garante que o src da imagem NÃO adicione uma / se for um link http **
-            const absoluteImgSrc = (imgSrc && (imgSrc.startsWith('http://') || imgSrc.startsWith('https://')))
-                ? imgSrc // Se já for um link completo, usa ele
-                : (imgSrc && !imgSrc.startsWith('/') ? '/' + imgSrc : imgSrc); // Senão, trata como caminho local
+            // Correção V2: Usa o caminho relativo exato que está no banco de dados
+            const absoluteimg_src = img_src;
             
             
             // ================================================================
@@ -1673,7 +1688,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // O card agora é clicável e leva para a nova página, EXCETO se clicar nos botões.
             // O título também é um link para a mesma página.
             card.innerHTML = `
-                <img src="${imgSrc}" alt="Imagem do projeto ${title}">
+                <img src="${img_src}" alt="Imagem do projeto ${title}">
                 
                 <a href="${projectUrl}" style="text-decoration: none; z-index: 3; position: relative;">
                     <h3 ${titleStyle}>${title || 'Projeto'}</h3>
