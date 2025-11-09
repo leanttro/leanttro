@@ -1334,7 +1334,7 @@
             <div class="hero-overlay"></div>
             <div class="container hero-content">
                 <h1>Seu site não vende sozinho? Eu automatizo!</h1>
-                <p>Eu transformo "sites-panfleto" em Vendedores IA. Eles qualificam leads, coletam briefings de orçamento e até rastreiam pedidos de e-commerce 24 horas por dia, 7 dias por semana. Além disso, busco seus dados do Google, Meta e do seu sistema, e os entrego em um Dashboard de BI que mostra seu ROI real.</p>
+                <p>Eu transformo "sites-panfleto" em Vendedores IA. Eles qualificam leads, coletam briefings de orçamento e até rastreiam pedidos de e-commerce 24 horas por dia, 7 dias por semana.</p>
                 <div class="hero-buttons">
                     <a href="#case-study-feiras" class="btn btn-primary">Ver Case de IA</a>
                     <a href="#google-search-intro" class="btn btn-outline">Diagnóstico de SEO</a>
@@ -1634,7 +1634,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     // =============================================================
-    // --- [MUDANÇA 1] DADOS DINÂMICOS DOS PROJETOS ---
+    // --- DADOS DINÂMICOS DOS PROJETOS ---
     // =============================================================
     
     // Variável global para armazenar os dados dos projetos buscados da API
@@ -1644,7 +1644,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const projectCarousel = document.getElementById('project-carousel');
 
-    // [MUDANÇA 3] A função 'renderProjects' agora usa a variável global 'allProjectsData'
     function renderProjects(filter = 'Todas') {
         if (!projectCarousel) return;
         projectCarousel.innerHTML = '';
@@ -1679,9 +1678,12 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const titleStyle = shortTitle === "Análise Crédito-Risco" ? 'style="left: -7px;"' : '';
             
+            // Adiciona um fallback para o caso de shortTitle ser nulo ou undefined
+            const displayTitle = shortTitle || "Projeto"; 
+            
             card.innerHTML = `
                 <img src="${imgSrc}" alt="Imagem do projeto ${title}">
-                <h3 ${titleStyle}>${shortTitle}</h3>
+                <h3 ${titleStyle}>${displayTitle}</h3>
             `;
             // --- [FIM DA CORREÇÃO] ---
             // ================================================================
@@ -2087,7 +2089,7 @@ document.addEventListener('DOMContentLoaded', function() {
             chatState = "AGUARDANDO_DETALHES";
             botReply = "Obrigado! 🙏<br><br>Para fechar: qual é o principal objetivo do seu site ou a ideia do seu projeto? (Ex: 'Quero vender mais', 'Preciso de automação', 'Quero um site novo')";
             chatbotInput.placeholder = "Descreva sua ideia ou objetivo...";
-        } else if (chatState === "AGUARDANDO_DETALHES") {
+        } else if (chatState === "AGUENTANDO_DETALHES") {
             conversationHistory.push({ role: 'orcamento_detalhes', text: messageText });
             chatState = "AGUARDANDO_ORCAMENTO";
             botReply = "Perfeito! E qual é o orçamento (budget) que você tem em mente para este projeto? (Ex: 'Até R$1k', 'R$2k-5k', 'Mais de R$5k', 'Não sei ainda')";
