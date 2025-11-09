@@ -403,6 +403,7 @@
             text-align: center;
             transition: all 0.3s ease;
             border: 1px solid transparent;
+            text-decoration: none; /* Garante que não sublinhe */
         }
 
         .btn-card.btn-card-live {
@@ -598,57 +599,7 @@
         }
 
 
-        /* MODAL DE PROJETOS */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); align-items: center; justify-content: center; padding: 1rem; }
-        .modal-content { background-color: var(--surface); margin: auto; padding: 2.5rem; border: 1px solid var(--border); width: 90%; max-width: 700px; border-radius: 16px; position: relative; animation: fadeInModal 0.4s; }
-        @keyframes fadeInModal { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        #modal-image {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            object-fit: cover;
-            border: 1px solid var(--border);
-        }
-        .close-modal-btn { color: var(--text-secondary); position: absolute; top: 1.5rem; right: 1.5rem; font-size: 1.75rem; font-weight: bold; cursor: pointer; transition: color 0.3s ease; }
-        .close-modal-btn:hover { color: var(--text-primary); }
-        #modal-title { font-size: 2rem; color: var(--accent); margin-bottom: 1rem; }
-        #modal-description { color: var(--text-secondary); margin-bottom: 1.5rem; }
-        #modal-skills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
-        #modal-skills span { background-color: var(--background); color: var(--text-secondary); font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 16px; }
-        
-        #modal-links {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        #modal-links a { 
-            font-weight: 600; 
-            margin-right: 0; 
-            text-align: center;
-        }
-
-        .btn-live {
-            background-color: var(--accent);
-            color: var(--text-primary);
-            font-weight: 700;
-            display: block; 
-            text-align: center;
-            padding: 0.75rem;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-        .btn-live:hover {
-            background-color: var(--accent-hover);
-            color: var(--text-primary);
-        }
-        .disclaimer {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-align: center;
-            display: block;
-            margin-top: 0.5rem;
-        }
+        /* (MODAL CSS REMOVIDO) */
 
         /* Seção Serviços */
         #servicos {
@@ -1594,17 +1545,7 @@
         
         </main>
     
-    <div id="project-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal-btn">&times;</span>
-            <img src="" alt="Imagem do projeto" id="modal-image">
-            <h2 id="modal-title"></h2>
-            <p id="modal-description"></p>
-            <div id="modal-skills"></div>
-            <div id="modal-links">
-                </div>
-        </div>
-    </div>
+    <!-- MODAL HTML REMOVIDO -->
 
     <div class="floating-chatbot">
         <div id="chatbotButtonContainer">
@@ -1717,6 +1658,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const card = document.createElement('div');
             card.className = 'project-preview-card';
             card.dataset.id = project.id;
+            const projectUrl = `/projeto/${project.id}`; // NOVA URL PARA PÁGINA DE DETALHES
             
             // ================================================================
             // --- [CORREÇÃO APLICADA AQUI] ---
@@ -1739,25 +1681,37 @@ document.addEventListener('DOMContentLoaded', function() {
             
             
             // ================================================================
-            // --- [NOVO INÍCIO] - Lógica para os botões do Card
-            // ================================================================
-            // (Copiado da lógica do modal e adaptado)
+            // --- [LÓGICA PARA BOTÕES DO CARD] ---
             const githubLinkUrl = project.githubLink || project.github_link;
             const liveLinkUrl = project.liveLink || project.live_link;
             const liveLinkText = project.liveLinkText || project.live_link_text || "Ver Demo Ao Vivo"; // Texto Padrão
             
             // ================================================================
-            // --- [MUDANÇA] - O innerHTML do card agora inclui os botões
-            // ================================================================
+            // --- [MUDANÇA COMPLETA DO CARD] ---
+            // O card agora é clicável e leva para a nova página, EXCETO se clicar nos botões.
+            // O título também é um link para a mesma página.
             card.innerHTML = `
                 <img src="${absoluteImgSrc}" alt="Imagem do projeto ${title}">
-                <h3 ${titleStyle}>${displayTitle}</h3>
+                
+                <!-- Título como link para a página de detalhes -->
+                <a href="${projectUrl}" style="text-decoration: none; z-index: 3; position: relative;">
+                    <h3 ${titleStyle}>${displayTitle}</h3>
+                </a>
                 
                 <div class="project-card-buttons">
                     ${liveLinkUrl ? `<a href="${liveLinkUrl}" class="btn-card btn-card-live" target="_blank" onclick="event.stopPropagation()">${liveLinkText}</a>` : ''}
                     ${githubLinkUrl ? `<a href="${githubLinkUrl}" class="btn-card btn-card-github" target="_blank" onclick="event.stopPropagation()">Ver no GitHub</a>` : ''}
                 </div>
                 `;
+            
+            // Adiciona evento de clique no card inteiro para ir à página de detalhes
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', (e) => {
+                // Se o clique NÃO foi dentro da div de botões E NÃO foi diretamente no link do título (que já navega sozinho)
+                if (!e.target.closest('.project-card-buttons') && e.target.tagName !== 'A') {
+                    window.location.href = projectUrl;
+                }
+            });
             // --- [FIM DA MUDANÇA] ---
             // ================================================================
 
@@ -1773,98 +1727,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    const modal = document.getElementById('project-modal');
-    const closeModalBtn = modal.querySelector('.close-modal-btn');
-
-    if (projectCarousel) {
-        projectCarousel.addEventListener('click', (e) => {
-            const card = e.target.closest('.project-preview-card');
-            if (card) {
-                const projectId = parseInt(card.dataset.id);
-                
-                // Busca o projeto na variável global 'allProjectsData'
-                const project = allProjectsData.find(p => p.id === projectId);
-                
-                if (project) {
-                    
-                    // ================================================================
-                    // --- [CORREÇÃO APLICADA AQUI] ---
-                    // Adiciona a mesma lógica defensiva para todas as propriedades
-                    
-                    const modalImgSrc = project.imageSrc || project.image_src;
-                    
-                    // ** CORREÇÃO: Garante que o src da imagem NÃO adicione uma / se for um link http **
-                    const absoluteModalImgSrc = (modalImgSrc && (modalImgSrc.startsWith('http://') || modalImgSrc.startsWith('https://')))
-                        ? modalImgSrc // Se já for um link completo, usa ele
-                        : (modalImgSrc && !modalImgSrc.startsWith('/') ? '/' + modalImgSrc : modalImgSrc); // Senão, trata como caminho local
-                    
-                    document.getElementById('modal-image').src = absoluteModalImgSrc;
-                    document.getElementById('modal-image').alt = `Imagem do projeto ${project.title || project.titulo}`;
-                    document.getElementById('modal-title').textContent = project.title || project.titulo;
-                    document.getElementById('modal-description').textContent = project.longDescription || project.long_description;
-                    
-                    const skillsContainer = document.getElementById('modal-skills');
-                    skillsContainer.innerHTML = '';
-                    if (project.skills) { 
-                        project.skills.forEach(skill => {
-                            const skillTag = document.createElement('span');
-                            skillTag.textContent = skill;
-                            skillsContainer.appendChild(skillTag);
-                        });
-                    }
-                    
-                    const linksContainer = document.getElementById('modal-links');
-                    linksContainer.innerHTML = ''; 
-                    
-                    const caseStudyLink = project.caseStudyLink || project.case_study_link;
-                    if (caseStudyLink) {
-                        const caseLink = document.createElement('a');
-                        caseLink.href = caseStudyLink;
-                        caseLink.className = 'btn btn-accent';
-                        caseLink.textContent = 'Ver Case Completo';
-                        caseLink.addEventListener('click', (e) => {
-                            closeModal();
-                        });
-                        linksContainer.appendChild(caseLink);
-                    }
-                    
-                    const liveLinkUrl = project.liveLink || project.live_link;
-                    if (liveLinkUrl) {
-                        const liveLink = document.createElement('a');
-                        liveLink.href = liveLinkUrl;
-                        liveLink.className = 'btn-live';
-                        liveLink.target = '_blank';
-                        liveLink.textContent = project.liveLinkText || project.live_link_text || "Ver Demo Ao Vivo"; // Também corrigido
-                        linksContainer.appendChild(liveLink);
-                    }
-                    
-                    const githubLinkUrl = project.githubLink || project.github_link;
-                    const githubLink = document.createElement('a');
-                    githubLink.href = githubLinkUrl;
-                    githubLink.className = 'btn btn-outline';
-                    githubLink.target = '_blank';
-                    githubLink.textContent = 'Ver no GitHub';
-                    linksContainer.appendChild(githubLink);
-                    
-                    // --- [FIM DA CORREÇÃO APLICADA] ---
-                    // ================================================================
-                    
-                    if (project.disclaimer) {
-                        const disclaimerSpan = document.createElement('span');
-                        disclaimerSpan.className = 'disclaimer';
-                        disclaimerSpan.textContent = project.disclaimer;
-                        linksContainer.appendChild(disclaimerSpan);
-                    }
-                    modal.style.display = 'flex';
-                }
-            }
-        });
-    }
+    // (LÓGICA DE MODAL REMOVIDA DAQUI)
     
     // --- Lógica de Header, Slideshows, Menu, Fade-in (Inalterada) ---
-    function closeModal() { if (modal) modal.style.display = 'none'; }
-    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-    if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) { closeModal(); } });
+    // (Não há mais modal para fechar, então removemos os listeners do modal)
+    
     const header = document.querySelector('header');
     if (header) {
         window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 50); });

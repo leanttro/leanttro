@@ -1,7 +1,7 @@
 import os
 import psycopg2
 import psycopg2.extras
-from psycopg2 import sql # <-- [MUDANÇA 1] Importação necessária para updates seguros
+from psycopg2 import sql # Importação necessária para updates seguros
 from flask import Flask, jsonify, request, send_from_directory, render_template, abort
 from dotenv import load_dotenv
 from flask_cors import CORS
@@ -10,7 +10,7 @@ import decimal
 import json
 import traceback
 
-# --- [NOVO] IMPORTAÇÕES PARA O FUNIL ---
+# --- IMPORTAÇÕES PARA O FUNIL ---
 import requests
 import google.generativeai as genai
 # --- FIM DA IMPORTAÇÃO ---
@@ -133,8 +133,7 @@ try:
     if GEMINI_API_KEY:
         genai.configure(api_key=GEMINI_API_KEY)
         
-        # --- [PROMPT ATUALIZADO] ---
-        # (Baseado nos novos CVs enviados)
+        # --- [PROMPT ATUALIZADO V2] ---
         SYSTEM_PROMPT_LEIA = """
         Você é o "LÊ-IA", o assistente de IA pessoal de Leandro Andrade (apelido "Leanttro").
         Seu propósito é responder perguntas de recrutadores e potenciais clientes de forma profissional, amigável e baseada ESTRITAMENTE nos fatos abaixo.
@@ -207,7 +206,7 @@ except Exception as e:
 # --- FIM DA CONFIGURAÇÃO DO GEMINI ---
 
 
-# --- FUNÇÕES DE BANCO DE DADOS (Inalteradas) ---
+# --- FUNÇÕES DE BANCO DE DADOS ---
 def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL)
     return conn
@@ -222,7 +221,7 @@ def format_db_data(data_dict):
             data_dict[key] = float(value)
     return data_dict
 
-# --- HELPER FUNCTIONS DO PAGESPEED (Inalteradas) ---
+# --- HELPER FUNCTIONS DO PAGESPEED ---
 def fetch_full_pagespeed_json(url_to_check, api_key):
     """
     Função helper que chama a API PageSpeed e retorna o JSON completo.
@@ -257,8 +256,6 @@ def extract_failing_audits(report_json):
     failed_audits = []
     
     for audit_key, audit_details in audits.items():
-        # Captura auditorias que não são 'informativas' E (têm score < 1 OU score == 0)
-        # Isso garante que peguemos "opportunities" e "diagnostics" que falharam.
         score_val = audit_details.get('score')
         if audit_details.get('scoreDisplayMode') != 'informative' and score_val is not None and score_val < 1:
             failed_audits.append({
@@ -308,7 +305,6 @@ def get_projetos():
         conn = get_db_connection()
         cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         
-        # SQL usa ALIAS (AS) para corresponder ao JSON que o JS espera
         cur.execute(
             "SELECT "
             "    id, "
@@ -329,7 +325,6 @@ def get_projetos():
         projetos_raw = cur.fetchall()
         cur.close()
         
-        # O format_db_data é importante para lidar com o array 'skills'
         projetos = [format_db_data(dict(proj)) for proj in projetos_raw]
         return jsonify(projetos)
         
@@ -340,16 +335,11 @@ def get_projetos():
         if conn: conn.close()
 
 
-# --- [MODIFICADO] ENDPOINT DE DIAGNÓSTICO DE SEO (LÓGICA DO 'FLUXO') ---
+# --- ENDPOINT DE DIAGNÓSTICO DE SEO ---
 @app.route('/api/diagnostico_seo', methods=['POST'])
 def handle_diagnostico_e_isca():
     """
     API para a barra de "Diagnóstico de SEO".
-    1. Recebe a URL.
-    2. Chama a API do PageSpeed.
-    3. Salva o URL e o Score na tabela `leanttro_leads` (lead frio).
-    4. Chama o Gemini para criar a "ISCA V2" (teaser SEM detalhes).
-    5. Retorna a "ISCA V2" e o `lead_id` para o frontend.
     """
     print("\n--- [FUNIL-ETAPA-1] Recebido trigger para /api/diagnostico_seo ---")
     
@@ -385,15 +375,14 @@ def handle_diagnostico_e_isca():
         new_lead_id = cur.fetchone()[0]
         conn.commit()
         cur.close()
-        conn.close() # Fecha a conexão após salvar
+        conn.close()
         print(f"✅  [DB] Lead frio salvo com ID: {new_lead_id}")
 
         # 3. Chamar Gemini para criar a "ISCA V2"
         user_failing_audits = extract_failing_audits(user_report)
         num_falhas = len(user_failing_audits)
         
-        # --- [PROMPT DA ISCA ATUALIZADO] ---
-        # (Não revela mais os detalhes, apenas a contagem)
+        # --- PROMPT DA ISCA V2 ---
         system_prompt_isca_v2 = f"""
         Você é o "Analista de Ouro", um especialista sênior em SEO.
         Sua missão é dar um DIAGNÓSTICO-ISCA para um usuário que enviou a URL do site dele.
@@ -426,7 +415,7 @@ def handle_diagnostico_e_isca():
         """
         
         print("ℹ️  [Gemini-ISCA V2] Gerando diagnóstico-isca (sem detalhes)...")
-        chat_session = diag_model.start_chat(history=[]) # Usa o 'diag_model'
+        chat_session = diag_model.start_chat(history=[])
         response = chat_session.send_message(
             system_prompt_isca_v2,
             generation_config=genai.types.GenerationConfig(temperature=0.3),
@@ -438,7 +427,7 @@ def handle_diagnostico_e_isca():
         return jsonify({
             'success': True, 
             'lead_id': new_lead_id,
-            'diagnosis': response.text, # A nova "isca"
+            'diagnosis': response.text,
             'seo_score': user_seo_score_int
         }), 200
 
@@ -452,29 +441,25 @@ def handle_diagnostico_e_isca():
 # --- FIM DO ENDPOINT DE DIAGNÓSTICO ---
 
 
-# --- [MUDANÇA 2] /api/orcar AGORA CRIA O REGISTRO E RETORNA O NOVO ID ---
+# --- /api/orcar (CREATE) ---
 @app.route('/api/orcar', methods=['POST'])
 def handle_orcamento_create():
     """
     API para o chatbot CRIAR um pedido de orçamento (lead quente).
-    Recebe o primeiro passo do funil e RETORNA O NOVO 'orcamento_id'.
     """
     print("\n--- [FUNIL-ETAPA-2] Recebido trigger para /api/orcar (CREATE) ---")
     data = request.json
     
-    # Dados do Orçamento (podem ser nulos no início)
     lead_id = data.get('lead_id') 
     nome = data.get('nome_contato')
     contato = data.get('email_ou_whatsapp')
     detalhes = data.get('detalhes_projeto')
     orcamento = data.get('orcamento_estimado')
     
-    # Dados do Funil (V3)
     perfil = data.get('perfil_lead', 'Cliente') 
     tem_site = data.get('tem_site', 'Não Informado') 
     interesse = f"Perfil: {perfil} | Tem Site: {tem_site}"
 
-    # Dados do Lead (para criação manual)
     url_analisada = data.get('url_analisada', 'N/A - Orçamento Manual')
     seo_score = data.get('seo_score') 
     origem_lead = 'CHATBOT_MANUAL' if not lead_id else 'SEO_DIAGNOSTICO'
@@ -484,7 +469,6 @@ def handle_orcamento_create():
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # --- Lógica V3 (Inalterada): Cria um lead frio se não existir ---
         if not lead_id:
             print(f"ℹ️  [DB] lead_id NULO. Criando novo 'Lead Frio' (Manual)...")
             cur.execute(
@@ -498,29 +482,25 @@ def handle_orcamento_create():
             print(f"✅  [DB] Novo lead frio (Manual) criado com ID: {lead_id}")
         else:
             print(f"ℹ️  [DB] Usando lead_id existente (SEO): {lead_id}")
-        # --- Fim da Lógica V3 ---
 
         print(f"ℹ️  [DB] Criando lead quente (orçamento) para Lead ID: {lead_id}")
         
-        # --- MUDANÇA PRINCIPAL: Adicionado "RETURNING id" ---
         cur.execute(
             "INSERT INTO leanttro_orcar (lead_id, nome_contato, email_ou_whatsapp, interesse_servico, detalhes_projeto, orcamento_estimado, status_orcamento) "
             "VALUES (%s, %s, %s, %s, %s, %s, 'PENDENTE') "
-            "RETURNING id;", # <-- AQUI
+            "RETURNING id;",
             (lead_id, nome, contato, interesse, detalhes, orcamento)
         )
         
-        new_orcamento_id = cur.fetchone()[0] # <-- Captura o ID retornado
-        
+        new_orcamento_id = cur.fetchone()[0]
         conn.commit()
         cur.close()
         print(f"✅  [DB] Lead quente (orçamento) CRIADO com ID: {new_orcamento_id}.")
         
-        # --- MUDANÇA PRINCIPAL: Retorna o novo ID para o JavaScript ---
         return jsonify({
             'success': True, 
             'message': 'Solicitação de orçamento iniciada!',
-            'orcamento_id': new_orcamento_id # <-- Retorna para o JS
+            'orcamento_id': new_orcamento_id
         }), 201
         
     except Exception as e:
@@ -532,22 +512,19 @@ def handle_orcamento_create():
         if conn: conn.close()
 
 
-# --- [MUDANÇA 3] NOVA API PARA ATUALIZAR O ORÇAMENTO PASSO-A-PASSO ---
-
-# Lista segura de colunas que o frontend (JS) tem permissão para atualizar
+# --- API PARA ATUALIZAR ORÇAMENTO ---
 ALLOWED_ORCAR_COLUMNS = [
     'nome_contato',
     'email_ou_whatsapp',
     'detalhes_projeto',
     'orcamento_estimado',
-    'interesse_servico' # (Caso o funil mude)
+    'interesse_servico'
 ]
 
 @app.route('/api/orcar/update', methods=['POST'])
 def handle_orcamento_update():
     """
     API para o chatbot ATUALIZAR um pedido de orçamento passo-a-passo.
-    Recebe um 'orcamento_id', um 'campo' e um 'valor'.
     """
     print("\n--- [FUNIL-ETAPA-3] Recebido trigger para /api/orcar/update ---")
     data = request.json
@@ -557,22 +534,17 @@ def handle_orcamento_update():
     valor = data.get('valor')
 
     if not orcamento_id or not campo or valor is None:
-        return jsonify({'error': 'Dados incompletos (orcamento_id, campo, valor são obrigatórios)'}), 400
+        return jsonify({'error': 'Dados incompletos'}), 400
 
-    # --- CHECAGEM DE SEGURANÇA (Evita SQL Injection no nome da coluna) ---
     if campo not in ALLOWED_ORCAR_COLUMNS:
         print(f"❌ ERRO: Tentativa de update em campo NÃO PERMITIDO: {campo}")
         return jsonify({'error': 'Operação não permitida.'}), 403
-    # --- FIM DA CHECAGEM ---
 
     conn = None
     try:
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # Constrói a query de forma segura usando psycopg2.sql
-        # sql.Identifier() trata o nome da coluna (campo) de forma segura
-        # %s (valor) e %s (id) são tratados como parâmetros seguros
         update_query = sql.SQL("UPDATE leanttro_orcar SET {col} = %s WHERE id = %s").format(
             col=sql.Identifier(campo)
         )
@@ -593,14 +565,13 @@ def handle_orcamento_update():
         return jsonify({'error': 'Erro interno ao atualizar orçamento.'}), 500
     finally:
         if conn: conn.close()
-# --- [FIM DA NOVA API] ---
 
 
+# --- ENDPOINT DO CHATBOT LÊ-IA ---
 @app.route('/api/chat', methods=['POST'])
 def handle_chat():
     """
     Endpoint para o chatbot LÊ-IA (Q&A sobre o Leandro).
-    (Inalterado, mas agora usa o novo PROMPT de sistema)
     """
     print("\n--- [Q&A-CHAT] Recebido trigger para /api/chat ---")
     
@@ -647,7 +618,6 @@ def handle_chat():
 def get_post_detalhe(slug):
     """
     Renderiza a página 'post-detalhe.html'.
-    (Inalterado)
     """
     conn = None
     try:
@@ -673,6 +643,37 @@ def get_post_detalhe(slug):
     finally:
         if conn: conn.close()
 
+# --- [NOVO] ROTA PARA DETALHES DO PROJETO ---
+@app.route('/projeto/<int:projeto_id>')
+def get_projeto_detalhe(projeto_id):
+    """
+    Renderiza a página 'projeto-detalhe.html' com dados do banco.
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # Busca o projeto pelo ID, garantindo que esteja publicado
+        cur.execute(
+            "SELECT * FROM leanttro_projetos WHERE id = %s AND publicado = true;",
+            (projeto_id,)
+        )
+        projeto_raw = cur.fetchone()
+        cur.close()
+
+        if projeto_raw:
+            projeto_data = format_db_data(dict(projeto_raw))
+            return render_template('projeto-detalhe.html', projeto=projeto_data)
+        else:
+            abort(404, description="Projeto não encontrado ou não publicado")
+            
+    except Exception as e:
+        print(f"ERRO na rota /projeto/{projeto_id}: {e}")
+        return "Erro ao carregar a página do projeto", 500
+    finally:
+        if conn: conn.close()
+# --- FIM DA NOVA ROTA ---
+
 # --- ROTAS ESTÁTICAS (DEVE VIR POR ÚLTIMO) ---
 
 @app.route('/')
@@ -688,7 +689,6 @@ def serve_static_files(path):
     if '.' not in os.path.basename(path):
         abort(404, description="Caminho inválido")
         
-    # Medida de segurança básica: Evitar "directory traversal"
     if '..' in path:
         abort(400, description="Caminho malicioso detectado")
         
@@ -699,8 +699,6 @@ def serve_static_files(path):
 
 # -- EXECUÇÃO DO SERVIDOR 
 if __name__ == '__main__':
-    # Roda o setup do banco de dados na inicialização
     setup_database() 
-    
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
