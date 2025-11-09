@@ -316,7 +316,7 @@ def get_projetos():
             "    live_link AS liveLink, "
             "    live_link_text AS liveLinkText, "
             "    disclaimer, "
-            "    image_src AS imageSrc, "
+            "    image_src AS imagem_url, " # --- ALTERAÇÃO AQUI --- (de imageSrc para imagem_url)
             "    case_study_link AS caseStudyLink "
             "FROM leanttro_projetos "
             "WHERE publicado = true "
