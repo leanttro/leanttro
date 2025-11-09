@@ -168,6 +168,21 @@
             color: var(--text-secondary); 
         }
         .post-conteudo p { margin-bottom: 1.5em; }
+        
+        /* --- [INÍCIO DA CORREÇÃO] --- */
+        /* Estilos para listas e negritos gerados pelo Markdown */
+        .post-conteudo ul {
+            margin-bottom: 1.5em;
+            padding-left: 20px; /* Adiciona indentação para a lista */
+        }
+        .post-conteudo li {
+            margin-bottom: 0.5em; /* Espaço entre os itens da lista */
+        }
+        .post-conteudo strong { 
+            color: var(--text-primary); /* Garante que o negrito fique com a cor primária */
+        }
+        /* --- [FIM DA CORREÇÃO] --- */
+
         .post-conteudo h2 { 
             font-size: 2em; 
             margin-top: 45px; 
@@ -178,7 +193,7 @@
         .post-conteudo h3 { font-size: 1.5em; margin-top: 35px; margin-bottom: 10px; }
         .post-conteudo a { color: var(--accent); font-weight: 600; text-decoration: underline; }
         .post-conteudo a:hover { color: var(--accent-hover); }
-        .post-conteudo strong { color: var(--text-primary); }
+
         
         /* DISCLAIMER (NOVO PARA PROJETOS) */
         .project-disclaimer {
@@ -203,12 +218,10 @@
             .post-conteudo { font-size: 1em; }
             .project-actions { flex-direction: column; gap: 10px; }
             
-            /* --- ALTERAÇÃO AQUI --- */
             .btn-project { 
                 width: 100%; 
-                box-sizing: border-box; /* ADICIONADO: Corrige o overflow do botão */
+                box-sizing: border-box; 
             }
-            /* Regra .btn-github removida pois o botão foi excluído */
         }
     </style>
 </head>
@@ -263,7 +276,7 @@
             {% endif %}
 
             <section class="post-conteudo">
-                {{ projeto.long_description | replace('\n', '<br>') | safe }}
+                {{ projeto.long_description | markdown | safe }}
             </section>
 
             {% if projeto.disclaimer %}
