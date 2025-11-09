@@ -303,6 +303,9 @@
             scrollbar-color: var(--accent) var(--surface);
             /* Garante que o scroll seja suave no JS */
             scroll-behavior: smooth; 
+            /* [NOVO] Altura mínima para o estado de "Carregando..." */
+            min-height: 350px; 
+            align-items: center; /* Centraliza o "Carregando..." */
         }
         .project-carousel::-webkit-scrollbar { height: 8px; }
         .project-carousel::-webkit-scrollbar-track { background: var(--surface); border-radius: 10px; }
@@ -757,8 +760,6 @@
             visibility: hidden;
             transform: scale(0.5);
             transition: all 0.3s ease;
-            /* [MUDANÇA FOTO] Garante que a imagem não vaze */
-            overflow: hidden; 
         }
 
         .chatbot-minimized-icon.minimized {
@@ -806,8 +807,6 @@
             font-size: 1.2rem;
             color: var(--chat-text-primary); /* Branco */
             flex-shrink: 0;
-            /* [MUDANÇA FOTO] Garante que a imagem não vaze */
-            overflow: hidden;
         }
         .preview-info strong {
             font-family: var(--font-body);
@@ -897,8 +896,6 @@
             font-size: 1.5rem;
             color: var(--chat-text-primary); /* Branco */
             flex-shrink: 0;
-            /* [MUDANÇA FOTO] Garante que a imagem não vaze */
-            overflow: hidden;
         }
 
         .chatbot-header-info h3 {
@@ -973,8 +970,6 @@
             font-size: 1rem;
             flex-shrink: 0;
             color: var(--chat-text-primary); /* Branco */
-            /* [MUDANÇA FOTO] Garante que a imagem não vaze */
-            overflow: hidden;
         }
         .message.bot .message-avatar { background: var(--chat-accent); } /* Laranja */
         .message.user .message-avatar { background-color: var(--chat-text-secondary); } /* Cinza */
@@ -1316,8 +1311,8 @@
             </div>
             <div class="hero-overlay"></div>
             <div class="container hero-content">
-                <h1>Seu site não vende sozinho? Eu automatizo!</h1>
-                <p>Eu transformo "sites-panfleto" em Vendedores IA. Eles qualificam leads, coletam briefings de orçamento e até rastreiam pedidos de e-commerce 24 horas por dia, 7 dias por semana. Além disso, busco seus dados do Google, Meta e do seu sistema, e os entrego em um Dashboard de BI que mostra seu ROI real.</p>
+                <h1>Engenheiro de Dados &amp; Desenvolvedor Full Stack</h1>
+                <p>Eu construo soluções de dados eficientes e desenvolvo aplicações web completas, transformando problemas complexos em resultados tangíveis.</p>
                 <div class="hero-buttons">
                     <a href="#case-study-feiras" class="btn btn-primary">Ver Case de IA</a>
                     <a href="#google-search-intro" class="btn btn-outline">Diagnóstico de SEO</a>
@@ -1516,7 +1511,7 @@
     <div class="floating-chatbot">
         <div id="chatbotButtonContainer">
              <div class="chatbot-minimized-icon" id="minimizedIcon" aria-label="Abrir Chatbot">
-                <img src="leanttro.png" alt="Leanttro Chatbot Icon" style="width: 100%; height: 100%; border-radius: 50%;">
+                <i class="fas fa-robot"></i>
             </div>
             <div class="chatbot-preview-button" id="chatbotButton" aria-label="Abrir LÊ-IA">
                 <button class="preview-close" id="previewClose" aria-label="Minimizar Preview">
@@ -1524,7 +1519,7 @@
                 </button>
                 <div class="preview-header">
                     <div class="preview-avatar">
-                        <img src="leanttro.png" alt="Leanttro Preview Icon" style="width: 100%; height: 100%; border-radius: 50%;">
+                        <i class="fas fa-robot"></i>
                     </div>
                     <div class="preview-info">
                         <strong>LÊ<span>ia</span></strong>
@@ -1540,7 +1535,7 @@
         <div class="chatbot-window" id="chatbotWindow">
             <div class="chatbot-header">
                 <div class="chatbot-header-avatar">
-                    <img src="leanttro.png" alt="Leanttro Header Icon" style="width: 100%; height: 100%; border-radius: 50%;">
+                    <i class="fas fa-robot"></i>
                 </div>
                 <div class="chatbot-header-info">
                     <h3>LÊ<span>ia</span></h3>
@@ -1590,92 +1585,45 @@
 
     <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // --- DADOS DOS PROJETOS (ESTÁTICO - Inalterado) ---
-    const projectsData = [
-        {
-            id: 1,
-            title: "Case de Produto: Feiras de Rua - SP",
-            shortTitle: "Feiras de Rua - SP",
-            longDescription: "Produto digital full-stack para encontrar feiras em SP. Inclui API em Flask, banco de dados PostgreSQL, frontend responsivo e um chatbot de IA (RAG) treinado com dados vivos do banco.",
-            skills: ["Desenvolvimento Web", "Python", "SQL", "API Rest", "Machine Learning"], 
-            githubLink: "https://github.com/leanttro/feiras-de-rua.git",
-            liveLink: "https://www.feirasderua.com.br",
-            liveLinkText: "Veja o Site ao Vivo",
-            disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
-            imageSrc: "principalfeiras.png",
-            caseStudyLink: "#case-study-feiras" 
-        },
-        {
-            id: 2,
-            title: "Pipeline de Dados - NYC Taxi",
-            shortTitle: "Pipeline NYC Taxi",
-            longDescription: "Solução de Machine Learning de ponta a ponta para prever tarifas de táxi em NYC. O projeto inclui um pipeline de dados na GCP, treinamento de modelo e o deploy de um simulador interativo em Hugging Face Spaces.",
-            skills: ["GCP", "Python", "SQL", "Databricks"],
-            githubLink: "https://github.com/leanttro/taxi_nyc_cloud",
-            liveLink: "https://leanttro.github.io/taxi_nyc_cloud",
-            liveLinkText: "Ver Simulador de IA",
-            disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
-            imageSrc: "projeto-2.png"
-        },
-        {
-            id: 3,
-            title: "Automação de Leads de Marketing",
-            shortTitle: "Automação Mkt",
-            longDescription: "Sistema de automação low-code/high-code que qualifica e segmenta leads de marketing. Utiliza n8n para orquestrar o fluxo e scripts em Python para integrar com APIs externas, salvando os dados em um banco PostgreSQL para análise.",
-            skills: ["Automação", "Python", "SQL", "API Rest"],
-            githubLink: "https://github.com/leanttro/automacao_mkt_n8n.git",
-            liveLink: "https://automacao-mkt-api.onrender.com/",
-            liveLinkText: "Ver API Funcionando",
-            disclaimer: "(Pode demorar até 40s para iniciar, hospedagem gratuita)",
-            imageSrc: "projeto-3.png"
-        },
-        {
-            id: 4,
-            title: "Dashboard de Risco de Crédito",
-            shortTitle: "Análise Crédito-Risco",
-            longDescription: "Análise de dados e criação de um dashboard interativo no Power BI para avaliar o risco de crédito de clientes. O projeto incluiu limpeza, tratamento de dados com Python (Pandas) e criação de métricas e KPIs estratégicos, aplicando conceitos de machine learning para a modelagem de risco.",
-            skills: ["Power BI", "Python", "Machine Learning"],
-            githubLink: "https://github.com/leanttro",
-            imageSrc: "projeto-4.png"
-        },
-        {
-            id: 5,
-            title: "Pipeline de E-commerce",
-            shortTitle: "Análise Logística",
-            longDescription: "Pipeline de dados completo para um dataset de e-commerce do Kaggle. O projeto aborda a extração, limpeza, transformação e carga dos dados, preparando-os para análises de negócio e modelagem.",
-            skills: ["Python", "SQL", "API Rest", "Docker"],
-            githubLink: "https://github.com/leanttro/kaggle_ecommerce_pipeline.git",
-            imageSrc: "projeto-5.png"
-        },
-        {
-            id: 6,
-            title: "Website Institucional",
-            shortTitle: "Site Institucional",
-            longDescription: "Website institucional responsivo para a empresa de logística Vick Express. Desenvolvido com foco em performance, design moderno e uma experiência de usuário intuitiva para apresentar os serviços da empresa.",
-            skills: ["Desenvolvimento Web"],
-            githubLink: "https://github.com/leanttro/vick_express",
-            liveLink: "https://leanttro.github.io/vick_express/",
-            liveLinkText: "Veja Funcionando",
-            imageSrc: "projeto-6.png"
-        }
-    ];
+    
+    // =============================================================
+    // --- [MUDANÇA PARTE 1] DADOS DINÂMICOS DOS PROJETOS ---
+    // =============================================================
+    
+    // Variável global para armazenar os dados dos projetos buscados da API
+    let allProjectsData = [];
+    
+    // --- [DELETADO] O array estático 'const projectsData = [...]' foi removido ---
 
-    // --- LÓGICA DO SITE (Filtros, Modal, Header, etc. - Inalterado) ---
+
+    // --- LÓGICA DO SITE (Filtros, Modal, Header, etc.) ---
 
     const projectCarousel = document.getElementById('project-carousel');
 
+    // [MUDANÇA] A função 'renderProjects' agora usa a variável global 'allProjectsData'
     function renderProjects(filter = 'Todas') {
         if (!projectCarousel) return;
         projectCarousel.innerHTML = '';
+        
+        // Usa a variável global 'allProjectsData' em vez de 'projectsData'
         const filteredProjects = filter === 'Todas'
-            ? projectsData
-            : projectsData.filter(p => p.skills.includes(filter));
+            ? allProjectsData 
+            : allProjectsData.filter(p => p.skills && p.skills.includes(filter));
+
+        if (filteredProjects.length === 0 && filter !== 'Todas') {
+             projectCarousel.innerHTML = `<p style="color: var(--text-secondary); width: 100%; text-align: center;">Nenhum projeto encontrado para a skill "${filter}".</p>`;
+             return;
+        }
 
         filteredProjects.forEach(project => {
             const card = document.createElement('div');
             card.className = 'project-preview-card';
             card.dataset.id = project.id;
+            
+            // A API já envia 'shortTitle', então a lógica de estilo funciona
             const titleStyle = project.shortTitle === "Análise Crédito-Risco" ? 'style="left: -7px;"' : '';
+            
+            // A API já envia 'imageSrc'
             card.innerHTML = `
                 <img src="${project.imageSrc}" alt="Imagem do projeto ${project.title}">
                 <h3 ${titleStyle}>${project.shortTitle}</h3>
@@ -1700,19 +1648,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const card = e.target.closest('.project-preview-card');
             if (card) {
                 const projectId = parseInt(card.dataset.id);
-                const project = projectsData.find(p => p.id === projectId);
+                
+                // [MUDANÇA] Busca o projeto na variável global 'allProjectsData'
+                const project = allProjectsData.find(p => p.id === projectId);
+                
                 if (project) {
+                    // O restante desta lógica permanece IDÊNTICO, pois os nomes
+                    // (aliases) da API correspondem aos nomes do JS antigo.
                     document.getElementById('modal-image').src = project.imageSrc;
                     document.getElementById('modal-image').alt = `Imagem do projeto ${project.title}`;
                     document.getElementById('modal-title').textContent = project.title;
                     document.getElementById('modal-description').textContent = project.longDescription;
+                    
                     const skillsContainer = document.getElementById('modal-skills');
                     skillsContainer.innerHTML = '';
-                    project.skills.forEach(skill => {
-                        const skillTag = document.createElement('span');
-                        skillTag.textContent = skill;
-                        skillsContainer.appendChild(skillTag);
-                    });
+                    if (project.skills) { // Adiciona verificação
+                        project.skills.forEach(skill => {
+                            const skillTag = document.createElement('span');
+                            skillTag.textContent = skill;
+                            skillsContainer.appendChild(skillTag);
+                        });
+                    }
+                    
                     const linksContainer = document.getElementById('modal-links');
                     linksContainer.innerHTML = ''; 
                     if (project.caseStudyLink) {
@@ -1751,15 +1708,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // --- Lógica de Header, Slideshows, Menu, Fade-in (Inalterada) ---
     function closeModal() { if (modal) modal.style.display = 'none'; }
     if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
     if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) { closeModal(); } });
-
     const header = document.querySelector('header');
     if (header) {
         window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 50); });
     }
-
     const slides = document.querySelectorAll('.hero-slide');
     let currentSlide = 0;
     if (slides.length > 0) {
@@ -1769,7 +1725,6 @@ document.addEventListener('DOMContentLoaded', function() {
           slides[currentSlide].classList.add('active');
       }, 5000);
     }
-
     const skillsSlides = document.querySelectorAll('.skills-slide');
     let currentSkillSlide = 0;
     if (skillsSlides.length > 0) {
@@ -1779,7 +1734,6 @@ document.addEventListener('DOMContentLoaded', function() {
           skillsSlides[currentSkillSlide].classList.add('active');
       }, 5000);
     }
-
     const menuToggle = document.getElementById('menu-toggle');
     const navMenu = document.getElementById('nav-menu');
     if (menuToggle && navMenu) {
@@ -1792,7 +1746,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }); 
         });
     }
-
     const faders = document.querySelectorAll('.fade-in');
     const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -80px 0px" };
     const appearOnScroll = new IntersectionObserver((entries, observer) => {
@@ -1804,11 +1757,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, appearOptions);
     faders.forEach(fader => appearOnScroll.observe(fader));
+    // --- Fim da Lógica de UI Inalterada ---
 
 
-    // =============================================================
-    // --- INÍCIO: LÓGICA COMPLETA DO CHATBOT E FUNIL DE VENDAS (V3) ---
-    // =============================================================
+    // ====================================================================
+    // --- [MUDANÇA PARTE 2] LÓGICA COMPLETA DO CHATBOT (FUNIL SALVO-A-PASSO) ---
+    // ====================================================================
 
     // IDs dos elementos do Chatbot
     const chatbotButton = document.getElementById('chatbotButton');
@@ -1827,24 +1781,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const seoInput = document.getElementById('seo-url-input');
     const seoNote = document.getElementById('seo-result-note');
 
-    // Variáveis de Estado para o Funil de Vendas (SEO)
-    let currentLeadId = null; 
-    let currentUrlAnalisada = null; 
-    let currentSeoScore = null; 
+    // --- [MUDANÇA] Variáveis de Estado para o Funil ---
+    let currentLeadId = null;       // ID do 'leanttro_leads' (seja SEO ou Manual)
+    let currentOrcamentoId = null;  // ID do 'leanttro_orcar' (O MAIS IMPORTANTE)
     
-    // [MUDANÇA V3] Novos estados do funil
-    let chatState = "QA"; // Estado inicial: "QA" (Perguntas e Respostas)
-    // Outros estados: 
-    // "LOADING", 
-    // "AGUARDANDO_PERMISSAO" (Funil SEO), 
-    // "AGUARDANDO_TIPO_LEAD" (Funil Manual V3)
-    // "AGUARDANDO_TEM_SITE" (Funil Manual V3)
-    // "AGUARDANDO_NOME", 
-    // "AGUARDANDO_CONTATO", 
-    // "AGUARDANDO_DETALHES", 
-    // "AGUARDANDO_ORCAMENTO"
+    // Dados temporários do Funil SEO
+    let tempUrlAnalisada = null; 
+    let tempSeoScore = null; 
+    
+    // Dados temporários do Funil Manual
+    let tempPerfilLead = null;
+    let tempTemSite = null;
+    
+    // Estado principal do Chatbot
+    let chatState = "QA"; // "QA", "LOADING", "AGUARDANDO_PERMISSAO", "AGUARDANDO_TIPO_LEAD", "AGUARDANDO_TEM_SITE", "AGUARDANDO_NOME", "AGUARDANDO_CONTATO", "AGUARDANDO_DETALHES", "AGUARDANDO_ORCAMENTO"
 
-    let conversationHistory = []; // Armazena objetos { role, text }
+    let conversationHistoryQA = []; // Histórico APENAS para o Q&A (LÊ-IA)
 
     // --- Lógica de Animação da Preview (Inalterado) ---
     const previewMessages = [
@@ -1855,7 +1807,6 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
     let messageIndex = 0;
     let previewInterval;
-
     function minimizePreview() {
         if (chatbotButton) chatbotButton.classList.add('minimized');
         if (minimizedIcon) minimizedIcon.classList.add('minimized');
@@ -1882,6 +1833,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (previewClose) previewClose.addEventListener('click', function(e) { e.stopPropagation(); minimizePreview(); });
     if (minimizedIcon) minimizedIcon.addEventListener('click', maximizePreview);
     if (previewMessageEl) startPreviewAnimation();
+    // --- Fim da Lógica da Preview ---
 
     // --- Lógica de Abrir/Fechar Chat (Inalterado) ---
     function toggleChat(e) {
@@ -1901,8 +1853,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (previewInterval) clearInterval(previewInterval); 
 
             setTimeout(() => {
-                // Adiciona a primeira mensagem do bot se for a primeira vez
-                // E se NÃO estivermos no meio de um diagnóstico
                 if (chatbotMessages && chatbotMessages.children.length === 0 && chatState === "QA") {
                     startChat(); // Inicia o chat de Q&A
                 }
@@ -1910,12 +1860,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }
     }
-
     if (chatbotButton) chatbotButton.addEventListener('click', toggleChat);
     if (chatbotClose) chatbotClose.addEventListener('click', toggleChat);
     if (leiaCtaButton) leiaCtaButton.addEventListener('click', toggleChat);
+    // --- Fim da Lógica Abrir/Fechar ---
 
-    // --- Funções de Chat (Adaptadas para LÊ-IA) ---
+    // --- Funções de Chat (Adaptadas para LÊ-IA e Funil V4) ---
 
     // Adiciona a primeira mensagem de Q&A
     function startChat() {
@@ -1923,8 +1873,20 @@ document.addEventListener('DOMContentLoaded', function() {
             "Olá! 👋 Sou o LÊ-IA, o assistente de IA do Leandro.<br><br>Estou aqui para te ajudar com dúvidas sobre projetos, carreira e como o Leandro pode somar na sua empresa!", 
             false
         );
-        chatState = "QA"; // Garante que o estado é Q&A
-        conversationHistory = []; // Limpa o histórico para um novo Q&A
+        resetChatState(); // Garante que o estado é Q&A
+    }
+    
+    // [NOVA] Função para resetar o estado do funil
+    function resetChatState() {
+        chatState = "QA";
+        currentLeadId = null;
+        currentOrcamentoId = null;
+        tempUrlAnalisada = null;
+        tempSeoScore = null;
+        tempPerfilLead = null;
+        tempTemSite = null;
+        conversationHistoryQA = []; // Limpa o histórico de Q&A
+        if (chatbotInput) chatbotInput.placeholder = "Digite sua mensagem...";
     }
 
     function getCurrentTime() {
@@ -1932,7 +1894,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
     }
 
-    // [MUDANÇA FOTO] Função AddMessage agora lida com <img> para o bot
+    // [MUDANÇA] Função AddMessage agora lida com gatilhos de funil
     function addMessage(text, isUser = false) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
@@ -1940,53 +1902,38 @@ document.addEventListener('DOMContentLoaded', function() {
         let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         formattedText = formattedText.replace(/\n/g, '<br>');
         
-        // Define o botão de WhatsApp (será substituído se a tag existir)
         const whatsappButtonHtml = `
             <br><a href="http://wa.me/+5511913324827" target="_blank" 
                style="display: inline-block; padding: 10px 15px; background-color: #25D366; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 10px;">
                <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> Falar com Leandro
             </a>`;
-        
-        // Substitui a tag [WHATSAPP_BUTTON] pelo HTML
         formattedText = formattedText.replace("[WHATSAPP_BUTTON]", whatsappButtonHtml);
 
-        // Adiciona ao histórico local
-        // O histórico do funil é separado (adicionado em handleSendMessage)
-        if (chatState === "QA" || chatState === "LOADING") {
-             conversationHistory.push({ 
+        // [MUDANÇA] Salva no histórico de Q&A APENAS se estiver em modo Q&A
+        if (chatState === "QA") {
+             conversationHistoryQA.push({ 
                 role: isUser ? 'user' : 'bot', 
                 text: text // Salva o texto original
             });
         }
         
-        // --- [MUDANÇA V3] Lógica do GATILHO MANUAL ---
+        // --- Lógica de GATILHO MANUAL ---
         if (text.includes("[INICIAR_ORCAMENTO_MANUAL]")) {
-            // Limpa a tag da mensagem
             formattedText = formattedText.replace("[INICIAR_ORCAMENTO_MANUAL]", "").trim();
-            
-             // Limpa os dados do funil SEO (caso existam)
-            currentLeadId = null;
-            currentUrlAnalisada = null;
-            currentSeoScore = null;
-
-            // Muda o estado do chat para o NOVO funil
-            chatState = "AGUARDANDO_TIPO_LEAD";
-            conversationHistory = []; // Inicia um novo histórico (de funil)
+            resetChatState(); // Reseta qualquer estado anterior
+            chatState = "AGUARDANDO_TIPO_LEAD"; // Inicia o funil manual
+            conversationHistoryQA = []; // Limpa o histórico de Q&A
 
             setTimeout(() => {
-                // [MUDANÇA V3] Pergunta o tipo de lead
                 addMessage("Entendido. Para eu direcionar seu atendimento, você é um <strong>cliente buscando um orçamento</strong> ou um <strong>recrutador</strong>?", false);
                 if (chatbotInput) chatbotInput.placeholder = "Digite 'Cliente' ou 'Recrutador'...";
             }, 1000);
 
         // --- Lógica da ISCA (Funil SEO) ---
         } else if (text.includes("[FORMULARIO_LEAD]")) {
-            // Limpa a tag da mensagem
             formattedText = formattedText.replace("[FORMULARIO_LEAD]", "").trim();
-
-            // Muda o estado do chat para "Aguardando Permissão" (Funil SEO)
-            chatState = "AGUARDANDO_PERMISSAO";
-            conversationHistory = []; // Inicia um novo histórico (de funil)
+            chatState = "AGUARDANDO_PERMISSAO"; // Inicia o funil SEO
+            conversationHistoryQA = []; // Limpa o histórico de Q&A
 
             setTimeout(() => {
                 addMessage("Eu posso salvar essas informações (URL, nome, contato) para o Leandro analisar e te enviar o diagnóstico completo? (Sim / Não)", false);
@@ -1995,14 +1942,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // --- FIM DAS LÓGICAS DE GATILHO ---
 
-        // [MUDANÇA FOTO] Lógica do avatar (usuário vs bot)
-        const avatarHtml = isUser
-            ? '<i class="fas fa-user"></i>'
-            : '<img src="leanttro.png" alt="Bot Avatar" style="width: 100%; height: 100%; border-radius: 50%;">';
-
         messageDiv.innerHTML = `
             <div class="message-avatar">
-                ${avatarHtml}
+                <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
             </div>
             <div class="message-content">
                 <div class="message-bubble">${formattedText}</div>
@@ -2016,15 +1958,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // [MUDANÇA FOTO] Função showTypingIndicator agora usa <img>
     function showTypingIndicator() {
         const typingDiv = document.createElement('div');
         typingDiv.className = 'message bot typing-message';
         typingDiv.id = 'typing-indicator';
         typingDiv.innerHTML = `
-            <div class="message-avatar">
-                <img src="leanttro.png" alt="Bot Avatar" style="width: 100%; height: 100%; border-radius: 50%;">
-            </div>
+            <div class="message-avatar"><i class="fas fa-robot"></i></div>
             <div class="message-content">
                 <div class="message-bubble">
                     <div class="typing-indicator"><span></span><span></span><span></span></div>
@@ -2044,7 +1983,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- [MUDANÇA V3] Lógica Principal de Envio (COM NOVOS ESTADOS) ---
+    // --- [MUDANÇA] Lógica Principal de Envio (COM NOVAS APIs) ---
     async function handleSendMessage() {
         if (!chatbotInput || !chatbotSend || !chatbotMessages) return;
 
@@ -2057,98 +1996,114 @@ document.addEventListener('DOMContentLoaded', function() {
         chatbotSend.disabled = true;
         showTypingIndicator();
 
-        // Variável auxiliar para armazenar a resposta do bot (padrão Q&A)
-        let botReply = '';
-        let shouldResetPlaceholder = false;
+        let botReply = ''; // Resposta do bot
+        let erroNoFunil = false; // Flag de erro
 
         // --- LÓGICA DE ESTADO DO CHATBOT ---
-
-        // ESTADO 1: Q&A Padrão (Recrutadores)
-        if (chatState === "QA") {
-            try {
-                // Envia todo o histórico para a API de chat
+        try {
+            // ESTADO 1: Q&A Padrão
+            if (chatState === "QA") {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ conversationHistory: conversationHistory })
+                    body: JSON.stringify({ conversationHistory: conversationHistoryQA })
                 });
                 if (!response.ok) throw new Error('Falha na resposta da IA.');
                 const data = await response.json();
                 botReply = data.reply;
-            } catch (error) {
-                console.error('Erro no /api/chat:', error);
+
+            // ESTADO 2 (Funil SEO): Aguardando Permissão (Sim/Não)
+            } else if (chatState === "AGUARDANDO_PERMISSAO") {
+                const userInput = messageText.toLowerCase();
+                
+                if (userInput.includes('sim') || userInput.includes('s')) {
+                    // --- [API CREATE] ---
+                    // Cria o registro no 'leanttro_orcar' e pega o ID
+                    const novoId = await criarOrcamentoRegistro({
+                        lead_id: currentLeadId, // Já temos o ID do 'leanttro_leads'
+                        url_analisada: tempUrlAnalisada,
+                        seo_score: tempSeoScore,
+                        perfil_lead: 'Cliente (SEO)',
+                        tem_site: 'Sim'
+                    });
+                    
+                    currentOrcamentoId = novoId; // Salva o ID principal
+                    chatState = "AGUARDANDO_NOME";
+                    botReply = "Ótimo! Para eu poder te enviar o diagnóstico completo, qual é o seu nome?";
+                    chatbotInput.placeholder = "Digite seu nome...";
+                
+                } else { // Usuário negou
+                    botReply = "Entendido. Sem problemas. Eu não posso enviar o relatório sem salvar seus dados.\n\nMas se preferir, você pode falar diretamente com o Leandro sobre essa análise pelo WhatsApp.\n[WHATSAPP_BUTTON]";
+                    resetChatState(); // Reseta o chatbot
+                }
+
+            // ESTADO 3 (Funil Manual): Coletando Tipo de Lead
+            } else if (chatState === "AGUARDANDO_TIPO_LEAD") {
+                tempPerfilLead = messageText; // Salva temporariamente
+                chatState = "AGUARDANDO_TEM_SITE";
+                botReply = "Certo. E você já possui um site ou domínio? (Sim / Não / Não se aplica)";
+                chatbotInput.placeholder = "Digite 'Sim', 'Não' ou 'N/A'...";
+            
+            // ESTADO 4 (Funil Manual): Coletando se tem site
+            } else if (chatState === "AGUARDANDO_TEM_SITE") {
+                tempTemSite = messageText; // Salva temporariamente
+                
+                // --- [API CREATE] ---
+                // Cria o registro no 'leanttro_orcar' (e também no 'leanttro_leads')
+                const novoId = await criarOrcamentoRegistro({
+                    lead_id: null, // O backend vai criar um
+                    perfil_lead: tempPerfilLead,
+                    tem_site: tempTemSite
+                });
+
+                currentOrcamentoId = novoId; // Salva o ID principal
+                chatState = "AGUARDANDO_NOME"; // Avança para o funil comum
+                botReply = "Perfeito. Para começar o orçamento, qual é o seu nome?";
+                chatbotInput.placeholder = "Digite seu nome...";
+
+            // ESTADO 5: Coletando Nome (Funil Comum)
+            } else if (chatState === "AGUARDANDO_NOME") {
+                // --- [API UPDATE] ---
+                await atualizarOrcamentoPasso('nome_contato', messageText);
+                chatState = "AGUARDANDO_CONTATO";
+                botReply = `Prazer, ${messageText}! 👋<br><br>Qual é o seu melhor e-mail ou WhatsApp para o Leandro entrar em contato?`;
+                chatbotInput.placeholder = "Digite seu e-mail ou WhatsApp...";
+
+            // ESTADO 6: Coletando Contato (Funil Comum)
+            } else if (chatState === "AGUARDANDO_CONTATO") {
+                // --- [API UPDATE] ---
+                await atualizarOrcamentoPasso('email_ou_whatsapp', messageText);
+                chatState = "AGUARDANDO_DETALHES";
+                botReply = "Obrigado! 🙏<br><br>Para fechar: qual é o principal objetivo do seu site ou a ideia do seu projeto? (Ex: 'Quero vender mais', 'Preciso de automação', 'Quero um site novo')";
+                chatbotInput.placeholder = "Descreva sua ideia ou objetivo...";
+
+            // ESTADO 7: Coletando Detalhes (Funil Comum)
+            } else if (chatState === "AGUARDANDO_DETALHES") {
+                // --- [API UPDATE] ---
+                await atualizarOrcamentoPasso('detalhes_projeto', messageText);
+                chatState = "AGUARDANDO_ORCAMENTO";
+                botReply = "Perfeito! E qual é o orçamento (budget) que você tem em mente para este projeto? (Ex: 'Até R$1k', 'R$2k-5k', 'Mais de R$5k', 'Não sei ainda')";
+                chatbotInput.placeholder = "Digite sua faixa de orçamento...";
+
+            // ESTADO 8: Coletando Orçamento (Fim do Funil)
+            } else if (chatState === "AGUARDANDO_ORCAMENTO") {
+                // --- [API UPDATE] ---
+                await atualizarOrcamentoPasso('orcamento_estimado', messageText);
+                
+                botReply = "🚀 **Excelente!**<br><br>Recebi todas as informações. O Leandro vai analisar seu pedido e entrará em contato com você em breve pelo contato que você forneceu.<br><br>Obrigado pela confiança!";
+                
+                resetChatState(); // Reseta o chatbot para Q&A
+            }
+        
+        } catch (error) {
+            console.error('Erro no handleSendMessage (Funil ou QA):', error);
+            botReply = "Desculpe, estou com problemas de conexão e não consegui processar sua resposta. Vamos tentar de novo.";
+            erroNoFunil = true;
+            // O chatbot vai repetir a última pergunta no próximo envio, pois o estado não avançou.
+            // Se o erro foi no Q&A, ele apenas mostra o erro e continua.
+            if (chatState === 'QA') {
                 botReply = "Desculpe, estou com problemas para me conectar ao meu cérebro de IA no momento. Tente novamente mais tarde.";
             }
-
-        // ESTADO 2 (Funil SEO): Aguardando Permissão (Sim/Não)
-        } else if (chatState === "AGUARDANDO_PERMISSAO") {
-            const userInput = messageText.toLowerCase();
-            
-            if (userInput.includes('sim') || userInput.includes('s')) {
-                // Usuário permitiu (continua funil SEO)
-                chatState = "AGUARDANDO_NOME";
-                botReply = "Ótimo! Para eu poder te enviar o diagnóstico completo, qual é o seu nome?";
-                chatbotInput.placeholder = "Digite seu nome...";
-            } 
-            else if (userInput.includes('não') || userInput.includes('nao') || userInput.includes('n')) {
-                // Usuário negou
-                chatState = "QA"; // Reseta o chatbot
-                botReply = "Entendido. Sem problemas. Eu não posso enviar o relatório sem salvar seus dados.\n\NMas se preferir, você pode falar diretamente com o Leandro sobre essa análise pelo WhatsApp.\n[WHATSAPP_BUTTON]";
-                shouldResetPlaceholder = true; // Flag para resetar o placeholder
-            } 
-            else {
-                // Não entendeu
-                botReply = "Desculpe, não entendi. Por favor, digite 'Sim' ou 'Não' para eu saber se posso salvar seus dados.";
-                // O estado continua "AGUARDANDO_PERMISSAO"
-                chatbotInput.placeholder = "Digite 'Sim' ou 'Não'...";
-            }
-
-        // [NOVO] ESTADO 3 (Funil Manual V3): Coletando Tipo de Lead
-        } else if (chatState === "AGUARDANDO_TIPO_LEAD") {
-            conversationHistory.push({ role: 'orcamento_perfil', text: messageText }); 
-            chatState = "AGUARDANDO_TEM_SITE";
-            botReply = "Certo. E você já possui um site ou domínio? (Sim / Não / Não se aplica)";
-            chatbotInput.placeholder = "Digite 'Sim', 'Não' ou 'N/A'...";
-        
-        // [NOVO] ESTADO 4 (Funil Manual V3): Coletando se tem site
-        } else if (chatState === "AGUARDANDO_TEM_SITE") {
-            conversationHistory.push({ role: 'orcamento_tem_site', text: messageText });
-            chatState = "AGUARDANDO_NOME"; // Avança para o funil comum
-            botReply = "Perfeito. Para começar o orçamento, qual é o seu nome?";
-            chatbotInput.placeholder = "Digite seu nome...";
-
-        // ESTADO 5: Coletando dados para o Orçamento (Funil Comum)
-        } else if (chatState === "AGUARDANDO_NOME") {
-            // Guarda o nome e avança o estado
-            conversationHistory.push({ role: 'orcamento_nome', text: messageText }); 
-            chatState = "AGUARDANDO_CONTATO";
-            botReply = `Prazer, ${messageText}! 👋<br><br>Qual é o seu melhor e-mail ou WhatsApp para o Leandro entrar em contato?`;
-            chatbotInput.placeholder = "Digite seu e-mail ou WhatsApp...";
-
-        } else if (chatState === "AGUARDANDO_CONTATO") {
-            // Guarda o contato e avança o estado
-            conversationHistory.push({ role: 'orcamento_contato', text: messageText });
-            chatState = "AGUARDANDO_DETALHES";
-            botReply = "Obrigado! 🙏<br><br>Para fechar: qual é o principal objetivo do seu site ou a ideia do seu projeto? (Ex: 'Quero vender mais', 'Preciso de automação', 'Quero um site novo')";
-            chatbotInput.placeholder = "Descreva sua ideia ou objetivo...";
-
-        } else if (chatState === "AGUARDANDO_DETALHES") {
-            // Guarda os detalhes e avança o estado
-            conversationHistory.push({ role: 'orcamento_detalhes', text: messageText });
-            chatState = "AGUARDANDO_ORCAMENTO";
-            botReply = "Perfeito! E qual é o orçamento (budget) que você tem em mente para este projeto? (Ex: 'Até R$1k', 'R$2k-5k', 'Mais de R$5k', 'Não sei ainda')";
-            chatbotInput.placeholder = "Digite sua faixa de orçamento...";
-
-        } else if (chatState === "AGUARDANDO_ORCAMENTO") {
-            // Guarda o orçamento, salva no DB e reseta
-            conversationHistory.push({ role: 'orcamento_budget', text: messageText });
-            botReply = "🚀 **Excelente!**<br><br>Recebi todas as informações. O Leandro vai analisar seu pedido e entrará em contato com você em breve pelo contato que você forneceu.<br><br>Obrigado pela confiança!";
-            
-            // Chama a função para salvar o Lead/Orçamento
-            await salvarOrcamento(); // A função salvarOrcamento agora envia os dados V3
-
-            chatState = "QA"; // Reseta o chatbot para Q&A
-            shouldResetPlaceholder = true; // Flag para resetar o placeholder
         }
         // --- FIM DA LÓGICA DE ESTADO ---
 
@@ -2161,57 +2116,76 @@ document.addEventListener('DOMContentLoaded', function() {
         chatbotInput.disabled = false;
         chatbotSend.disabled = false;
         
-        if (shouldResetPlaceholder) {
+        // Se o estado foi resetado (fim do funil ou erro de permissão), reseta o placeholder
+        if (chatState === 'QA' && !erroNoFunil) {
             chatbotInput.placeholder = "Digite sua mensagem...";
         }
         
         chatbotInput.focus();
     }
 
-    // --- [MUDANÇA V3] FUNÇÃO HELPER PARA SALVAR O ORÇAMENTO (COM DADOS V3) ---
-    async function salvarOrcamento() {
-        // Mapeia o histórico do funil (conversationHistory) para o payload de salvamento
-        const dadosOrcamento = {
-            // Dados do Funil SEO (serão null se for funil manual)
-            lead_id: currentLeadId,
-            url_analisada: currentUrlAnalisada, 
-            seo_score: currentSeoScore, 
-            
-            // [NOVOS CAMPOS V3] - Dados do Funil Manual
-            perfil_lead: conversationHistory.find(m => m.role === 'orcamento_perfil')?.text || 'Não informado',
-            tem_site: conversationHistory.find(m => m.role === 'orcamento_tem_site')?.text || 'Não informado',
-            
-            // Dados Comuns
-            nome_contato: conversationHistory.find(m => m.role === 'orcamento_nome')?.text || null,
-            email_ou_whatsapp: conversationHistory.find(m => m.role === 'orcamento_contato')?.text || null,
-            detalhes_projeto: conversationHistory.find(m => m.role === 'orcamento_detalhes')?.text || null,
-            orcamento_estimado: conversationHistory.find(m => m.role === 'orcamento_budget')?.text || null
-            
-            // 'interesse_servico' será montado pelo backend (app.py)
-        };
 
+    // --- [NOVA] FUNÇÃO HELPER (CREATE) PARA O FUNIL V4 ---
+    async function criarOrcamentoRegistro(dadosIniciais) {
+        console.log("Chamando /api/orcar (CREATE) com:", dadosIniciais);
         try {
             const response = await fetch('/api/orcar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dadosOrcamento)
+                body: JSON.stringify(dadosIniciais)
             });
-            if (!response.ok) throw new Error('Falha ao salvar orçamento no DB.');
-
+            
             const data = await response.json();
-            console.log('Orçamento salvo com sucesso:', data);
+            if (!response.ok) {
+                throw new Error(data.error || 'Falha ao criar registro de orçamento.');
+            }
+
+            console.log('Registro de orçamento criado com ID:', data.orcamento_id);
+            return data.orcamento_id; // Retorna o ID do 'leanttro_orcar'
 
         } catch (error) {
-            console.error("ERRO CRÍTICO ao salvar orçamento:", error);
-            // Em caso de erro, avisa no console mas segue o fluxo do chat
-        } finally {
-            // Limpa o histórico e os dados temporários para um novo funil
-            conversationHistory = [];
-            currentLeadId = null; 
-            currentUrlAnalisada = null;
-            currentSeoScore = null;
+            console.error("ERRO CRÍTICO ao criar orçamento:", error);
+            throw error; // Repassa o erro para o handleSendMessage
         }
     }
+
+    // --- [NOVA] FUNÇÃO HELPER (UPDATE) PARA O FUNIL V4 ---
+    async function atualizarOrcamentoPasso(campo, valor) {
+        if (!currentOrcamentoId) {
+            console.error("ERRO FATAL: Tentativa de UPDATE sem currentOrcamentoId.");
+            throw new Error("ID do orçamento não encontrado.");
+        }
+        
+        const payload = {
+            orcamento_id: currentOrcamentoId,
+            campo: campo,
+            valor: valor
+        };
+        
+        console.log("Chamando /api/orcar/update com:", payload);
+        
+        try {
+            const response = await fetch('/api/orcar/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || `Falha ao atualizar o campo ${campo}.`);
+            }
+            
+            console.log(`Campo ${campo} atualizado com sucesso.`);
+            return data;
+
+        } catch (error) {
+            console.error(`ERRO CRÍTICO ao atualizar ${campo}:`, error);
+            throw error; // Repassa o erro para o handleSendMessage
+        }
+    }
+
+    // --- [DELETADA] A função 'salvarOrcamento()' antiga foi removida ---
 
     if (chatbotSend) chatbotSend.addEventListener('click', handleSendMessage);
     if (chatbotInput) chatbotInput.addEventListener('keypress', (e) => {
@@ -2234,27 +2208,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 seoNote.className = 'search-bar-note error';
                 return;
             }
-            // Garante que a URL tenha protocolo para o fetch
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 url = 'https://' + url;
             }
 
-            // Desabilita e muda o texto
             seoFormButton.disabled = true;
             seoFormButton.textContent = "Analisando...";
             seoNote.textContent = "Iniciando diagnóstico... Isso pode levar até 40 segundos. Abrindo o chat...";
             seoNote.className = 'search-bar-note';
 
+            resetChatState(); // Reseta qualquer estado anterior
             chatState = "LOADING"; 
             
-            // Abre o chatbot para mostrar o processo
              if (chatbotWindow && !chatbotWindow.classList.contains('active')) {
                     toggleChat(); 
              }
-            showTypingIndicator(); // Indicador de que algo está acontecendo
+            showTypingIndicator(); 
 
             try {
-                // 1. Chama a API de diagnóstico
                 const response = await fetch('/api/diagnostico_seo', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -2262,22 +2233,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 const data = await response.json();
-                removeTypingIndicator(); // Remove o typing ANTES de adicionar a resposta
+                removeTypingIndicator(); 
 
                 if (!response.ok) {
                     throw new Error(data.error || 'Erro desconhecido na API.');
                 }
 
-                // 2. Salva os dados para o funil do chatbot
-                currentLeadId = data.lead_id;
-                currentUrlAnalisada = url;
-                currentSeoScore = data.seo_score; 
+                // [MUDANÇA] Salva os dados temporariamente
+                currentLeadId = data.lead_id; // ID do 'leanttro_leads'
+                tempUrlAnalisada = url;
+                tempSeoScore = data.seo_score; 
+                // currentOrcamentoId ainda é NULL
 
                 seoNote.textContent = "Análise concluída! Veja o resultado no chat.";
                 seoNote.className = 'search-bar-note success';
 
-                // 3. Injeta a "ISCA" no chat.
-                // A função addMessage detecta a tag [FORMULARIO_LEAD] e inicia o funil SEO.
+                // Injeta a "ISCA" no chat.
+                // A função addMessage detecta o [FORMULARIO_LEAD] e muda o estado
                 addMessage(data.diagnosis, false);
 
             } catch (error) {
@@ -2287,7 +2259,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 removeTypingIndicator();
                 addMessage(`Desculpe, ocorreu um erro ao analisar a URL: ${error.message}. Tente novamente.`, false);
-                chatState = "QA"; // Reseta o estado
+                resetChatState(); // Reseta o estado para Q&A
 
             } finally {
                 seoFormButton.disabled = false;
@@ -2305,37 +2277,38 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========================================================
     const scrollLeftBtn = document.getElementById('scroll-left-btn');
     const scrollRightBtn = document.getElementById('scroll-right-btn');
-    const carousel = document.getElementById('project-carousel');
+    // const carousel = document.getElementById('project-carousel'); // Já definido acima
 
-    if (scrollLeftBtn && scrollRightBtn && carousel) {
+    if (scrollLeftBtn && scrollRightBtn && projectCarousel) {
         const updateProjectButtonState = () => {
-            if (!carousel || !scrollLeftBtn || !scrollRightBtn) return;
+            if (!projectCarousel || !scrollLeftBtn || !scrollRightBtn) return;
             setTimeout(() => {
-                const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-                scrollLeftBtn.disabled = carousel.scrollLeft <= 1;
-                scrollRightBtn.disabled = carousel.scrollLeft >= maxScroll - 1;
+                const maxScroll = projectCarousel.scrollWidth - projectCarousel.clientWidth;
+                scrollLeftBtn.disabled = projectCarousel.scrollLeft <= 1;
+                scrollRightBtn.disabled = projectCarousel.scrollLeft >= maxScroll - 1;
             }, 100);
         };
 
         const getProjectScrollAmount = () => {
-            const card = carousel.querySelector('.project-preview-card');
+            const card = projectCarousel.querySelector('.project-preview-card');
             if (!card) return 300; 
             const cardWidth = card.offsetWidth;
-            const gap = parseFloat(window.getComputedStyle(carousel).gap) || (1.5 * 16); 
+            const gap = parseFloat(window.getComputedStyle(projectCarousel).gap) || (1.5 * 16); 
             return cardWidth + gap;
         };
 
         scrollLeftBtn.addEventListener('click', () => {
-            carousel.scrollBy({ left: -getProjectScrollAmount(), behavior: 'smooth' });
+            projectCarousel.scrollBy({ left: -getProjectScrollAmount(), behavior: 'smooth' });
         });
 
         scrollRightBtn.addEventListener('click', () => {
-            carousel.scrollBy({ left: getProjectScrollAmount(), behavior: 'smooth' });
+            projectCarousel.scrollBy({ left: getProjectScrollAmount(), behavior: 'smooth' });
         });
 
-        carousel.addEventListener('scroll', updateProjectButtonState);
-        new ResizeObserver(updateProjectButtonState).observe(carousel);
-        setTimeout(updateProjectButtonState, 200);
+        projectCarousel.addEventListener('scroll', updateProjectButtonState);
+        new ResizeObserver(updateProjectButtonState).observe(projectCarousel);
+        // [MUDANÇA] A chamada inicial é feita pela função de carregamento
+        // setTimeout(updateProjectButtonState, 200); 
     }
     // --- FIM: LÓGICA BOTÕES CARROSSEL PROJETOS ---
 
@@ -2417,17 +2390,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     // --- FIM: LÓGICA BOTÕES CARROSSEL BLOG ---
 
-    // Esta função será chamada para renderizar os cards do blog na tela
+    // ========================================================
+    // --- FUNÇÕES DE CARREGAMENTO DINÂMICO (BLOG E PROJETOS) ---
+    // ========================================================
+
+    // Esta função renderiza os cards do blog na tela (Inalterada)
     function renderBlogPosts(posts) {
         const blogCarousel = document.getElementById('blog-carousel');
         if (!blogCarousel) return;
-
         blogCarousel.innerHTML = ''; 
 
         if (!posts || posts.length === 0) {
             blogCarousel.innerHTML = '<p style="color: var(--text-secondary); width: 100%; text-align: center;">Nenhum post encontrado.</p>';
             if (blogScrollLeftBtn) {
-                // Se não há posts, desabilita os botões de scroll
                 blogScrollLeftBtn.disabled = true;
                 blogScrollRightBtn.disabled = true;
             }
@@ -2437,29 +2412,24 @@ document.addEventListener('DOMContentLoaded', function() {
         posts.forEach(post => {
             const card = document.createElement('div');
             card.className = 'project-preview-card'; 
-
             const imageUrl = post.imagem_url || 'https://placehold.co/280x350/1E293B/94A3B8?text=Blog+Post';
             const altText = `Imagem do post ${post.titulo}`;
-            const postUrl = `/blog/${post.slug}`; // URL dinâmica
-
+            const postUrl = `/blog/${post.slug}`; 
             card.innerHTML = `
                 <img src="${imageUrl}" alt="${altText}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/280x350/1E293B/94A3B8?text=Blog+Post';">
                 <a href="${postUrl}" style="text-decoration: none; z-index: 3; position: relative;">
                    <h3 style="left: -12px; text-align: center; width: 100%;">${post.titulo || 'Post Sem Título'}</h3>
                 </a>
             `;
-
             card.style.cursor = 'pointer';
             card.addEventListener('click', (e) => {
                  if (e.target.tagName !== 'A' && e.target.tagName !== 'H3') {
                      window.location.href = postUrl;
                  }
             });
-
             blogCarousel.appendChild(card);
         });
 
-        // Atualiza os botões do carrossel
         if (blogScrollLeftBtn) {
             setTimeout(() => {
                 const blogCarousel = document.getElementById('blog-carousel');
@@ -2471,18 +2441,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Esta função será chamada quando a página carregar
+    // Esta função busca os dados do blog (Inalterada)
     function iniciarCarregamentoDoBlog() {
         const blogCarousel = document.getElementById('blog-carousel');
         if (blogCarousel) {
             blogCarousel.innerHTML = '<p style="color: var(--text-secondary); width: 100%; text-align: center;">Carregando posts...</p>';
         }
 
-        // AGORA O FETCH ESTÁ ATIVO! (Chamada real da API)
-        fetch('/api/leanttro_blog') // URL que o backend (app.py) define
+        fetch('/api/leanttro_blog')
             .then(response => {
                 if (!response.ok) {
-                    // Tenta ler o erro do corpo da resposta, se disponível
                     return response.json().then(err => {
                         throw new Error(err.error || 'Falha ao carregar posts.');
                     });
@@ -2490,7 +2458,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                renderBlogPosts(data); // Chama a função acima para construir os cards
+                renderBlogPosts(data); 
             })
             .catch(error => {
                 console.error('Erro ao buscar posts:', error);
@@ -2500,8 +2468,48 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // Chama as funções de inicialização
-    renderProjects();
+    // --- [NOVA] FUNÇÃO DE CARREGAMENTO DE PROJETOS ---
+    function iniciarCarregamentoProjetos() {
+        const projectCarousel = document.getElementById('project-carousel');
+        if (projectCarousel) {
+            projectCarousel.innerHTML = '<p style="color: var(--text-secondary); width: 100%; text-align: center;">Carregando projetos...</p>';
+        }
+
+        fetch('/api/leanttro_projetos') // Chama a nova API
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.error || 'Falha ao carregar projetos.');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                allProjectsData = data; // Salva os dados na variável global
+                renderProjects('Todas'); // Renderiza os projetos
+                
+                // Atualiza o estado dos botões do carrossel de projetos
+                if (scrollLeftBtn) {
+                    setTimeout(() => {
+                        const carousel = document.getElementById('project-carousel');
+                        if (!carousel) return;
+                        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+                        scrollLeftBtn.disabled = carousel.scrollLeft <= 1;
+                        scrollRightBtn.disabled = carousel.scrollLeft >= maxScroll - 1;
+                    }, 150);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao buscar projetos:', error);
+                if (projectCarousel) {
+                    projectCarousel.innerHTML = `<p style="color: var(--error-color); width: 100%; text-align: center;">Erro ao carregar projetos: ${error.message}.</p>`;
+                }
+            });
+    }
+
+    // --- CHAMADAS DE INICIALIZAÇÃO ---
+    // [MUDANÇA] 'renderProjects()' foi substituído por 'iniciarCarregamentoProjetos()'
+    iniciarCarregamentoProjetos(); 
     iniciarCarregamentoDoBlog(); 
 });
     </script>

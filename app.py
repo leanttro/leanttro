@@ -1,6 +1,7 @@
 import os
 import psycopg2
 import psycopg2.extras
+from psycopg2 import sql # <-- [MUDANÇA 1] Importação necessária para updates seguros
 from flask import Flask, jsonify, request, send_from_directory, render_template, abort
 from dotenv import load_dotenv
 from flask_cors import CORS
@@ -76,6 +77,25 @@ def setup_database():
     );
     """
     
+    # SQL para Tabela 4: leanttro_projetos
+    CREATE_PROJETOS_TABLE_SQL = """
+    CREATE TABLE IF NOT EXISTS leanttro_projetos (
+        id SERIAL PRIMARY KEY,
+        ordem INTEGER DEFAULT 0,
+        titulo TEXT NOT NULL,
+        short_title TEXT,
+        long_description TEXT,
+        skills TEXT[],
+        github_link TEXT,
+        live_link TEXT,
+        live_link_text TEXT,
+        disclaimer TEXT,
+        image_src TEXT,
+        case_study_link TEXT,
+        publicado BOOLEAN DEFAULT true
+    );
+    """
+    
     conn = None
     try:
         print("ℹ️  [DB Setup] Conectando ao banco para verificar tabelas...")
@@ -90,6 +110,9 @@ def setup_database():
         
         print("ℹ️  [DB Setup] Verificando tabela 'leanttro_orcar'...")
         cur.execute(CREATE_ORCAR_TABLE_SQL)
+        
+        print("ℹ️  [DB Setup] Verificando tabela 'leanttro_projetos'...")
+        cur.execute(CREATE_PROJETOS_TABLE_SQL)
         
         conn.commit()
         cur.close()
@@ -275,6 +298,48 @@ def get_blog_posts():
     finally:
         if conn: conn.close()
 
+@app.route('/api/leanttro_projetos', methods=['GET'])
+def get_projetos():
+    """
+    API para o carrossel de projetos (dinâmico).
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        
+        # SQL usa ALIAS (AS) para corresponder ao JSON que o JS espera
+        cur.execute(
+            "SELECT "
+            "    id, "
+            "    titulo AS title, "
+            "    short_title AS shortTitle, "
+            "    long_description AS longDescription, "
+            "    skills, "
+            "    github_link AS githubLink, "
+            "    live_link AS liveLink, "
+            "    live_link_text AS liveLinkText, "
+            "    disclaimer, "
+            "    image_src AS imageSrc, "
+            "    case_study_link AS caseStudyLink "
+            "FROM leanttro_projetos "
+            "WHERE publicado = true "
+            "ORDER BY ordem ASC;"
+        )
+        projetos_raw = cur.fetchall()
+        cur.close()
+        
+        # O format_db_data é importante para lidar com o array 'skills'
+        projetos = [format_db_data(dict(proj)) for proj in projetos_raw]
+        return jsonify(projetos)
+        
+    except Exception as e:
+        print(f"ERRO no endpoint /api/leanttro_projetos: {e}")
+        return jsonify({'error': 'Erro interno ao buscar projetos.'}), 500
+    finally:
+        if conn: conn.close()
+
+
 # --- [MODIFICADO] ENDPOINT DE DIAGNÓSTICO DE SEO (LÓGICA DO 'FLUXO') ---
 @app.route('/api/diagnostico_seo', methods=['POST'])
 def handle_diagnostico_e_isca():
@@ -387,48 +452,39 @@ def handle_diagnostico_e_isca():
 # --- FIM DO ENDPOINT DE DIAGNÓSTICO ---
 
 
-# --- [MUDANÇA CRÍTICA] ENDPOINT /api/orcar AGORA ACEITA LEADS MANUAIS ---
+# --- [MUDANÇA 2] /api/orcar AGORA CRIA O REGISTRO E RETORNA O NOVO ID ---
 @app.route('/api/orcar', methods=['POST'])
-def handle_orcamento():
+def handle_orcamento_create():
     """
-    API para o chatbot salvar um pedido de orçamento (lead quente).
-    AGORA TRATA DOIS CASOS:
-    1.  Lead ID EXISTE (Veio do Funil SEO).
-    2.  Lead ID é NULL (Veio do Funil Manual [INICIAR_ORCAMENTO_MANUAL]).
+    API para o chatbot CRIAR um pedido de orçamento (lead quente).
+    Recebe o primeiro passo do funil e RETORNA O NOVO 'orcamento_id'.
     """
-    print("\n--- [FUNIL-ETAPA-2] Recebido trigger para /api/orcar ---")
+    print("\n--- [FUNIL-ETAPA-2] Recebido trigger para /api/orcar (CREATE) ---")
     data = request.json
     
-    # Dados do Orçamento
-    lead_id = data.get('lead_id') # Pode ser null
+    # Dados do Orçamento (podem ser nulos no início)
+    lead_id = data.get('lead_id') 
     nome = data.get('nome_contato')
     contato = data.get('email_ou_whatsapp')
-    
-    # [NOVOS CAMPOS V3] - Vem do novo fluxo do JS (que faremos depois)
-    perfil = data.get('perfil_lead', 'Cliente') # (Cliente ou Recrutador)
-    tem_site = data.get('tem_site', 'Não Informado') # (Sim, Não, N/A)
-    
     detalhes = data.get('detalhes_projeto')
     orcamento = data.get('orcamento_estimado')
     
-    # [NOVO CAMPO V3] - Define o interesse
+    # Dados do Funil (V3)
+    perfil = data.get('perfil_lead', 'Cliente') 
+    tem_site = data.get('tem_site', 'Não Informado') 
     interesse = f"Perfil: {perfil} | Tem Site: {tem_site}"
 
-    # Dados do Lead (se for um novo lead manual)
+    # Dados do Lead (para criação manual)
     url_analisada = data.get('url_analisada', 'N/A - Orçamento Manual')
-    seo_score = data.get('seo_score') # Será null se for manual
+    seo_score = data.get('seo_score') 
     origem_lead = 'CHATBOT_MANUAL' if not lead_id else 'SEO_DIAGNOSTICO'
-
-    if not nome or not contato or not detalhes:
-        return jsonify({'error': 'Dados incompletos para orçamento.'}), 400
 
     conn = None
     try:
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # --- [NOVA LÓGICA V3] ---
-        # Se o lead_id NÃO foi fornecido (veio do funil manual), crie um novo lead
+        # --- Lógica V3 (Inalterada): Cria um lead frio se não existir ---
         if not lead_id:
             print(f"ℹ️  [DB] lead_id NULO. Criando novo 'Lead Frio' (Manual)...")
             cur.execute(
@@ -437,31 +493,107 @@ def handle_orcamento():
                 "RETURNING id;",
                 (url_analisada, seo_score, origem_lead)
             )
-            lead_id = cur.fetchone()[0] # Pega o ID do novo lead criado
-            conn.commit() # Comita a criação do novo lead
+            lead_id = cur.fetchone()[0] 
+            conn.commit() 
             print(f"✅  [DB] Novo lead frio (Manual) criado com ID: {lead_id}")
         else:
             print(f"ℹ️  [DB] Usando lead_id existente (SEO): {lead_id}")
-        # --- [FIM DA NOVA LÓGICA V3] ---
+        # --- Fim da Lógica V3 ---
 
-        print(f"ℹ️  [DB] Salvando lead quente (orçamento) para Lead ID: {lead_id}")
+        print(f"ℹ️  [DB] Criando lead quente (orçamento) para Lead ID: {lead_id}")
+        
+        # --- MUDANÇA PRINCIPAL: Adicionado "RETURNING id" ---
         cur.execute(
             "INSERT INTO leanttro_orcar (lead_id, nome_contato, email_ou_whatsapp, interesse_servico, detalhes_projeto, orcamento_estimado, status_orcamento) "
-            "VALUES (%s, %s, %s, %s, %s, %s, 'PENDENTE');",
+            "VALUES (%s, %s, %s, %s, %s, %s, 'PENDENTE') "
+            "RETURNING id;", # <-- AQUI
             (lead_id, nome, contato, interesse, detalhes, orcamento)
         )
+        
+        new_orcamento_id = cur.fetchone()[0] # <-- Captura o ID retornado
+        
         conn.commit()
         cur.close()
-        print(f"✅  [DB] Lead quente (orçamento) salvo com sucesso.")
-        return jsonify({'success': True, 'message': 'Solicitação de orçamento recebida!'}), 201
+        print(f"✅  [DB] Lead quente (orçamento) CRIADO com ID: {new_orcamento_id}.")
+        
+        # --- MUDANÇA PRINCIPAL: Retorna o novo ID para o JavaScript ---
+        return jsonify({
+            'success': True, 
+            'message': 'Solicitação de orçamento iniciada!',
+            'orcamento_id': new_orcamento_id # <-- Retorna para o JS
+        }), 201
         
     except Exception as e:
-        print(f"❌ ERRO no endpoint /api/orcar: {e}")
+        print(f"❌ ERRO no endpoint /api/orcar (CREATE): {e}")
         traceback.print_exc()
         if conn: conn.rollback()
         return jsonify({'error': 'Erro interno ao salvar orçamento.'}), 500
     finally:
         if conn: conn.close()
+
+
+# --- [MUDANÇA 3] NOVA API PARA ATUALIZAR O ORÇAMENTO PASSO-A-PASSO ---
+
+# Lista segura de colunas que o frontend (JS) tem permissão para atualizar
+ALLOWED_ORCAR_COLUMNS = [
+    'nome_contato',
+    'email_ou_whatsapp',
+    'detalhes_projeto',
+    'orcamento_estimado',
+    'interesse_servico' # (Caso o funil mude)
+]
+
+@app.route('/api/orcar/update', methods=['POST'])
+def handle_orcamento_update():
+    """
+    API para o chatbot ATUALIZAR um pedido de orçamento passo-a-passo.
+    Recebe um 'orcamento_id', um 'campo' e um 'valor'.
+    """
+    print("\n--- [FUNIL-ETAPA-3] Recebido trigger para /api/orcar/update ---")
+    data = request.json
+    
+    orcamento_id = data.get('orcamento_id')
+    campo = data.get('campo')
+    valor = data.get('valor')
+
+    if not orcamento_id or not campo or valor is None:
+        return jsonify({'error': 'Dados incompletos (orcamento_id, campo, valor são obrigatórios)'}), 400
+
+    # --- CHECAGEM DE SEGURANÇA (Evita SQL Injection no nome da coluna) ---
+    if campo not in ALLOWED_ORCAR_COLUMNS:
+        print(f"❌ ERRO: Tentativa de update em campo NÃO PERMITIDO: {campo}")
+        return jsonify({'error': 'Operação não permitida.'}), 403
+    # --- FIM DA CHECAGEM ---
+
+    conn = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Constrói a query de forma segura usando psycopg2.sql
+        # sql.Identifier() trata o nome da coluna (campo) de forma segura
+        # %s (valor) e %s (id) são tratados como parâmetros seguros
+        update_query = sql.SQL("UPDATE leanttro_orcar SET {col} = %s WHERE id = %s").format(
+            col=sql.Identifier(campo)
+        )
+
+        print(f"ℹ️  [DB] Executando UPDATE: SET {campo} = (valor) no orcamento_id {orcamento_id}")
+        cur.execute(update_query, (valor, orcamento_id))
+        
+        conn.commit()
+        cur.close()
+        
+        print(f"✅  [DB] Campo {campo} atualizado.")
+        return jsonify({'success': True, 'message': f'Campo {campo} atualizado.'}), 200
+
+    except Exception as e:
+        print(f"❌ ERRO no endpoint /api/orcar/update: {e}")
+        traceback.print_exc()
+        if conn: conn.rollback()
+        return jsonify({'error': 'Erro interno ao atualizar orçamento.'}), 500
+    finally:
+        if conn: conn.close()
+# --- [FIM DA NOVA API] ---
 
 
 @app.route('/api/chat', methods=['POST'])
