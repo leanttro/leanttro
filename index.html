@@ -1663,7 +1663,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Torna o JS robusto, aceitando o formato novo (camelCase) OU o antigo (snake_case)
             
             // Verifica se a propriedade 'imageSrc' (nova) existe, senão, usa 'image_src' (antiga)
-            const imgSrc = project.imageSrc || project.image_src; 
+            const imgSrc = project.imageSrc || project.image_src || project.imagem_url;
             const title = project.title || project.titulo;
             const shortTitle = project.shortTitle || project.short_title;
             
