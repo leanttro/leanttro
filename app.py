@@ -697,10 +697,10 @@ def serve_static_files(path):
     else:
         abort(404, description="Arquivo não encontrado")
 
-# --- EXECUÇÃO DO SERVIDOR ---
+# -- EXECUÇÃO DO SERVIDOR 
 if __name__ == '__main__':
     # Roda o setup do banco de dados na inicialização
     setup_database() 
     
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=False)
+    app.run(host="0.0.0.0", port=port, debug=False)   
