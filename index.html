@@ -1413,7 +1413,7 @@
         <section id="google-search-intro" class="google-search-section">
             <div class="search-intro-content">
                 <h2 class="search-section-title">Faça um Diagnóstico de SEO com Minha IA</h2>
-                <p class="search-section-subtitle">Quer saber como seu site performa? Insira a URL abaixo e receba uma análise de SEO gratuita, entregue diretamente pelo LÊ-IA no chat.</p>
+                <p class="search-section-subtitle">Quer saber como seu site performa? Insira η URL abaixo e receba uma análise de SEO gratuita, entregue diretamente pelo LÊ-IA no chat.</p>
 
                 <div class="search-bar-simulator">
                     <i data-lucide="search" class="search-bar-icon lucide-icon"></i>
@@ -1640,9 +1640,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Variável global para armazenar os dados dos projetos buscados da API
     let allProjectsData = [];
     
-    // --- [MUDANÇA 2] O array estático 'const projectsData = [...]' foi REMOVIDO daqui ---
-
-
     // --- LÓGICA DO SITE (Filtros, Modal, Header, etc.) ---
 
     const projectCarousel = document.getElementById('project-carousel');
@@ -1652,12 +1649,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!projectCarousel) return;
         projectCarousel.innerHTML = '';
         
-        // Usa a variável global 'allProjectsData' em vez de 'projectsData'
+        // Usa a variável global 'allProjectsData'
         const filteredProjects = filter === 'Todas'
             ? allProjectsData 
             : allProjectsData.filter(p => p.skills && p.skills.includes(filter));
 
-        // Adiciona um check para quando o array está sendo carregado ou o filtro não retorna nada
         if (filteredProjects.length === 0 && allProjectsData.length > 0) {
              projectCarousel.innerHTML = `<p style="color: var(--text-secondary); width: 100%; text-align: center;">Nenhum projeto encontrado para a skill "${filter}".</p>`;
              return;
@@ -1672,14 +1668,24 @@ document.addEventListener('DOMContentLoaded', function() {
             card.className = 'project-preview-card';
             card.dataset.id = project.id;
             
-            // A API já envia 'shortTitle', então a lógica de estilo funciona
-            const titleStyle = project.shortTitle === "Análise Crédito-Risco" ? 'style="left: -7px;"' : '';
+            // ================================================================
+            // --- [INÍCIO DA CORREÇÃO DE "UNDEFINED"] ---
+            // Torna o JS robusto, aceitando o formato novo (camelCase) OU o antigo (snake_case)
             
-            // A API já envia 'imageSrc'
+            // Verifica se a propriedade 'imageSrc' (nova) existe, senão, usa 'image_src' (antiga)
+            const imgSrc = project.imageSrc || project.image_src; 
+            const title = project.title || project.titulo;
+            const shortTitle = project.shortTitle || project.short_title;
+            
+            const titleStyle = shortTitle === "Análise Crédito-Risco" ? 'style="left: -7px;"' : '';
+            
             card.innerHTML = `
-                <img src="${project.imageSrc}" alt="Imagem do projeto ${project.title}">
-                <h3 ${titleStyle}>${project.shortTitle}</h3>
+                <img src="${imgSrc}" alt="Imagem do projeto ${title}">
+                <h3 ${titleStyle}>${shortTitle}</h3>
             `;
+            // --- [FIM DA CORREÇÃO] ---
+            // ================================================================
+
             projectCarousel.appendChild(card);
         });
     }
@@ -1701,20 +1707,23 @@ document.addEventListener('DOMContentLoaded', function() {
             if (card) {
                 const projectId = parseInt(card.dataset.id);
                 
-                // [MUDANÇA 4] Busca o projeto na variável global 'allProjectsData'
+                // Busca o projeto na variável global 'allProjectsData'
                 const project = allProjectsData.find(p => p.id === projectId);
                 
                 if (project) {
-                    // O restante desta lógica permanece IDÊNTICO, pois os nomes
-                    // (aliases) da API (app.py) correspondem aos nomes do JS.
-                    document.getElementById('modal-image').src = project.imageSrc;
-                    document.getElementById('modal-image').alt = `Imagem do projeto ${project.title}`;
-                    document.getElementById('modal-title').textContent = project.title;
-                    document.getElementById('modal-description').textContent = project.longDescription;
+                    
+                    // ================================================================
+                    // --- [INÍCIO DA CORREÇÃO DE "UNDEFINED" NO MODAL] ---
+                    // Adiciona a mesma lógica defensiva para todas as propriedades
+                    
+                    document.getElementById('modal-image').src = project.imageSrc || project.image_src;
+                    document.getElementById('modal-image').alt = `Imagem do projeto ${project.title || project.titulo}`;
+                    document.getElementById('modal-title').textContent = project.title || project.titulo;
+                    document.getElementById('modal-description').textContent = project.longDescription || project.long_description;
                     
                     const skillsContainer = document.getElementById('modal-skills');
                     skillsContainer.innerHTML = '';
-                    if (project.skills) { // Adiciona verificação
+                    if (project.skills) { 
                         project.skills.forEach(skill => {
                             const skillTag = document.createElement('span');
                             skillTag.textContent = skill;
@@ -1724,9 +1733,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     const linksContainer = document.getElementById('modal-links');
                     linksContainer.innerHTML = ''; 
-                    if (project.caseStudyLink) {
+                    
+                    const caseStudyLink = project.caseStudyLink || project.case_study_link;
+                    if (caseStudyLink) {
                         const caseLink = document.createElement('a');
-                        caseLink.href = project.caseStudyLink;
+                        caseLink.href = caseStudyLink;
                         caseLink.className = 'btn btn-accent';
                         caseLink.textContent = 'Ver Case Completo';
                         caseLink.addEventListener('click', (e) => {
@@ -1734,20 +1745,28 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                         linksContainer.appendChild(caseLink);
                     }
-                    if (project.liveLink) {
+                    
+                    const liveLinkUrl = project.liveLink || project.live_link;
+                    if (liveLinkUrl) {
                         const liveLink = document.createElement('a');
-                        liveLink.href = project.liveLink;
+                        liveLink.href = liveLinkUrl;
                         liveLink.className = 'btn-live';
                         liveLink.target = '_blank';
-                        liveLink.textContent = project.liveLinkText;
+                        liveLink.textContent = project.liveLinkText || project.live_link_text; // Também corrigido
                         linksContainer.appendChild(liveLink);
                     }
+                    
+                    const githubLinkUrl = project.githubLink || project.github_link;
                     const githubLink = document.createElement('a');
-                    githubLink.href = project.githubLink;
+                    githubLink.href = githubLinkUrl;
                     githubLink.className = 'btn btn-outline';
                     githubLink.target = '_blank';
                     githubLink.textContent = 'Ver no GitHub';
                     linksContainer.appendChild(githubLink);
+                    
+                    // --- [FIM DA CORREÇÃO DO MODAL] ---
+                    // ================================================================
+                    
                     if (project.disclaimer) {
                         const disclaimerSpan = document.createElement('span');
                         disclaimerSpan.className = 'disclaimer';
@@ -2194,7 +2213,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========================================================
     const scrollLeftBtn = document.getElementById('scroll-left-btn');
     const scrollRightBtn = document.getElementById('scroll-right-btn');
-    const carousel = document.getElementById('project-carousel'); // Renomeado de 'carousel' para evitar conflito
+    const carousel = document.getElementById('project-carousel'); 
 
     if (scrollLeftBtn && scrollRightBtn && carousel) {
         const updateProjectButtonState = () => {
@@ -2224,10 +2243,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         carousel.addEventListener('scroll', updateProjectButtonState);
         new ResizeObserver(updateProjectButtonState).observe(carousel);
-        
-        // [MUDANÇA 5] A chamada de atualização dos botões foi MOVIDA
-        // para dentro da nova função de fetch 'iniciarCarregamentoProjetos'
-        // setTimeout(updateProjectButtonState, 200); // <-- Linha DELETADA
     }
     // --- FIM: LÓGICA BOTÕES CARROSSEL PROJETOS ---
 
@@ -2373,7 +2388,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // ========================================================
-    // --- [MUDANÇA 6] NOVA FUNÇÃO DE CARREGAMENTO DE PROJETOS ---
+    // --- FUNÇÃO DE CARREGAMENTO DE PROJETOS (Inalterada) ---
     // ========================================================
     function iniciarCarregamentoProjetos() {
         const projectCarousel = document.getElementById('project-carousel');
@@ -2394,7 +2409,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 allProjectsData = data; // Salva os dados na variável global
                 renderProjects('Todas'); // Renderiza os projetos
                 
-                // [MUDANÇA 7] Atualiza o estado dos botões do carrossel DEPOIS de carregar
                 if (scrollLeftBtn) {
                     setTimeout(() => {
                         const carousel = document.getElementById('project-carousel');
@@ -2414,8 +2428,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- CHAMADAS DE INICIALIZAÇÃO ---
-    
-    // [MUDANÇA 8] 'renderProjects()' foi substituído por 'iniciarCarregamentoProjetos()'
     iniciarCarregamentoProjetos(); 
     iniciarCarregamentoDoBlog(); 
 });
